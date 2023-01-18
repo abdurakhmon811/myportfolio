@@ -1,0 +1,38 @@
+/* HTML elements */
+body {
+    background-color: #1E1E1E;
+    padding-bottom: 25px;
+}
+
+/* Classes */
+.custom-nav-link {
+    color: #7E7E7E;
+    transition: all 0.15s ease-in-out;
+}
+.custom-nav-link:hover {
+    color: #fff;
+}
+.custom-nav-link:active {
+    color: #fff;
+}
+.custom-nav-link:after {
+    background-color: #fff;
+    height: 100%;
+    opacity: 1;
+    transition: all 0.15s ease-in-out;
+    width: 100%;
+}
+.navbar {
+    background-color: #313131;
+    border: none;
+    height: 80px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+.nav-item {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+/* IDs */

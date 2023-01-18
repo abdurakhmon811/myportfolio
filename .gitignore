@@ -1,0 +1,3 @@
+msenv/
+__pycache__/
+*.sqlite3
