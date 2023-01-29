@@ -1,7 +1,7 @@
 /* HTML elements */
 body {
     background-color: #1E1E1E;
-    padding-bottom: 25px;
+    padding-bottom: 80px;
 }
 
 /* Classes */
@@ -15,12 +15,31 @@ body {
 .custom-nav-link:active {
     color: #fff;
 }
-.custom-nav-link:after {
-    background-color: #fff;
-    height: 100%;
-    opacity: 1;
+.dimgray-link {
+    color: #7E7E7E;
     transition: all 0.15s ease-in-out;
-    width: 100%;
+}
+.dimgray-link:hover {
+    color: #fff;
+}
+.dimgray-link:active {
+    color: #fff;
+}
+.dropdown-item {
+    color:#fff;
+}
+.dropdown-item:hover {
+    background-color: #fff;
+    color: #000;
+}
+.dropdown-menu {
+    background-color: #313131;
+}
+.language-legend {
+    display: flex;
+    float: right;
+    margin-top: 1.5rem;
+    margin-right: 0rem;
 }
 .navbar {
     background-color: #313131;
@@ -33,6 +52,14 @@ body {
 .nav-item {
     margin-left: 1em;
     margin-right: 1em;
+}
+/* Not used yet */
+.white-link {
+    color: #fff;
+    transition: all 0.2s ease-in-out;
+}
+.white-link:hover {
+    color: #fff;
 }
 
 /* IDs */

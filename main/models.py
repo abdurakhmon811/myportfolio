@@ -12,6 +12,7 @@ class About(models.Model):
         verbose_name = 'About'
         verbose_name_plural = 'About'
 
+    avatar = models.ImageField(upload_to='media/images', null=True)
     title = models.CharField(max_length=100)
     datetime = models.DateTimeField(auto_now_add=True)
     text = models.TextField()

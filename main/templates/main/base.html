@@ -11,9 +11,40 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
         <!-- TODO: Add favicon -->
         <script language="JavaScript" type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
-        <script src="{% static 'js/popper.min.js' %}"></script>
+        <script language="JavaScript" type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
     </head>
     <body id="main_body">
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <div class="language-legend">
+            <div class="dropdown">
+                <a class="dimgray-link fw-light"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+                    <img src="{% static 'icons/languages.png' %}" height="27">
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item fw-light"
+                        href="">
+                            English
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item fw-light"
+                        href="">
+                            Russian
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item fw-light"
+                        href="">
+                            Uzbek
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <nav class="navbar navbar-expand bg-body-tertiary fixed-bottom">
             <div class="container-fluid">
                 <div class="mx-auto">
@@ -24,18 +55,23 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link custom-nav-link fw-bold">
+                            <a href="{% url 'projects' %}" class="nav-link custom-nav-link fw-bold">
                                 Projects
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link custom-nav-link fw-bold">
+                            <a href="{% url 'about' %}" class="nav-link custom-nav-link fw-bold">
                                 About
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link custom-nav-link fw-bold">
+                            <a href="{% url 'contact_details' %}" class="nav-link custom-nav-link fw-bold">
                                 Contact details
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link custom-nav-link fw-bold">
+                                Statistics
                             </a>
                         </li>
                     </ul>
