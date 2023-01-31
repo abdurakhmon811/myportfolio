@@ -15,34 +15,33 @@
     </head>
     <body id="main_body">
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
-        <div class="language-legend">
-            <div class="dropdown">
-                <a class="dimgray-link fw-light"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false">
-                    <img src="{% static 'icons/languages.png' %}" height="27">
-                </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="dropdown-item fw-light"
-                        href="">
-                            English
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item fw-light"
-                        href="">
-                            Russian
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item fw-light"
-                        href="">
-                            Uzbek
-                        </a>
-                    </li>
-                </ul>
+        <div class="container main-page-header">
+            <div class="row media-links-row mx-auto">
+                <div class="col link-col">
+                    <a href="https://www.github.com/abdurakhmon811" class="fw-bold github">
+                        GitHub
+                    </a>
+                </div>
+                <div class="col link-col">
+                    <a href="mailto:abdurakhmonomonov@gmail.com" class="fw-bold gmail">
+                        Gmail
+                    </a>
+                </div>
+                <div class="col link-col">
+                    <a href="https://www.linkedin.com/in/abdurakhmon-omonov-4a0601251/" class="fw-bold linkedin">
+                        LinkedIn
+                    </a>
+                </div>
+                <div class="col link-col">
+                    <a href="https://www.telegram.me/abduraxmonomonov" class="fw-bold telegram">
+                        Telegram
+                    </a>
+                </div>
+                <div class="col link-col">
+                    <a href="https://twitter.com/abdurakhmon811" class="fw-bold twitter">
+                        Twitter
+                    </a>
+                </div>
             </div>
         </div>
         <nav class="navbar navbar-expand bg-body-tertiary fixed-bottom">
@@ -50,28 +49,23 @@
                 <div class="mx-auto">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="{% url 'index' %}" class="nav-link custom-nav-link fw-bold">
+                            <a href="{% url 'index' %}" class="nav-link custom-nav-link main-page fw-bold">
                                 Main page
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'projects' %}" class="nav-link custom-nav-link fw-bold">
+                            <a href="{% url 'projects' %}" class="nav-link custom-nav-link projects fw-bold">
                                 Projects
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'about' %}" class="nav-link custom-nav-link fw-bold">
+                            <a href="{% url 'about' %}" class="nav-link custom-nav-link about fw-bold">
                                 About
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'contact_details' %}" class="nav-link custom-nav-link fw-bold">
+                            <a href="{% url 'contact_details' %}" class="nav-link custom-nav-link contact-details fw-bold">
                                 Contact details
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link custom-nav-link fw-bold">
-                                Statistics
                             </a>
                         </li>
                     </ul>

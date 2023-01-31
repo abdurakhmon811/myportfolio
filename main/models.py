@@ -15,12 +15,14 @@ class About(models.Model):
     avatar = models.ImageField(upload_to='media/images', null=True)
     title = models.CharField(max_length=100)
     datetime = models.DateTimeField(auto_now_add=True)
-    text = models.TextField()
+    full_bio = models.TextField()
+    short_bio = models.TextField(null=True)     # Used for the main page
+    resume_link = models.URLField(null=True)    # Link for file located in Google Drive should be given
 
     objects = models.Manager()
 
     def __str__(self) -> str:
-        
+
         return self.title
 
 
@@ -30,7 +32,7 @@ class ContactDetail(models.Model):
     """
     
     media = models.ForeignKey(Media, on_delete=models.PROTECT)
-    comment = models.TextField()
+    comment = models.TextField(null=True)
 
     objects = models.Manager()
 

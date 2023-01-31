@@ -6,14 +6,109 @@ body {
 
 /* Classes */
 .custom-nav-link {
+    background-color: transparent;
+    border-radius: 1.5rem;
     color: #7E7E7E;
-    transition: all 0.15s ease-in-out;
+    display: flex;
+    transition: all 0.2s ease-in-out;
+    height: 0%;
 }
 .custom-nav-link:hover {
+    background-color: #00AFE2;
     color: #fff;
+    height: 100%;
 }
 .custom-nav-link:active {
+    background-color: #0082A7;
     color: #fff;
+    height: 100%;
+}
+@media only screen and (max-width: 616px) {
+    .main-page {
+        content: url('../icons/main_page_grey.png');
+        height: 50px;
+        transition: all 0.2s ease-in-out;
+        width: 50px;
+    }
+    .main-page:hover {
+        content: url('../icons/main_page_white.png');
+    }
+    .main-page:active {
+        content: url('../icons/main_page_white.png');
+    }
+    .projects {
+        content: url('../icons/projects_grey.png');
+        height: 50px;
+        transition: all 0.2s ease-in-out;
+        width: 50px;
+    }
+    .projects:hover {
+        content: url('../icons/projects_white.png')
+    }
+    .projects:active {
+        content: url('../icons/projects_white.png')
+    }
+    .about {
+        content: url('../icons/about_grey.png');
+        height: 50px;
+        transition: all 0.2s ease-in-out;
+        width: 50px;
+    }
+    .about:hover {
+        content: url('../icons/about_white.png')
+    }
+    .about:active {
+        content: url('../icons/about_white.png')
+    }
+    .contact-details {
+        content: url('../icons/contact_grey.png');
+        height: 50px;
+        transition: all 0.2s ease-in-out;
+        width: 50px;
+    }
+    .contact-details:hover {
+        content: url('../icons/contact_white.png')
+    }
+    .contact-details:active {
+        content: url('../icons/contact_white.png')
+    }
+    .statistics {
+        content: url('../icons/statistics_grey.png');
+        height: 50px;
+        transition: all 0.2s ease-in-out;
+        width: 50px;
+    }
+    .statistics:hover {
+        content: url('../icons/statistics_white.png')
+    }
+    .statistics:active {
+        content: url('../icons/statistics_white.png')
+    }
+    .github {
+        content: url('../icons/github.png');
+        height: 25px;
+        width: 25px;
+    }
+    .gmail {
+        content: url('../icons/gmail.png');
+        height: 25px;
+        width: 25px;
+    }
+    .linkedin {
+        content: url('../icons/linkedin.png');
+        height: 25px;
+        width: 25px;
+    }
+    .telegram {
+        content: url('../icons/telegram.png');
+        height: 25px;
+        width: 25px;
+    }
+    .twitter {
+        content: url('../icons/twitter.png');
+        height: 25px;
+        width: 25px;
+    }
 }
 .dimgray-link {
     color: #7E7E7E;
@@ -25,21 +120,58 @@ body {
 .dimgray-link:active {
     color: #fff;
 }
-.dropdown-item {
-    color:#fff;
+.github {
+    background-clip: text;
+    background-image: linear-gradient(to right, #d028ff, #9d46ff);
+    background-size: 100%;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
 }
-.dropdown-item:hover {
-    background-color: #fff;
-    color: #000;
+.gmail {
+    background-clip: text;
+    background-image: linear-gradient(to right, #4285f4, #db4437, #f4b400, #0f9d58);
+    background-size: 100%;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
 }
-.dropdown-menu {
-    background-color: #313131;
-}
-.language-legend {
+.link-col {
     display: flex;
-    float: right;
-    margin-top: 1.5rem;
-    margin-right: 0rem;
+    justify-content: center;
+}
+.linkedin {
+    background-clip: text;
+    background-image: linear-gradient(to right, #0077b5, #015988);
+    background-size: 100%;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+}
+.main-page-header {
+    border-bottom: 1px solid #444444;
+    height: 40px;
+    max-width: 100%;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    margin-top: 0;
+}
+@media only screen and (max-width: 616px) {
+    .main-page-header {
+        height: 50px;
+        padding-bottom: 12.5px;
+        padding-top: 12.5px;
+    }
+}
+.media-links-row {
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
 }
 .navbar {
     background-color: #313131;
@@ -52,6 +184,30 @@ body {
 .nav-item {
     margin-left: 1em;
     margin-right: 1em;
+}
+@media only screen and (max-width: 616px) {
+    .nav-item {
+        margin-left: 0.4em;
+        margin-right: 0.4em;
+    }
+}
+.telegram {
+    background-clip: text;
+    background-image: linear-gradient(to right, #229ed9, #fff);
+    background-size: 100%;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+}
+.twitter {
+    background-clip: text;
+    background-image: linear-gradient(to right, #1da1f2, #00cdff);
+    background-size: 100%;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
 }
 /* Not used yet */
 .white-link {

@@ -59,3 +59,11 @@ def contact_details(request: HttpRequest):
         'queryset': queryset,
     }
     return render(request, 'main/contact_details.html', context)
+
+
+def statistics(request: HttpRequest):
+    """
+    Renders the page for checking the statistics related to me for various time periods.
+    """
+
+    return render(request, 'main/statistics.html')
