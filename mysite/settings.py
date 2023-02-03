@@ -34,6 +34,9 @@ INSTALLED_APPS = [
     # My apps
     'main',
 
+    # Third party
+    'bootstrap5',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,6 +70,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+            ],
+            'builtins': [
+                'main.html_filters',
             ],
         },
     },
@@ -125,6 +131,9 @@ STATIC_DIRS = [
     (BASE_DIR / 'main/static'),
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

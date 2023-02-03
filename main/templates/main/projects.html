@@ -1,5 +1,90 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-
+<div class="container" id="projects-header">
+    <h1>Here are all of the projects I have done on my own</h1>
+</div>
+<div class="container" id="projects-container">
+    {% if own_projects %}
+        <div class="row projects-row">
+            {% for own_project in own_projects %}
+                <div class="card project-card">
+                    <img src="{{ own_project.image.url }}" class="project-image">
+                    <div class="card-img-overlay">
+                        <h5 class="card-title">{{ own_project.project_name }}</h5>
+                        <a href="" data-bs-toggle="modal" data-bs-target="#description" id="modal-trigger">
+                            Click here to read the description
+                        </a>
+                        <p class="card-text mt-3">Date finished - {{ own_project.date_finished|date:'d/m/Y' }}</p>
+                        <a href="{{ own_project.link }}" id="visit-link">Visit &raquo;</a>
+                    </div>
+                </div>
+                <div class="modal fade" id="description" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="fw-light">Project description</h3>
+                                <button type="button" 
+                                class="btn-close btn-close-white"
+                                data-bs-dismiss="modal"
+                                aria-label="Close">
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="fw-light">
+                                    {{ own_project.description }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-projects">It seems I have not either uploaded my projects or made any...</p>
+    {% endif %}
+</div>
+<div class="container" id="projects-header-2">
+    <h1>And these are the ones I have done with a team</h1>
+</div>
+<div class="container" id="projects-container-2">
+    {% if team_projects %}
+        <div class="row projects-row">
+            {% for team_project in team_projects %}
+                <div class="card project-card">
+                    <img src="{{ team_project.image.url }}" class="project-image">
+                    <div class="card-img-overlay">
+                        <h5 class="card-title">{{ team_project.project_name }}</h5>
+                        <a href="" data-bs-toggle="modal" data-bs-target="#description" id="modal-trigger">
+                            Click here to read the description
+                        </a>
+                        <p class="card-text mt-3">Date finished - {{ team_project.date_finished|date:'d/m/Y' }}</p>
+                        <a href="{{ team_project.link }}" id="visit-link">Visit &raquo;</a>
+                    </div>
+                </div>
+                <div class="modal fade" id="description" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="fw-light">Project description</h3>
+                                <button type="button" 
+                                class="btn-close btn-close-white"
+                                data-bs-dismiss="modal"
+                                aria-label="Close">
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="fw-light">
+                                    {{ team_project.description }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-projects">It seems I have not either uploaded the projects I made with a team or made any...</p>
+    {% endif %}
+</div>
 {% endblock content %}

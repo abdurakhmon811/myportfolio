@@ -1,5 +1,18 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-
+<div class="row main-row">
+    <div class="col-xl-8">
+        <h1 class="display-3 hi-there">
+            Hi there!
+        </h1>
+        <p class="fw-light short-bio">
+            {{ information.short_bio }} You can take a look at my projects or other information on 
+            <a href="{% url 'projects' %}" class="next-pages-link">the next pages &raquo;</a>
+        </p>
+    </div>
+    <div class="col-xl-4 main-image-col">
+        <img src="{{ information.avatar }}" class="avatar">
+    </div>
+</div>
 {% endblock content %}

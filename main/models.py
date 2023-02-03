@@ -1,5 +1,9 @@
 from django.db import models
-from .foreign_keys import Media
+from .foreign_keys import Education, \
+    Language, \
+    Media, \
+    ProgrammingLanguage, \
+    WorkExperience
 
 
 class About(models.Model):
@@ -12,11 +16,17 @@ class About(models.Model):
         verbose_name = 'About'
         verbose_name_plural = 'About'
 
-    avatar = models.ImageField(upload_to='media/images', null=True)
+    avatar = models.ImageField(upload_to='images', null=True)
     title = models.CharField(max_length=100)
     datetime = models.DateTimeField(auto_now_add=True)
     full_bio = models.TextField()
     short_bio = models.TextField(null=True)     # Used for the main page
+    programming_languages = models.ForeignKey(ProgrammingLanguage, on_delete=models.PROTECT, null=True)
+    languages = models.ForeignKey(Language, on_delete=models.PROTECT, null=True)
+    education = models.ForeignKey(Education, on_delete=models.PROTECT, null=True)
+    work_experience = models.ForeignKey(WorkExperience, on_delete=models.PROTECT, null=True)
+    skills = models.CharField(max_length=100, null=True)    # Either work related or non-releated
+    hobbies = models.CharField(max_length=100, null=True)
     resume_link = models.URLField(null=True)    # Link for file located in Google Drive should be given
 
     objects = models.Manager()
@@ -46,10 +56,17 @@ class Project(models.Model):
     A model for handling projects created by me.
     """
 
+    developed = [
+        ('My own', 'My own'),
+        ('With team', 'With team'),
+    ]
+
+    project_created = models.CharField(max_length=100, choices=developed, null=True)
     project_name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
     link = models.URLField()
-    image = models.ImageField(upload_to='media/images')
+    image = models.ImageField(upload_to='images')
+    date_finished = models.DateField(auto_now_add=False, null=True)
 
     objects = models.Manager()
 
