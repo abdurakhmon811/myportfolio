@@ -3,11 +3,10 @@ from django.urls import path
 from . import views
 
 appname = 'main'
-urlpatterns = [
+urlpatterns = (
     path('', views.index, name='index'),
     path('search/', views.search, name='search'),
     path('projects/', views.projects, name='projects'),
     path('about/', views.about, name='about'),
     path('contact-details/', views.contact_details, name='contact_details'),
-    path('statistics/', views.statistics, name='statistics'),
-]
+)

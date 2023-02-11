@@ -1,5 +1,5 @@
-{% load bootstrap5 %}
 {% load static %}
+{% load i18n %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -65,17 +65,22 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li class="dropdown-item">
-                            <a href="" class="fw-bold">
+                            <a href="" class="fw-bold" id="de">
+                                Deutsch
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="" class="fw-bold" id="en">
                                 English
                             </a>
                         </li>
                         <li class="dropdown-item">
-                            <a href="" class="fw-bold">
+                            <a href="" class="fw-bold" id="ru">
                                 Russian
                             </a>
                         </li>
                         <li class="dropdown-item">
-                            <a href="" class="fw-bold">
+                            <a href="" class="fw-bold" id="uz">
                                 Uzbek
                             </a>
                         </li>
@@ -91,7 +96,7 @@
                             <a href="{% url 'index' %}" 
                             class="nav-link custom-nav-link main-page fw-bold"
                             id="main-page">
-                                Main page
+                                {% translate "Main page" %}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -105,7 +110,7 @@
                             <a href="{% url 'about' %}" 
                             class="nav-link custom-nav-link about fw-bold"
                             id="about">
-                                About
+                                About me
                             </a>
                         </li>
                         <li class="nav-item">
@@ -142,8 +147,24 @@
                     $(current_page).css('transition', 'none');
 
                 }
+                
+                DefineLanLinks(
+                    document.getElementById('de'),
+                    document.getElementById('en'),
+                    document.getElementById('ru'),
+                    document.getElementById('uz'),
+                );
 
             });
+
+            function DefineLanLinks(link_de, link_en, link_ru, link_uz) {
+
+                link_de.href = 'de' + location.pathname;
+                link_en.href = 'en' + location.pathname;
+                link_ru.href = 'ru' + location.pathname;
+                link_uz.href = 'uz' + location.pathname;
+
+            };
         </script>
         {% block content %}{% endblock content %}
     </body>
