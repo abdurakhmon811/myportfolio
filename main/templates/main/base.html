@@ -6,10 +6,10 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="EI=edge">
-        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Abdurakhmon Omonov{% endblock title %}</title>
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
         <!-- TODO: Add favicon -->
         <script language="JavaScript" type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
         <script language="JavaScript" type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
@@ -147,24 +147,8 @@
                     $(current_page).css('transition', 'none');
 
                 }
-                
-                DefineLanLinks(
-                    document.getElementById('de'),
-                    document.getElementById('en'),
-                    document.getElementById('ru'),
-                    document.getElementById('uz'),
-                );
 
             });
-
-            function DefineLanLinks(link_de, link_en, link_ru, link_uz) {
-
-                link_de.href = 'de' + location.pathname;
-                link_en.href = 'en' + location.pathname;
-                link_ru.href = 'ru' + location.pathname;
-                link_uz.href = 'uz' + location.pathname;
-
-            };
         </script>
         {% block content %}{% endblock content %}
     </body>
