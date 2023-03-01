@@ -2,25 +2,33 @@
 from django.db import models
 
 
+class EducationDegree(models.Model):
+    """
+    A model for handling education degrees which are going to be related to Education model.
+    """
+
+    degree = models.CharField(max_length=100)
+
+    objects = models.Manager()
+
+    def __str__(self) -> str:
+        
+        return self.degree
+
+
 class Education(models.Model):
     """
     A model for handling what education I have.
     """
 
-    degrees = [
-        ('Associate degree', 'Associate degree'),
-        ("Bachelor's degree", "Bachelor's degree"),
-        ("Master's degree", "Master's degree"),
-        ('Doctoral degree', 'Doctoral degree'),
-    ]
-
-    education = models.CharField(max_length=100, choices=degrees)
+    education = models.ForeignKey(EducationDegree, on_delete=models.PROTECT, null=True)
     institution = models.CharField(max_length=150)
     faculty = models.CharField(max_length=150)
     major = models.CharField(max_length=200)
     start_date = models.DateField(auto_now_add=False)
     still_studying = models.BooleanField(default=False)
     end_date = models.DateField(auto_now_add=False, null=True)
+    comment = models.TextField(null=True)
 
     objects = models.Manager()
 
@@ -45,6 +53,7 @@ class Language(models.Model):
 
     language = models.CharField(max_length=100)
     knowledge_extent = models.CharField(max_length=20, choices=degrees)
+    comment = models.TextField(null=True)
 
     objects = models.Manager()
 
@@ -64,7 +73,8 @@ class Media(models.Model):
         verbose_name_plural = 'Media'
     
     media_type = models.CharField(max_length=100)
-    icon = models.ImageField(upload_to='images')
+    media_image = models.ImageField(upload_to='images')
+    comment = models.TextField(null=True)
 
     objects = models.Manager()
 
@@ -81,7 +91,8 @@ class ProgrammingLanguage(models.Model):
     language = models.CharField(max_length=100)
     started = models.DateField(auto_now_add=False)      # The date when I started learning programming
     still_learning = models.BooleanField(default=True)
-    knowledge_on = models.TextField                     # What I can do using the language
+    ended = models.DateField(auto_now_add=False, null=True)
+    comment = models.TextField(null=True)                     # What I can do using the language
 
     objects = models.Manager()
 
@@ -90,24 +101,28 @@ class ProgrammingLanguage(models.Model):
         return self.language
 
 
+class WorkType(models.Model):
+    """
+    A model for handling work types which are going to be related to WorkExperience model.
+    """
+
+    work_type = models.CharField(max_length=100)
+
+    objects = models.Manager()
+
+    def __str__(self) -> str:
+        
+        return self.work_type
+
+
 class WorkExperience(models.Model):
     """
     A model for handling what work experience I have.
     """
 
-    types = [
-        ('Remote full-time', 'Remote full-time'),
-        ('Remote part-time', 'Remote part-time'),
-        ('Remote contract', 'Remote contract'),
-        ('In-person full-time', 'In-person full-time'),
-        ('In-person part-time', 'In-person part-time'),
-        ('In-person contract', 'In-person contract'),
-        ('Freelance', 'Freelance'),
-    ]
-
     work_place = models.CharField(max_length=150)
     as_a = models.CharField(max_length=150)         # EXAMPLE: Full-stack Web Developer
-    employment_type = models.CharField(max_length=100, choices=types)
+    employment_type = models.ForeignKey(WorkType, on_delete=models.PROTECT, null=True)
     started = models.DateField(auto_now_add=False)  # The date I started working at the specified work place
     still_working = models.BooleanField(default=False)
     ended = models.DateField(auto_now_add=False)    # The date I ended working at the specified work place

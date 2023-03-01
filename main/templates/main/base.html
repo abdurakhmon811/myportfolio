@@ -126,28 +126,20 @@
         </nav>
         <script>
             $(document).ready(function (e) {
-
                 var current_page = document.querySelector("a[href='" + location.pathname + "']");
                 var icon_name = current_page.textContent.toLowerCase().trim().replace(' ', '_');
-
                 $('#loader').hide();
-
                 if (window.innerWidth > 616) {
-
                     $(current_page).css('background-color', '#00afe2');
                     $(current_page).css('color', '#fff');
                     $(current_page).css('height', '100%');
                     $(current_page).css('transition', 'none');
-
                 } else {
-
                     $(current_page).css('background-color', '#00afe2');
                     $(current_page).css('content', "url('../static/icons/" + icon_name + "_white.png')");
                     $(current_page).css('height', '100%');
                     $(current_page).css('transition', 'none');
-
-                }
-
+                };
             });
         </script>
         {% block content %}{% endblock content %}

@@ -4,9 +4,9 @@ from django import template
 register = template.Library()
 
 @register.filter
-def truncate_120(text):
+def truncate(text, length):
     """
-    A function for truncating the parts of the given text after 120 characters.
+    A function for truncating the parts of the given text after the given length.
     """
 
-    return f'{text[:120]}...'
+    return text[:length] if len(text) <= length else f'{text[:length]}...'

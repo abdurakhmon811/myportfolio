@@ -34,14 +34,14 @@ def search(request: HttpRequest):
     my_projects = None
     contact_information = None
 
-    if request.method == 'GET' and 'searched' in request.POST:
+    if request.method == 'GET' and 'searched' in request.GET:
         searched = request.GET.get('searched')
-        personal_information = About.objects.filter(Q(title__icontains=searched) | 
-                                                    Q(full_bio__icontains=searched))
-        my_projects = Project.objects.filter(Q(project_name__icontains=searched) |
-                                             Q(description__icontains=searched))
-        contact_information = ContactDetail.objects.filter(Q(media__icontains=searched) |
-                                                           Q(comment_icontains=searched))
+        personal_information = About.objects.filter(Q(title__contains=searched) | 
+                                                    Q(full_bio__contains=searched))
+        my_projects = Project.objects.filter(Q(project_name__contains=searched) |
+                                             Q(description__contains=searched))
+        contact_information = ContactDetail.objects.filter(Q(media__contains=searched) |
+                                                           Q(comment_contains=searched))
     
     context = {
         'searched': searched,
@@ -73,13 +73,19 @@ def about(request: HttpRequest):
     """
 
     information = None
+    skills = None
+    hobbies = None
     try:
         information = About.objects.latest('datetime')
+        skills = information.skills.split(',')
+        hobbies = information.hobbies.split(',')
     except ObjectDoesNotExist:
         pass
 
     context = {
         'information': information,
+        'skills': skills,
+        'hobbies': hobbies,
     }
     return render(request, 'main/about.html', context)
 
@@ -99,11 +105,3 @@ def contact_details(request: HttpRequest):
         'details': details,
     }
     return render(request, 'main/contact_details.html', context)
-
-
-def statistics(request: HttpRequest):
-    """
-    Renders the page for checking the statistics related to me for various time periods.
-    """
-
-    return render(request, 'main/statistics.html')

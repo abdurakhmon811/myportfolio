@@ -1,5 +1,362 @@
 {% extends 'main/base.html' %}
+{% load static %}
 
 {% block content %}
-
+<div class="about-me-header">
+    <h1 class="display-1 next-pages-link fw-light">{{ information.title }}</h1>
+    <h4 class="text-light fw-light mt-3">
+        {{ information.full_bio }}
+    </h4>
+</div>
+<div class="about-me-body">
+    <div class="row about-me-row">
+        <div class="col-xl-4 about-me-img-col">
+            <img src="{% static 'images/work-experience.png' %}" class="about-me-img">
+        </div>
+        <div class="col-xl-8 h-100">
+            <div class="carousel slide h-100" id="work-exp-slides">
+                <div class="carousel-inner h-100">
+                    {% for work_exp in information.work_experience.all %}
+                        <div class="carousel-item work-exp-carousel-item h-100">
+                            <div class="custom-caption h-100">
+                                <div class="inner-caption h-100">
+                                    <h2 class="text-light fw-light">
+                                        <img src="{% static 'icons/company-icon.png' %}" height="25"> 
+                                        {{ work_exp.work_place }}
+                                    </h2>
+                                    <h5 class="text-light fw-light">
+                                        As a {{ work_exp.as_a }}
+                                    </h5>
+                                    <h5 class="text-light fw-light">
+                                        Employment type - {{ work_exp.employment_type }}
+                                    </h5>
+                                    <h6 class="text-light fw-light">
+                                        {% if work_exp.ended %}
+                                            Period: {{ work_exp.started|date:'d.m.Y' }} - {{ work_exp.ended|date:'d.m.Y' }}
+                                        {% else %}
+                                            Period: {{ work_exp.started|date:'d.m.Y' }} - Current
+                                        {% endif %}
+                                    </h6>
+                                    <p class="text-light fw-light mt-2">
+                                        Thoughts:<br>
+                                        {{ work_exp.comment|truncate:450 }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="carousel-item work-exp-carousel-item h-100">
+                            <div class="custom-caption h-100">
+                                <div class="inner-caption h-100">
+                                    <h2 class="text-light fw-light">
+                                        <img src="{% static 'icons/company-icon.png' %}" height="25"> 
+                                        Nothing yet
+                                    </h2>
+                                    <h5 class="text-light fw-light">
+                                        As a Nothing yet
+                                    </h5>
+                                    <h5 class="text-light fw-light">
+                                        Employment type - Nothing yet
+                                    </h5>
+                                    <h6 class="text-light fw-light">
+                                        {% if work_exp.ended %}
+                                            Period: Nothing yet - Nothing yet
+                                        {% else %}
+                                            Period: Nothing yet - Nothing yet
+                                        {% endif %}
+                                    </h6>
+                                    <p class="text-light fw-light mt-2">
+                                        Thoughts:<br>
+                                        Nothing yet
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#work-exp-slides" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#work-exp-slides" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- should-be-reversed class reverses the flex-direction in smaller screens than 1200px -->
+    <div class="row about-me-row mt-4" id="should-be-reversed">
+        <div class="col-xl-8 h-100">
+            <div class="carousel slide h-100" id="education-slides">
+                <div class="carousel-inner h-100">
+                    {% for edu in information.education.all %}
+                        <div class="carousel-item education-carousel-item h-100">
+                            <div class="custom-caption h-100">
+                                <div class="inner-caption h-100">
+                                    <h2 class="text-light fw-light">
+                                        <img src="{% static 'icons/education.png' %}" height="25"> 
+                                        {{ edu.education }}
+                                    </h2>
+                                    <h5 class="text-light fw-light">
+                                        {{ edu.institution }}
+                                    </h5>
+                                    <h5 class="text-light fw-light">
+                                        Faculty - {{ edu.faculty }}
+                                    </h5>
+                                    <h5 class="text-light fw-light">
+                                        Major - {{ edu.major }}
+                                    </h5>
+                                    <h6 class="text-light fw-light">
+                                        {% if edu.end_date %}
+                                            Period: {{ edu.start_date|date:'d.m.Y' }} - {{ edu.end_date|date:'d.m.Y' }}
+                                        {% else %}
+                                            Period: {{ edu.start_date|date:'d.m.Y' }} - Current
+                                        {% endif %}
+                                    </h6>
+                                    <p class="text-light fw-light mt-2">
+                                        Thoughts:<br>
+                                        {{ edu.comment|truncate:450 }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="carousel-item education-carousel-item h-100">
+                            <div class="custom-caption h-100">
+                                <div class="inner-caption h-100">
+                                    <h2 class="text-light fw-light">
+                                        <img src="{% static 'icons/education.png' %}" height="25"> 
+                                        Nothing yet
+                                    </h2>
+                                    <h5 class="text-light fw-light">
+                                        Nothing yet
+                                    </h5>
+                                    <h5 class="text-light fw-light">
+                                        Faculty - Nothing yet
+                                    </h5>
+                                    <h5 class="text-light fw-light">
+                                        Major - Nothing yet
+                                    </h5>
+                                    <h6 class="text-light fw-light">
+                                        {% if edu.end_date %}
+                                            Period: Nothing yet - Nothing yet
+                                        {% else %}
+                                            Period: Nothing yet - Nothing yet
+                                        {% endif %}
+                                    </h6>
+                                    <p class="text-light fw-light mt-2">
+                                        Thoughts:<br>
+                                        Nothing yet
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#education-slides" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#education-slides" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-xl-4 about-me-img-col">
+            <img src="{% static 'images/education.png' %}" class="about-me-img">
+        </div>
+    </div>
+    <div class="row about-me-row mt-4">
+        <div class="col-xl-4 about-me-img-col">
+            <img src="{% static 'images/languages.png' %}" class="about-me-img">
+        </div>
+        <div class="col-xl-8 h-100">
+            <div class="carousel slide h-100" id="languages-slides">
+                <div class="carousel-inner h-100">
+                    {% for lang in information.languages.all %}
+                        <div class="carousel-item languages-carousel-item h-100">
+                            <div class="custom-caption h-100">
+                                <div class="inner-caption h-100">
+                                    <h2 class="text-light fw-light">
+                                        <img src="{% static 'icons/languages-sm.png' %}" height="25"> 
+                                        {{ lang.language }}
+                                    </h2>
+                                    <h5 class="text-light fw-light">
+                                        Knowledge degree - {{ lang.knowledge_extent }}
+                                    </h5>
+                                    <p class="text-light fw-light mt-2">
+                                        Thoughts:<br>
+                                        {{ lang.comment|truncate:450 }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="carousel-item languages-carousel-item h-100">
+                            <div class="custom-caption h-100">
+                                <div class="inner-caption h-100">
+                                    <h2 class="text-light fw-light">
+                                        <img src="{% static 'icons/languages-sm.png' %}" height="25"> 
+                                        Nothing yet
+                                    </h2>
+                                    <h5 class="text-light fw-light">
+                                        Knowledge degree - Nothing yet
+                                    </h5>
+                                    <p class="text-light fw-light mt-2">
+                                        Thoughts:<br>
+                                        Nothing yet
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#languages-slides" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#languages-slides" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- should-be-reversed class reverses the flex-direction in smaller screens than 1200px -->
+    <div class="row about-me-row mt-4" id="should-be-reversed">
+        <div class="col-xl-8 h-100">
+            <div class="carousel slide h-100" id="programming-languages-slides">
+                <div class="carousel-inner h-100">
+                    {% for plang in information.programming_languages.all %}
+                        <div class="carousel-item programming-languages-carousel-item h-100">
+                            <div class="custom-caption h-100">
+                                <div class="inner-caption h-100">
+                                    <h2 class="text-light fw-light">
+                                        <img src="{% static 'icons/programming-languages.png' %}" height="25"> 
+                                        {{ plang.language }}
+                                    </h2>
+                                    <h5 class="text-light fw-light">
+                                        {% if plang.still_learning and plang.language == 'Python' %}
+                                            Still learning - True
+                                        {% elif plang.still_learning and plang.language == 'JavaScript' %}
+                                            Still learning - true
+                                        {% elif plang.still_learning %}
+                                            Still learning - True
+                                        {% else %}
+                                            Still learning - False
+                                        {% endif %}
+                                    </h5>
+                                    <h6 class="text-light fw-light">
+                                        {% if not plang.still_learning %}
+                                            Period: {{ plang.started|date:'d.m.Y' }} - {{ plang.ended|date:'d.m.Y' }}
+                                        {% else %}
+                                            Period: {{ plang.started|date:'d.m.Y' }} - Current
+                                        {% endif %}
+                                    </h6>
+                                    <p class="text-light fw-light mt-2">
+                                        Thoughts:<br>
+                                        {{ plang.comment|truncate:450 }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="carousel-item programming-languages-carousel-item h-100">
+                            <div class="custom-caption h-100">
+                                <div class="inner-caption h-100">
+                                    <h2 class="text-light fw-light">
+                                        <img src="{% static 'icons/programming-languages.png' %}" height="25"> 
+                                        Nothing yet
+                                    </h2>
+                                    <h5 class="text-light fw-light">
+                                        Still learning - Nothing yet
+                                    </h5>
+                                    <h6 class="text-light fw-light">
+                                        {% if not plang.still_learning %}
+                                            Period: Nothing yet - Nothing yet
+                                        {% else %}
+                                            Period: Nothing yet - Nothing yet
+                                        {% endif %}
+                                    </h6>
+                                    <p class="text-light fw-light mt-2">
+                                        Thoughts:<br>
+                                        Nothing yet
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#programming-languages-slides" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#programming-languages-slides" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-xl-4 about-me-img-col">
+            <img src="{% static 'images/programming-languages.png' %}" class="about-me-img">
+        </div>
+    </div>
+    <div class="sh-div">
+        <h1 class="skills-text fw-light">
+            Skills
+        </h1>
+        <div class="sh-row">
+            {% for skill in skills %}
+                <h4 class="skill">
+                    {{ skill }}
+                </h4>
+            {% empty %}
+                <h4 class="nothin-yet-text">Nothing yet</h4>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="sh-div">
+        <h1 class="hobbies-text fw-light">
+            Hobbies
+        </h1>
+        <div class="sh-row">
+            {% for hobby in hobbies %}
+                <h4 class="hobby">
+                    {{ hobby }}
+                </h4>
+            {% empty %}
+                <h4 class="nothin-yet-text">Nothing yet</h4>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="resume-link-div">
+        <a href="{{ information.resume_link }}" class="resume-link">DOWNLOAD RESUME</a>
+    </div>
+</div>
+<script>
+    const work_exp_carousel_items = document.querySelectorAll('.work-exp-carousel-item');
+    $(work_exp_carousel_items[0]).addClass('active');
+    const education_carousel_items = document.querySelectorAll('.education-carousel-item');
+    $(education_carousel_items[0]).addClass('active');
+    const languages_carousel_items = document.querySelectorAll('.languages-carousel-item');
+    $(languages_carousel_items[0]).addClass('active');
+    const programming_languages_carousel_items = document.querySelectorAll('.programming-languages-carousel-item');
+    $(programming_languages_carousel_items[0]).addClass('active');
+    const skills = document.querySelectorAll('.skill');
+    const hobbies = document.querySelectorAll('.hobby');
+    if (skills.length > 1) {
+        var chosen_skills = $(skills).slice(1);
+        for (let i = 0; i < chosen_skills.length; i++) {
+            chosen_skills[i].classList.add('ms-2');
+        };
+    };
+    if (hobbies.length > 1) {
+        var chosen_hobbies = $(hobbies).slice(1);
+        for (let i = 0; i < chosen_hobbies.length; i++) {
+            chosen_hobbies[i].classList.add('ms-2');
+        };
+    };
+</script>
 {% endblock content %}

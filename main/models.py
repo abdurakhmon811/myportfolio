@@ -16,15 +16,15 @@ class About(models.Model):
         verbose_name = 'About'
         verbose_name_plural = 'About'
 
-    avatar = models.ImageField(upload_to='images')
+    avatar = models.ImageField(upload_to='images', null=True)  # Used for the main page
     title = models.CharField(max_length=100)
     datetime = models.DateTimeField(auto_now_add=True)
     full_bio = models.TextField()
     short_bio = models.TextField(null=True)     # Used for the main page
-    programming_languages = models.ManyToManyField(ProgrammingLanguage)
-    languages = models.ManyToManyField(Language)
-    education = models.ManyToManyField(Education)
     work_experience = models.ManyToManyField(WorkExperience)
+    education = models.ManyToManyField(Education)
+    languages = models.ManyToManyField(Language)
+    programming_languages = models.ManyToManyField(ProgrammingLanguage)
     skills = models.CharField(max_length=100, null=True)    # Either work related or non-releated
     hobbies = models.CharField(max_length=100, null=True)
     resume_link = models.URLField(null=True)    # Link for file located in Google Drive should be given
