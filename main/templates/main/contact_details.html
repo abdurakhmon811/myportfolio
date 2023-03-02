@@ -2,20 +2,31 @@
 {% load static %}
 
 {% block content %}
-<div class="row contact-row">
-    <div class="col-md contact-col">
-        <img src="{% static 'images/gmail.jpg' %}" class="contact-img">
-    </div>
-    <div class="col-md contact-col">
-        <img src="{% static 'images/linkedin.jpg' %}" class="contact-img">
-    </div>
-</div>
-<div class="row about-row">
-    <div class="col-md contact-col">
-        <img src="{% static 'images/telegram.jpg' %}" class="contact-img">
-    </div>
-    <div class="col-md contact-col">
-        <img src="{% static 'images/twitter.jpg' %}" class="contact-img">
-    </div>
+<div class="contact-details-body">
+    {% for detail in results %}
+        <div class="row contact-detail-row">
+            <div class="col-md-10 contact-info-col">
+                <h2 class="fw-light">
+                    <img src="{{ detail.media.media_image.url }}" class="mb-2" height="30"> {{ detail.media.media_type }}
+                </h2>
+                <p class="fw-light">
+                    {{ detail.comment }}
+                </p>
+                {% if detail.is_url %}
+                    <a href="{{ detail.value }}" class="contact-link">Contact &raquo;</a>
+                {% elif detail.is_email %}
+                    <a href="mailto:{{ detail.value }}" class="contact-link">Contact &raquo;</a>
+                {% elif detail.is_phone_number %}
+                    <a href="tel:{{ detail.value }}" class="contact-link">Contact &raquo;</a>
+                {% endif %}
+            </div>
+            <div class="col-md-2 qrcode-col">
+                <!-- The path to the qrcode image should be changed to the appropriate one when deploying -->
+                <img src="../{{ detail.qrcode }}" id="qrcode">
+            </div>
+        </div>
+    {% empty %}
+        <h2 class="nothing-yet-text text-center mt-5 mb-5">Nothing yet</h2>
+    {% endfor %}
 </div>
 {% endblock content %}

@@ -31,10 +31,10 @@
                                         Employment type - {{ work_exp.employment_type }}
                                     </h5>
                                     <h6 class="text-light fw-light">
-                                        {% if work_exp.ended %}
-                                            Period: {{ work_exp.started|date:'d.m.Y' }} - {{ work_exp.ended|date:'d.m.Y' }}
-                                        {% else %}
+                                        {% if work_exp.still_working %}
                                             Period: {{ work_exp.started|date:'d.m.Y' }} - Current
+                                        {% else %}
+                                            Period: {{ work_exp.started|date:'d.m.Y' }} - {{ work_exp.ended|date:'d.m.Y' }}
                                         {% endif %}
                                     </h6>
                                     <p class="text-light fw-light mt-2">
@@ -59,11 +59,7 @@
                                         Employment type - Nothing yet
                                     </h5>
                                     <h6 class="text-light fw-light">
-                                        {% if work_exp.ended %}
-                                            Period: Nothing yet - Nothing yet
-                                        {% else %}
-                                            Period: Nothing yet - Nothing yet
-                                        {% endif %}
+                                        Period: Nothing yet
                                     </h6>
                                     <p class="text-light fw-light mt-2">
                                         Thoughts:<br>
@@ -108,10 +104,10 @@
                                         Major - {{ edu.major }}
                                     </h5>
                                     <h6 class="text-light fw-light">
-                                        {% if edu.end_date %}
-                                            Period: {{ edu.start_date|date:'d.m.Y' }} - {{ edu.end_date|date:'d.m.Y' }}
-                                        {% else %}
+                                        {% if edu.still_studying %}
                                             Period: {{ edu.start_date|date:'d.m.Y' }} - Current
+                                        {% else %}
+                                            Period: {{ edu.start_date|date:'d.m.Y' }} - {{ edu.end_date|date:'d.m.Y' }}
                                         {% endif %}
                                     </h6>
                                     <p class="text-light fw-light mt-2">
@@ -139,11 +135,7 @@
                                         Major - Nothing yet
                                     </h5>
                                     <h6 class="text-light fw-light">
-                                        {% if edu.end_date %}
-                                            Period: Nothing yet - Nothing yet
-                                        {% else %}
-                                            Period: Nothing yet - Nothing yet
-                                        {% endif %}
+                                        Period: Nothing yet
                                     </h6>
                                     <p class="text-light fw-light mt-2">
                                         Thoughts:<br>
@@ -249,10 +241,10 @@
                                         {% endif %}
                                     </h5>
                                     <h6 class="text-light fw-light">
-                                        {% if not plang.still_learning %}
-                                            Period: {{ plang.started|date:'d.m.Y' }} - {{ plang.ended|date:'d.m.Y' }}
-                                        {% else %}
+                                        {% if plang.still_learning %}
                                             Period: {{ plang.started|date:'d.m.Y' }} - Current
+                                        {% else %}
+                                            Period: {{ plang.started|date:'d.m.Y' }} - {{ plang.ended|date:'d.m.Y' }}
                                         {% endif %}
                                     </h6>
                                     <p class="text-light fw-light mt-2">
@@ -274,11 +266,7 @@
                                         Still learning - Nothing yet
                                     </h5>
                                     <h6 class="text-light fw-light">
-                                        {% if not plang.still_learning %}
-                                            Period: Nothing yet - Nothing yet
-                                        {% else %}
-                                            Period: Nothing yet - Nothing yet
-                                        {% endif %}
+                                        Period: Nothing yet
                                     </h6>
                                     <p class="text-light fw-light mt-2">
                                         Thoughts:<br>
@@ -313,7 +301,7 @@
                     {{ skill }}
                 </h4>
             {% empty %}
-                <h4 class="nothin-yet-text">Nothing yet</h4>
+                <h4 class="nothing-yet-text">Nothing yet</h4>
             {% endfor %}
         </div>
     </div>
@@ -327,12 +315,16 @@
                     {{ hobby }}
                 </h4>
             {% empty %}
-                <h4 class="nothin-yet-text">Nothing yet</h4>
+                <h4 class="nothing-yet-text">Nothing yet</h4>
             {% endfor %}
         </div>
     </div>
     <div class="resume-link-div">
-        <a href="{{ information.resume_link }}" class="resume-link">DOWNLOAD RESUME</a>
+        {% if information.resume_link %}
+            <a href="{{ information.resume_link }}" class="resume-link">DOWNLOAD RESUME</a>
+        {% else %}
+            <h4 class="nothing-yet-text">Resume not available for now</h4>
+        {% endif %}
     </div>
 </div>
 <script>

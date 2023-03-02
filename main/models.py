@@ -42,7 +42,12 @@ class ContactDetail(models.Model):
     """
     
     media = models.ForeignKey(Media, on_delete=models.PROTECT)
+    value = models.CharField(max_length=1000, null=True)
     comment = models.TextField(null=True)
+
+    is_url = models.BooleanField(default=False)
+    is_email = models.BooleanField(default=False)
+    is_phone_number = models.BooleanField(default=False)
 
     objects = models.Manager()
 

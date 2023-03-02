@@ -15,4 +15,12 @@
         <img src="{{ information.avatar.url }}" class="avatar">
     </div>
 </div>
+<script>
+    $('.main-row').css('opacity', '0');
+    $('.main-row').css('transform', 'translateY(-20px)');
+    $(document).ready(function (e) {
+        const row = document.querySelector('.main-row');
+        $(row).addClass('show-smooth');
+    });
+</script>
 {% endblock content %}

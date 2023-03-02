@@ -56,10 +56,10 @@
                 name="searched"
                 placeholder="Type your keyword to search" 
                 type="search">
-                <button type="submit" class="btn">
+                <button type="submit" class="btn" style="opacity: 50%; pointer-events: none;"> <!-- Temporary -->
                     <img src="{% static 'icons/search_grey.png' %}" id="search-grey">
                 </button>
-                <div class="dropdown-center">
+                <div class="dropdown-center" style="opacity: 50%; pointer-events: none;"> <!-- Temporary -->
                     <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="{% static 'icons/languages.png' %}" height="25">
                     </button>
@@ -131,11 +131,13 @@
                 $('#loader').hide();
                 if (window.innerWidth > 616) {
                     $(current_page).css('background-color', '#00afe2');
+                    $(current_page).css('box-shadow', '0 0 1.2rem #00afe2');
                     $(current_page).css('color', '#fff');
                     $(current_page).css('height', '100%');
                     $(current_page).css('transition', 'none');
                 } else {
                     $(current_page).css('background-color', '#00afe2');
+                    $(current_page).css('box-shadow', '0 0 1.2rem #00afe2');
                     $(current_page).css('content', "url('../static/icons/" + icon_name + "_white.png')");
                     $(current_page).css('height', '100%');
                     $(current_page).css('transition', 'none');

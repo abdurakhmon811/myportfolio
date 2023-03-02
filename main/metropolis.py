@@ -13,24 +13,27 @@ I named this module METROPOLIS as I am going to refer to the classes and methods
 It would be better of you to contribute to the code if you have some spare time. But, remember not to change the existing
 code if it does not have any problems and follow the ethics of programming in general.
 """
+from qrcode import QRCode
+import qrcode
 
 
-class Factory:
+def qrcode_maker(data: str, 
+                 version: int, 
+                 box_size: int, 
+                 border: int, 
+                 fill_color: tuple,
+                 back_color: tuple, 
+                 fit=True) -> QRCode:
     """
-    A class for producing codes that are going to be appended to your module.
+    Creates a qrcode based on the given data, for more information visit https://pypi.org/project/qrcode
     """
 
-    def __init__(self):
-        """
-        Initialize the parameters or methods.
-        """
-
-
-    def class_maker(self, **kwargs):
-        """
-        The method produces a class and appends it to the part of shown module.
-        """
-
-        class_name = kwargs['class_name']
-        class_description = kwargs['description']
-        
+    maker = qrcode.QRCode(
+                        version=version,
+                        error_correction=qrcode.ERROR_CORRECT_M,
+                        box_size=box_size,
+                        border=border,
+                    )
+    maker.add_data(data)
+    maker.make(fit=fit)
+    return maker.make_image(fill_color=fill_color, back_color=back_color)

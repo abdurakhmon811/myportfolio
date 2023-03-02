@@ -1,7 +1,9 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from os.path import exists
+from .metropolis import qrcode_maker
 from .models import About, \
     ContactDetail, \
     Project
@@ -95,13 +97,26 @@ def contact_details(request: HttpRequest):
     Renders the page for checking the information on my contact details.
     """
 
-    details = None
-    try:
-        details = ContactDetail.objects.latest('id')
-    except ObjectDoesNotExist:
-        pass
+    details = ContactDetail.objects.all()
+    results = []
+    for detail in details:
+        # The path should be changed to an appropriate one when deploying
+        path_to_qr = 'media/images/qrcode_%d.png' % int(detail.id)
+        if not exists(path_to_qr):
+            qr = qrcode_maker(detail.value, 4, 10, 3, (255, 51, 0), (255, 255, 255))
+            qr.save(path_to_qr)
+        detail_dict = {
+            'media': detail.media,
+            'value': detail.value,
+            'qrcode': path_to_qr,
+            'comment': detail.comment,
+            'is_url': detail.is_url,
+            'is_email': detail.is_email,
+            'is_phone_number': detail.is_phone_number,
+        }
+        results.append(detail_dict)
     
     context = {
-        'details': details,
+        'results': results,
     }
     return render(request, 'main/contact_details.html', context)

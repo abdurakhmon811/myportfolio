@@ -74,7 +74,6 @@ class Media(models.Model):
     
     media_type = models.CharField(max_length=100)
     media_image = models.ImageField(upload_to='images')
-    comment = models.TextField(null=True)
 
     objects = models.Manager()
 
