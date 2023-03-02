@@ -23,7 +23,6 @@ from . import views
 urlpatterns = [
     path('django-management-system/', admin.site.urls),
     path('', include('main.urls')),
-    #path('', views.maintenance, name='maintenance'),
 ]
 
 if settings.DEBUG:
