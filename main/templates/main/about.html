@@ -295,11 +295,13 @@
         <h1 class="skills-text fw-light">
             Skills
         </h1>
-        <div class="sh-row">
+        <div class="row sh-row">
             {% for skill in skills %}
-                <h4 class="skill">
-                    {{ skill }}
-                </h4>
+                <div class="col sh-col">
+                    <h4 class="skill">
+                        {{ skill }}
+                    </h4>
+                </div>
             {% empty %}
                 <h4 class="nothing-yet-text">Nothing yet</h4>
             {% endfor %}
@@ -309,11 +311,13 @@
         <h1 class="hobbies-text fw-light">
             Hobbies
         </h1>
-        <div class="sh-row">
+        <div class="row sh-row">
             {% for hobby in hobbies %}
-                <h4 class="hobby">
-                    {{ hobby }}
-                </h4>
+                <div class="col sh-col">
+                    <h4 class="hobby">
+                        {{ hobby }}
+                    </h4>
+                </div>
             {% empty %}
                 <h4 class="nothing-yet-text">Nothing yet</h4>
             {% endfor %}
@@ -336,19 +340,19 @@
     $(languages_carousel_items[0]).addClass('active');
     const programming_languages_carousel_items = document.querySelectorAll('.programming-languages-carousel-item');
     $(programming_languages_carousel_items[0]).addClass('active');
-    const skills = document.querySelectorAll('.skill');
-    const hobbies = document.querySelectorAll('.hobby');
-    if (skills.length > 1) {
-        var chosen_skills = $(skills).slice(1);
-        for (let i = 0; i < chosen_skills.length; i++) {
-            chosen_skills[i].classList.add('ms-2');
-        };
-    };
-    if (hobbies.length > 1) {
-        var chosen_hobbies = $(hobbies).slice(1);
-        for (let i = 0; i < chosen_hobbies.length; i++) {
-            chosen_hobbies[i].classList.add('ms-2');
-        };
-    };
+    //const skills = document.querySelectorAll('.skill');
+    //const hobbies = document.querySelectorAll('.hobby');
+    //if (skills.length > 1) {
+    //    var chosen_skills = $(skills).slice(1);
+    //    for (let i = 0; i < chosen_skills.length; i++) {
+    //        chosen_skills[i].classList.add('ms-2');
+    //    };
+    //};
+    //if (hobbies.length > 1) {
+    //    var chosen_hobbies = $(hobbies).slice(1);
+    //    for (let i = 0; i < chosen_hobbies.length; i++) {
+    //        chosen_hobbies[i].classList.add('ms-2');
+    //    };
+    //};
 </script>
 {% endblock content %}

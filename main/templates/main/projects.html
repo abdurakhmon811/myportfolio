@@ -12,14 +12,14 @@
                     <img src="{{ own_project.image.url }}" class="project-image">
                     <div class="card-img-overlay">
                         <h5 class="card-title">{{ own_project.project_name }}</h5>
-                        <a href="" data-bs-toggle="modal" data-bs-target="#description" id="modal-trigger">
+                        <a href="" data-bs-toggle="modal" data-bs-target="#description-{{ own_project.id }}" id="modal-trigger">
                             Click here to read the description
                         </a>
                         <p class="card-text mt-3">Date finished - {{ own_project.date_finished|date:'d/m/Y' }}</p>
                         <a href="{{ own_project.link }}" id="visit-link">Visit &raquo;</a>
                     </div>
                 </div>
-                <div class="modal fade" id="description" tabindex="-1" aria-hidden="true">
+                <div class="modal fade" id="description-{{ own_project.id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -62,7 +62,7 @@
                         <a href="{{ team_project.link }}" id="visit-link">Visit &raquo;</a>
                     </div>
                 </div>
-                <div class="modal fade" id="description" tabindex="-1" aria-hidden="true">
+                <div class="modal fade" id="description-2-{{ team_project.id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                             <div class="modal-header">

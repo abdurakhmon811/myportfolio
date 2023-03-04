@@ -59,8 +59,8 @@ def projects(request: HttpRequest):
     Renders the page for checking my projects.
     """
 
-    own_projects = Project.objects.filter(project_created='My own')
-    team_projects = Project.objects.filter(project_created='With team')
+    own_projects = Project.objects.filter(project_created='My own').order_by('date_finished')
+    team_projects = Project.objects.filter(project_created='With team').order_by('date_finished')
 
     context = {
         'own_projects': own_projects,

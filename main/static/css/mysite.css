@@ -355,6 +355,7 @@ input:-webkit-autofill:active {
     padding-right: 1rem;
     padding-top: 0.5rem;
     transition: all 0.2s ease-in-out;
+    width: fit-content;
 }
 .hobby:hover {
     background-color: #00a2d3;
@@ -389,7 +390,7 @@ input:-webkit-autofill:active {
     -webkit-text-fill-color: transparent; 
 }
 .loader {
-    animation: loader linear infinite;
+    animation: loader 1s linear infinite;
     border: 4px dashed #00afe2;
     border-radius: 50%;
     box-shadow: 0 0 2rem #00ade2ce;
@@ -659,36 +660,30 @@ input:-webkit-autofill:active {
 .second-main-page-header {
     max-width: 100%;
 }
+.sh-col {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
 .sh-div {
     height: fit-content;
     padding-bottom: 2rem;
     padding-left: 9rem;
     padding-right: 9rem;
     padding-top: 2rem;
+    text-align: center;
     width: 100%;
 }
 @media only screen and (max-width: 1200px) {
     .sh-div {
         padding-left: 2rem;
         padding-right: 2rem;
-        text-align: center;
     }
 }
 .sh-row {
     align-items: center;
     display: flex;
-    flex-direction: row;
     margin: 1rem;
-}
-@media only screen and (max-width: 400px) {
-    .sh-row {
-        flex-direction: column;
-    }
-}
-@media only screen and (max-width: 1200px) {
-    .sh-row {
-        justify-content: center;
-    }
 }
 .short-bio {
     font-size: 2.3rem;
@@ -721,6 +716,7 @@ input:-webkit-autofill:active {
     padding-right: 1rem;
     padding-top: 0.5rem;
     transition: all 0.2s ease-in-out;
+    width: fit-content;
 }
 .skill:hover {
     background-color: #24b308e5;
