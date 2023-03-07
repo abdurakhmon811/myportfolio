@@ -47,19 +47,21 @@
             </div>
         </div>
         <div class="second-main-page-header">
-            <form class="d-flex mx-auto" 
-            action="{% url 'search' %}" 
-            novalidate 
-            method="get" 
-            role="search">
-                <input class="form-control search-input fw-bold" 
-                name="searched"
-                placeholder="Type your keyword to search" 
-                type="search">
-                <button type="submit" class="btn" style="opacity: 50%; pointer-events: none;"> <!-- Temporary -->
+            <form class="d-flex mx-auto" id="search-form-trigger">
+                <input class="form-control search-input fw-bold"
+                placeholder="Type your keyword to search"
+                id="search-input-field-trigger"
+                oninput="GetDataAjax(); ChangeSearchVal(
+                    document.getElementById('search-input-field-trigger'),
+                    document.getElementById('search-input-field-main'),
+                )">
+                <a class="btn" 
+                data-bs-toggle="modal" 
+                data-bs-target="#search-results-modal" 
+                id="search-modal-trigger">
                     <img src="{% static 'icons/search_grey.png' %}" id="search-grey">
-                </button>
-                <div class="dropdown-center" style="opacity: 50%; pointer-events: none;"> <!-- Temporary -->
+                </a>
+                <div class="dropdown-center">
                     <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="{% static 'icons/languages.png' %}" height="25">
                     </button>
@@ -88,10 +90,36 @@
                 </div>
             </form>
         </div>
-        <h2 class="fw-light text-center mt-3" style="color: red">
+        <div class="modal fade" tabindex="-1" id="search-results-modal">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <form class="mx-auto w-100" id="search-form-main">
+                            <input class="form-control search-input ms-0 fw-bold"
+                            placeholder="Type your keyword to search"
+                            role="search"
+                            id="search-input-field-main">
+                            <button type="button" 
+                            class="btn-close btn-close-white" 
+                            aria-label="Close" 
+                            data-bs-dismiss="modal"
+                            id="close-search-modal">
+                            </button>
+                        </form>
+                    </div>
+                    <div class="modal-body ps-0 pe-0" id="search-results-body">
+                        <h5 class="nothing-yet-text text-center fw-bold mt-5 mb-5">
+                            Type your keyword above to search
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h4 class="fw-light text-center mt-3" style="color: red">
             WARNING: The website is still under development, so you may find some parts of it not functioning properly
-            or functioning at all.
-        </h2>
+            or functioning at all. Also, if you have visited the website before, hard clearing your browser's cache is needed 
+            to load the updated version of the site.
+        </h4>
         <nav class="navbar navbar-expand bg-body-tertiary fixed-bottom">
             <div class="container-fluid">
                 <div class="mx-auto">
@@ -147,6 +175,240 @@
                     $(current_page).css('transition', 'none');
                 };
             });
+
+            const main_search = document.querySelector('#search-input-field-main');
+            const trigger_search = document.querySelector('#search-input-field-trigger');
+
+            main_search.addEventListener('input', event => {
+                GetDataAjax();
+                ChangeSearchVal(
+                    document.getElementById('search-input-field-main'),
+                    document.getElementById('search-input-field-trigger'),
+                );
+            });
+            trigger_search.addEventListener('input', event => {
+                GetDataAjax();
+                ChangeSearchVal(
+                    document.getElementById('search-input-field-trigger'),
+                    document.getElementById('search-input-field-main'),
+                );
+            });
+
+            function ChangeSearchVal(source_input, target_input) {
+                $(target_input).prop('value', $(source_input).val());
+            };
+
+            function GetDataAjax() {
+                jQuery.ajax({
+                    url: '/search/',
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    dataType: 'json',
+                    data: {
+                        searching_for: $('#search-input-field-main').val() || $('#search-input-field-trigger').val(),
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        if (data.searching_for && data.searching_for !== '' && 
+                            data.searching_for !== null && data.searching_for !== undefined) {
+                            $('#search-results-body').empty();
+                            if (data.personal_information.length > 0) {
+                                $('#search-results-body').append(
+                                    '<p class="search-results-header">About</p>'
+                                );
+                                for (let i = 0; i < data.personal_information.length; i++) {
+                                    let dict = data.personal_information[i];
+                                    if (dict['full_bio'].includes(data.searching_for)) {
+                                        $('#search-results-body').append(
+                                            '<a href="/about/#bio" id="fb-' + i + '"></a>'
+                                        );
+                                        $('#fb-' + i).append(
+                                            '<div class="search-result" id="fb-div-' + i + '"></div>'
+                                        );
+                                        $('#fb-div-' + i).slideDown();
+                                        $('#fb-div-' + i).append(
+                                            '<h5 class="info-text fw-bold">' + dict['full_bio'].slice(0, 40) + '</h5>'
+                                        );
+                                        $('#fb-div-' + i).append(
+                                            '<p class="text-light fw-light">about &gt; author-bio &gt; ' + dict['full_bio'].slice(0, 20) + '...</p>'
+                                        );
+                                    };
+                                    if (dict['skills'].includes(data.searching_for)) {
+                                        $('#search-results-body').append(
+                                            '<a href="/about/#skills" id="s-' + i + '"></a>'
+                                        );
+                                        $('#s-' + i).append(
+                                            '<div class="search-result" id="s-div-' + i + '"></div>'
+                                        );
+                                        $('#s-div-' + i).append(
+                                            '<h5 class="info-text fw-bold">' + dict['skills'].slice(0, 40) + '</h5>'
+                                        );
+                                        $('#s-div-' + i).append(
+                                            '<p class="text-light fw-light">about &gt; skills &gt; ' + dict['skills'].slice(0, 20) + '...</p>'
+                                        );
+                                    };
+                                    if (dict['hobbies'].includes(data.searching_for)) {
+                                        $('#search-results-body').append(
+                                            '<a href="/about/#hobbies" id="h-' + i + '"></a>'
+                                        );
+                                        $('#h-' + i).append(
+                                            '<div class="search-result" id="h-div-' + i + '"></div>'
+                                        );
+                                        $('#h-div-' + i).append(
+                                            '<h5 class="info-text fw-bold">' + dict['hobbies'].slice(0, 40) + '</h5>'
+                                        );
+                                        $('#h-div-' + i).append(
+                                            '<p class="text-light fw-light">about &gt; hobbies &gt; ' + dict['hobbies'].slice(0, 20) + '...</p>'
+                                        );
+                                    };
+                                };
+                            };
+                            if (data.work_experience.length > 0) {
+                                $('#search-results-body').append(
+                                    '<p class="search-results-header">Work experience</p>'
+                                );
+                                for (let i = 0; i < data.work_experience.length; i++) {
+                                    let dict = data.work_experience[i];
+                                    $('#search-results-body').append(
+                                        '<a href="/about/#work-experience--' + dict['work_place'] + '" id="we-' + i + '"></a>'
+                                    );
+                                    $('#we-' + i).append(
+                                        '<div class="search-result" id="we-div-' + i + '"></div>'
+                                    );
+                                    $('#we-div-' + i).append(
+                                        '<h5 class="info-text fw-bold">' + dict['work_place'] + '</h5>'
+                                    );
+                                    $('#we-div-' + i).append(
+                                        '<h6 class="text-light fw-light">' + dict['as_a'] + '</h6>'
+                                    );
+                                    $('#we-div-' + i).append(
+                                        '<p class="text-light fw-light">about &gt; work-experience &gt; ' + dict['as_a'] + ' &gt; ' + dict['comment'].slice(0, 15) + '...</p>'
+                                    );
+                                };
+                            };
+                            if (data.education.length > 0) {
+                                $('#search-results-body').append(
+                                    '<p class="search-results-header">Education</p>'
+                                );
+                                for (let i = 0; i < data.education.length; i++) {
+                                    let dict = data.education[i];
+                                    $('#search-results-body').append(
+                                        '<a href="/about/#education--' + dict['education'] + '" id="e-' + i + '"></a>'
+                                    );
+                                    $('#e-' + i).append(
+                                        '<div class="search-result" id="e-div-' + i + '"></div>'
+                                    );
+                                    $('#e-div-' + i).append(
+                                        '<h5 class="info-text fw-bold">' + dict['education'] + '</h5>'
+                                    );
+                                    $('#e-div-' + i).append(
+                                        '<h6 class="text-light fw-light">' + dict['institution'] + '</h6>'
+                                    );
+                                    $('#e-div-' + i).append(
+                                        '<p class="text-light fw-light">about &gt; education &gt; ' + dict['institution'] + ' &gt; ' + dict['faculty'] + '...</p>'
+                                    );
+                                };
+                            };
+                            if (data.languages.length > 0) {
+                                $('#search-results-body').append(
+                                    '<p class="search-results-header">Languages</p>'
+                                );
+                                for (let i = 0; i < data.languages.length; i++) {
+                                    let dict = data.languages[i];
+                                    $('#search-results-body').append(
+                                        '<a href="/about/#languages--' + dict['language'] + '" id="l-' + i + '"></a>'
+                                    );
+                                    $('#l-' + i).append(
+                                        '<div class="search-result" id="l-div-' + i + '"></div>'
+                                    );
+                                    $('#l-div-' + i).append(
+                                        '<h5 class="info-text fw-bold">' + dict['language'] + '</h5>'
+                                    );
+                                    $('#l-div-' + i).append(
+                                        '<h6 class="text-light fw-light">' + dict['knowledge_extent'] + '</h6>'
+                                    );
+                                    $('#l-div-' + i).append(
+                                        '<p class="text-light fw-light">about &gt; languages &gt; ' + dict['language'] + ' &gt; ' + dict['knowledge_extent'] + '...</p>'
+                                    );
+                                };
+                            };
+                            if (data.programming_languages.length > 0) {
+                                $('#search-results-body').append(
+                                    '<p class="search-results-header">Programming languages</p>'
+                                );
+                                for (let i = 0; i < data.programming_languages.length; i++) {
+                                    let dict = data.programming_languages[i];
+                                    $('#search-results-body').append(
+                                        '<a href="/about/#programming-languages--' + dict['language'] + '" id="pl-' + i + '"></a>'
+                                    );
+                                    $('#pl-' + i).append(
+                                        '<div class="search-result" id="pl-div-' + i + '"></div>'
+                                    );
+                                    $('#pl-div-' + i).append(
+                                        '<h5 class="info-text fw-bold">' + dict['language'] + '</h5>'
+                                    );
+                                    $('#pl-div-' + i).append(
+                                        '<p class="text-light fw-light">about &gt; programming-languages &gt; ' + dict['language'] + '...</p>'
+                                    );
+                                };
+                            };
+                            if (data.my_projects.length > 0) {
+                                $('#search-results-body').append(
+                                    '<p class="search-results-header">Projects</p>'
+                                );
+                                for (let i = 0; i < data.my_projects.length; i++) {
+                                    let dict = data.my_projects[i];
+                                    $('#search-results-body').append(
+                                        '<a href="/projects/#projects--' + dict['project_name'] + '" id="mp-' + i + '"></a>'
+                                    );
+                                    $('#mp-' + i).append(
+                                        '<div class="search-result" id="mp-div-' + i + '"></div>'
+                                    );
+                                    $('#mp-div-' + i).append(
+                                        '<h5 class="info-text fw-bold">' + dict['project_name'] + '</h5>'
+                                    );
+                                    $('#mp-div-' + i).append(
+                                        '<p class="text-light fw-light">projects &gt; ' + dict['project_name'] + ' &gt; ' + dict['description'].slice(0, 20) + '...</p>'
+                                    );
+                                };
+                            };
+                            if (data.contact_information.length > 0) {
+                                $('#search-results-body').append(
+                                    '<p class="search-results-header">Contact</p>'
+                                );
+                                for (let i = 0; i < data.contact_information.length; i++) {
+                                    let dict = data.contact_information[i];
+                                    $('#search-results-body').append(
+                                        '<a href="/contact-details/#contact-information--' + dict['media'] + '" id="ci-' + i + '"></a>'
+                                    );
+                                    $('#ci-' + i).append(
+                                        '<div class="search-result" id="ci-div-' + i + '"></div>'
+                                    );
+                                    $('#ci-div-' + i).append(
+                                        '<h5 class="info-text fw-bold">' + dict['media'] + '</h5>'
+                                    );
+                                    $('#ci-div-' + i).append(
+                                        '<p class="text-light fw-light">contact &gt; ' + dict['media'] + ' &gt; ' + dict['comment'].slice(0, 20) + '...</p>'
+                                    );
+                                };
+                            };
+                        } else {
+                            $('#search-results-body').empty();
+                            $('#search-results-body').append(
+                                '<h5 class="nothing-yet-text text-center fw-bold mt-5 mb-5">Type your keyword above to search</h5>'
+                            );
+                        };
+                        if (data.not_found === true) {
+                            $('#search-resuls-body').empty();
+                            $('#search-results-body').append(
+                                '<h5 class="nothing-yet-text text-center fw-bold mt-5 mb-5">No data found</h5>'
+                            );
+                        };
+                    },
+                });
+            };
         </script>
         {% block content %}{% endblock content %}
     </body>

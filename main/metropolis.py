@@ -16,7 +16,6 @@ code if it does not have any problems and follow the ethics of programming in ge
 from qrcode import QRCode
 import qrcode
 
-
 def qrcode_maker(data: str, 
                  version: int, 
                  box_size: int, 

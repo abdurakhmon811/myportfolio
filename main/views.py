@@ -1,12 +1,23 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from django.http import HttpRequest, HttpResponse
+from django.http import Http404, HttpRequest, JsonResponse
 from django.shortcuts import render
 from os.path import exists
+from .foreign_keys import Education, \
+    Language, \
+    ProgrammingLanguage, \
+    WorkExperience
 from .metropolis import qrcode_maker
 from .models import About, \
     ContactDetail, \
     Project
+from .serializers import AboutSerializer, \
+    ContactDetailSerializer, \
+    EducationSerializer, \
+    LanguageSerializer, \
+    ProgrammingLanguageSerializer, \
+    ProjectSerializer, \
+    WorkExperienceSerializer
 
 
 def index(request: HttpRequest):
@@ -30,28 +41,78 @@ def search(request: HttpRequest):
     """
     Renders the page with the search results.
     """
-    
-    searched = None
-    personal_information = None
-    my_projects = None
-    contact_information = None
 
-    if request.method == 'GET' and 'searched' in request.GET:
-        searched = request.GET.get('searched')
-        personal_information = About.objects.filter(Q(title__contains=searched) | 
-                                                    Q(full_bio__contains=searched))
-        my_projects = Project.objects.filter(Q(project_name__contains=searched) |
-                                             Q(description__contains=searched))
-        contact_information = ContactDetail.objects.filter(Q(media__contains=searched) |
-                                                           Q(comment_contains=searched))
-    
-    context = {
-        'searched': searched,
-        'personal_information': personal_information,
-        'my_projects': my_projects,
-        'contact_information': contact_information,
-    }
-    return render(request, 'main/search.html', context)
+    request_is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    if request_is_ajax and request.method == 'GET' and 'searching_for' in request.GET:
+        searching_for = request.GET.get('searching_for')
+        if searching_for and len(searching_for) > 0:
+            personal_information = About.objects.filter(
+            Q(full_bio__icontains=searching_for) |
+            Q(skills__icontains=searching_for) |
+            Q(hobbies__icontains=searching_for)
+            )
+            work_experience = WorkExperience.objects.filter(
+                Q(work_place__icontains=searching_for) |
+                Q(as_a__icontains=searching_for) |
+                Q(employment_type__work_type__icontains=searching_for) |
+                Q(comment__icontains=searching_for)
+            )
+            education = Education.objects.filter(
+                Q(education__degree__icontains=searching_for) |
+                Q(institution__icontains=searching_for) |
+                Q(faculty__icontains=searching_for) |
+                Q(major__icontains=searching_for) |
+                Q(comment__icontains=searching_for)
+            )
+            languages = Language.objects.filter(
+                Q(language__icontains=searching_for) |
+                Q(knowledge_extent__icontains=searching_for) |
+                Q(comment__icontains=searching_for)
+            )
+            programming_languages = ProgrammingLanguage.objects.filter(
+                Q(language__icontains=searching_for) |
+                Q(comment__icontains=searching_for)
+            )
+            my_projects = Project.objects.filter(
+                Q(project_name__icontains=searching_for) |
+                Q(description__icontains=searching_for)
+            )
+            contact_information = ContactDetail.objects.filter(
+                Q(media__media_type__icontains=searching_for) |
+                Q(comment__icontains=searching_for)
+            )
+            not_found = None
+            if (
+                not personal_information and not work_experience and not education and not languages
+                and not programming_languages and not my_projects and not contact_information
+            ):
+                not_found = True
+            else:
+                not_found = False
+
+            personal_information = AboutSerializer(personal_information, many=True)
+            work_experience = WorkExperienceSerializer(work_experience, many=True)
+            education = EducationSerializer(education, many=True)
+            languages = LanguageSerializer(languages, many=True)
+            programming_languages = ProgrammingLanguageSerializer(programming_languages, many=True)
+            my_projects = ProjectSerializer(my_projects, many=True)
+            contact_information = ContactDetailSerializer(contact_information, many=True)
+            context = {
+                'searching_for': searching_for,
+                'not_found': not_found,
+                'personal_information': personal_information.data,
+                'work_experience': work_experience.data,
+                'education': education.data,
+                'languages': languages.data,
+                'programming_languages': programming_languages.data,
+                'my_projects': my_projects.data,
+                'contact_information': contact_information.data,
+            }
+            return JsonResponse(context)
+        else:
+            return JsonResponse({'searching_for': None})
+    else:
+        raise Http404
 
 
 def projects(request: HttpRequest):

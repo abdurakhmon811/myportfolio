@@ -13,15 +13,38 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.contrib.auth.models import User
 from django.urls import path, include
+from rest_framework import routers, serializers, viewsets
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+
+        model = User
+        fields = [
+            '__all__'
+        ]
+
+
+class UserViewSet(viewsets.ModelViewSet):
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('django-management-system/', admin.site.urls),
     path('', include('main.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_apis')),
 ]
 
 if settings.DEBUG:

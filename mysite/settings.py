@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+SECRET_KEY = 'django-insecure-3(g0x04(13v)mbo&4)edacpk%*i_%(mgky6*3h6(0$2mj170$#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
 
     # Third party
     'bootstrap5',
+    'rest_framework',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -80,6 +81,12 @@ TEMPLATES = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ]
+}
+
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
@@ -89,9 +96,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
+        'NAME': 'mysite_db',
+        'USER': 'Abdurakhmon',
+        'PASSWORD': 'longwaythroughchallenges2002811@',
         'HOST': 'localhost',
         'PORT': '3306',
     }
