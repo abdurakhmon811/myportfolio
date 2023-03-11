@@ -114,8 +114,20 @@ input:-webkit-autofill:active {
     font-weight: 300;
     padding: 2rem;
 }
+.carousel-indicators {
+    bottom: -40px;
+    position: absolute !important;
+}
 .carousel-item {
     transition: all 1s ease-in-out;
+}
+.clear-btn {
+    display: none;
+    transition: all 0.2s ease-in-out;
+}
+.clear-btn-img {
+    height: 10px;
+    margin-left: -20px;
 }
 .contact-detail-row {
     color: #fff;
@@ -170,14 +182,14 @@ input:-webkit-autofill:active {
     height: 0%;
 }
 .custom-nav-link:hover {
-    background-color: #00afe2;
-    box-shadow: 0 0 1.2rem #00afe2;
+    background-color: #ff3300e5;
+    box-shadow: 0 0 1.2rem #ff3300e5;
     color: #fff;
     height: 100%;
 }
 .custom-nav-link:active {
-    background-color: #0082a7;
-    box-shadow: 0 0 1.2rem #00afe2;
+    background-color: #d12b02e5;
+    box-shadow: 0 0 1.2rem #ff3300e5;
     color: #fff;
     height: 100%;
 }
@@ -213,10 +225,10 @@ input:-webkit-autofill:active {
         width: 50px;
     }
     .about:hover {
-        content: url('../icons/about_white.png')
+        content: url('../icons/about_me_white.png')
     }
     .about:active {
-        content: url('../icons/about_white.png')
+        content: url('../icons/about_me_white.png')
     }
     .contact-details {
         content: url('../icons/contact_details_grey.png');
@@ -275,14 +287,14 @@ input:-webkit-autofill:active {
     display: flex;
     justify-content: center;
 }
-.dropdown-item a {
+.dropdown-item {
     color: #7e7e7e;
+    font-weight: bold;
     text-decoration: none;
+    transition: all 0.3s ease-in-out;
 }
 .dropdown-item:hover {
-    background-color: #00afe2;
-}
-.dropdown-item:hover a {
+    background-color: #ff3300e5;
     color: #fff;
 }
 .form-control {
@@ -394,9 +406,9 @@ input:-webkit-autofill:active {
 }
 .loader {
     animation: loader 1s linear infinite;
-    border: 4px dashed #00afe2;
+    border: 4px dashed #ff3300e5;
     border-radius: 50%;
-    box-shadow: 0 0 2rem #00ade2ce;
+    box-shadow: 0 0 2rem #ff3300e5;
     height: 60px;
     margin: 0;
     padding: 0;
@@ -461,6 +473,8 @@ input:-webkit-autofill:active {
 }
 @media only screen and (max-width: 1200px) and (min-width: 768px) {
     .main-row {
+        display: flex;
+        flex-direction: column-reverse;
         padding-bottom: 3rem;
         padding-left: 2rem;
         padding-right: 2rem;
@@ -469,6 +483,8 @@ input:-webkit-autofill:active {
 }
 @media only screen and (max-width: 767px) {
     .main-row {
+        display: flex;
+        flex-direction: column-reverse;
         padding-bottom: 2rem;
         padding-left: 1rem;
         padding-right: 1rem;
@@ -876,6 +892,10 @@ input:-webkit-autofill:active {
     align-items: center;
     display: flex;
 }
+#search-form-trigger {
+    align-items: center;
+    display: flex;
+}
 #search-grey {
     height: 25px;
 }
@@ -896,9 +916,6 @@ input:-webkit-autofill:active {
 }
 #search-input-field-main {
     width: 100% !important;
-}
-#search-results-modal {
-    transition: all 2s ease-in-out !important;
 }
 #visit-link {
     font-size: 1.5rem;

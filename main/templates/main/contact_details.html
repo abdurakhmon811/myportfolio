@@ -5,7 +5,7 @@
 <div class="contact-details-body">
     {% for detail in results %}
         <div class="row contact-detail-row">
-            <div class="col-md-10 contact-info-col">
+            <div class="col-md-10 contact-info-col" id="{% replacechars detail.media.media_type ' ' '-' %}-{{ detail.id }}">
                 <h2 class="fw-light">
                     <img src="{{ detail.media.media_image.url }}" class="mb-2" height="30"> {{ detail.media.media_type }}
                 </h2>

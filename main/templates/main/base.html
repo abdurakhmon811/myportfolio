@@ -50,12 +50,18 @@
             <form class="d-flex mx-auto" id="search-form-trigger">
                 <input class="form-control search-input fw-bold"
                 placeholder="Type your keyword to search"
-                id="search-input-field-trigger"
-                oninput="GetDataAjax(); ChangeSearchVal(
-                    document.getElementById('search-input-field-trigger'),
-                    document.getElementById('search-input-field-main'),
+                id="search-input-field-trigger">
+                <a type="button"
+                class="clear-btn"
+                onclick="ClearText(
+                    ClearSearchModal('Type your keyword above to search'),
+                    ClearBtn(hide=true, document.querySelectorAll('.clear-btn')),
+                    document.querySelector('#search-input-field-main'),
+                    document.querySelector('#search-input-field-trigger')
                 )">
-                <a class="btn" 
+                    <img src="{% static 'icons/close-icon.png' %}" class="clear-btn-img">
+                </a>
+                <a class="btn"
                 data-bs-toggle="modal" 
                 data-bs-target="#search-results-modal" 
                 id="search-modal-trigger">
@@ -66,26 +72,26 @@
                         <img src="{% static 'icons/languages.png' %}" height="25">
                     </button>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-item">
-                            <a href="" class="fw-bold" id="de">
+                        <a href="" id="de">
+                            <li class="dropdown-item">
                                 Deutsch
-                            </a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a href="" class="fw-bold" id="en">
+                            </li>
+                        </a>
+                        <a href="" id="en">
+                            <li class="dropdown-item">
                                 English
-                            </a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a href="" class="fw-bold" id="ru">
+                            </li>
+                        </a>
+                        <a href="" id="ru">
+                            <li class="dropdown-item">
                                 Russian
-                            </a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a href="" class="fw-bold" id="uz">
+                            </li>
+                        </a>
+                        <a href="" id="uz">
+                            <li class="dropdown-item">
                                 Uzbek
-                            </a>
-                        </li>
+                            </li>
+                        </a>
                     </ul>
                 </div>
             </form>
@@ -99,6 +105,16 @@
                             placeholder="Type your keyword to search"
                             role="search"
                             id="search-input-field-main">
+                            <a type="button"
+                            class="clear-btn"
+                            onclick="ClearText(
+                                ClearSearchModal('Type your keyword above to search'),
+                                ClearBtn(hide=true, document.querySelectorAll('.clear-btn')),
+                                document.querySelector('#search-input-field-main'),
+                                document.querySelector('#search-input-field-trigger')
+                            )">
+                                <img src="{% static 'icons/close-icon.png' %}" class="clear-btn-img">
+                            </a>
                             <button type="button" 
                             class="btn-close btn-close-white" 
                             aria-label="Close" 
@@ -157,257 +173,477 @@
             </div>
         </nav>
         <script>
+            // Global variables or constants go here
+            const main_search = document.querySelector('#search-input-field-main');
+            const trigger_search = document.querySelector('#search-input-field-trigger');
+            const clear_buttons = document.querySelectorAll('.clear-btn');
+            var current_url = window.location.href.toString().replace('%20', '-');
+
+            // Event based functions go below
             $(document).ready(function (e) {
                 var current_page = document.querySelector("a[href='" + location.pathname + "']");
                 var icon_name = current_page.textContent.toLowerCase().trim().replace(' ', '_');
                 $('#loader').hide();
                 if (window.innerWidth > 616) {
-                    $(current_page).css('background-color', '#00afe2');
-                    $(current_page).css('box-shadow', '0 0 1.2rem #00afe2');
+                    $(current_page).css('background-color', '#2dc90ee5');
+                    $(current_page).css('box-shadow', '0 0 1.2rem #2dc90ee5');
                     $(current_page).css('color', '#fff');
                     $(current_page).css('height', '100%');
                     $(current_page).css('transition', 'none');
                 } else {
-                    $(current_page).css('background-color', '#00afe2');
-                    $(current_page).css('box-shadow', '0 0 1.2rem #00afe2');
+                    $(current_page).css('background-color', '#2dc90ee5');
+                    $(current_page).css('box-shadow', '0 0 1.2rem #2dc90ee5');
                     $(current_page).css('content', "url('../static/icons/" + icon_name + "_white.png')");
                     $(current_page).css('height', '100%');
                     $(current_page).css('transition', 'none');
                 };
+
+                if (current_url.indexOf('#') > 1 && current_url.indexOf('%') > 1 && current_url.indexOf('&') < 0) {
+                    let index_of_item = current_url.indexOf('%') + 1;
+                    let item_id = current_url.slice(index_of_item);
+                    let item = document.getElementById(item_id);
+                    if (item) {
+                        item.scrollIntoView(
+                            {
+                                block: 'center', 
+                                behavior: 'smooth'
+                            }
+                        );
+                    };
+                } else if (current_url.indexOf('#') > 1 && current_url.indexOf('&') > 1 && current_url.indexOf('%') < 0) {
+                    let parent_item_index = current_url.indexOf('#') + 1;
+                    let child_item_index = current_url.indexOf('&') + 1;
+                    let parent_item_id = current_url.slice(parent_item_index, (child_item_index - 1));
+                    let parent_item = document.getElementById(parent_item_id);
+                    if (parent_item) {
+                        parent_item.scrollIntoView(
+                            {
+                                block: 'center',
+                                behavior: 'smooth'
+                            }
+                        );
+                    };
+                } else if (current_url.indexOf('#') > 1 && current_url.indexOf('%') < 0 && current_url.indexOf('&') < 0) {
+                    let index_of_item = current_url.indexOf('#') + 1;
+                    let item_id = current_url.slice(index_of_item);
+                    let item = document.getElementById(item_id);
+                    if (item) {
+                        item.scrollIntoView(
+                            {
+                                block: 'center', 
+                                behavior: 'smooth'
+                            }
+                        );
+                    };
+                };
             });
 
-            const main_search = document.querySelector('#search-input-field-main');
-            const trigger_search = document.querySelector('#search-input-field-trigger');
+            $(main_search).on('keydown keyup', function (e) {
+                if ($(main_search).val() === '' || $(main_search).val() === ' ' || 
+                    $(main_search).val() === null || $(main_search).val() === undefined) {
+                    ClearSearchModal('Type your keyword above to search');
+                    ClearBtn(hide=true, clear_buttons);
+                } else {
+                    ClearBtn(arguments=clear_buttons);
+                };
+            });
 
-            main_search.addEventListener('input', event => {
-                GetDataAjax();
-                ChangeSearchVal(
+            $(main_search).on('input', event => {
+                GetDataAjax(
+                    '/search/', 
+                    'json', 
+                    '#search-input-field-main', 
+                    '#search-input-field-trigger', 
+                    ManageAjaxResults
+                );
+                ExchangeSearchVal(
                     document.getElementById('search-input-field-main'),
                     document.getElementById('search-input-field-trigger'),
                 );
             });
-            trigger_search.addEventListener('input', event => {
-                GetDataAjax();
-                ChangeSearchVal(
+
+            $(main_search).on('keypress', event => {
+                if (event.keyCode === 13) {
+                    return false;
+                };
+            });
+
+            $(trigger_search).on('keydown keyup', function (e) {
+                if ($(trigger_search).val() === '' || $(trigger_search).val() === ' ' || 
+                    $(trigger_search).val() === null || $(trigger_search).val() === undefined) {
+                    ClearSearchModal('Type your keyword above to search');
+                    ClearBtn(hide=true, clear_buttons);
+                } else {
+                    ClearBtn(arguments=clear_buttons);
+                };
+            });
+
+            $(trigger_search).on('input', event => {
+                GetDataAjax(
+                    '/search/', 
+                    'json', 
+                    '#search-input-field-main', 
+                    '#search-input-field-trigger', 
+                    ManageAjaxResults
+                );
+                ExchangeSearchVal(
                     document.getElementById('search-input-field-trigger'),
                     document.getElementById('search-input-field-main'),
                 );
             });
 
-            function ChangeSearchVal(source_input, target_input) {
+            $(trigger_search).on('keypress', event => {
+                if (event.keyCode === 13) {
+                    return false;
+                };
+            });
+            
+            // Other (object-oriented or none) functions/methods go below
+            function ClearBtn(hide=false) {
+                if (hide === true) {
+                    for (let i = 0; i < arguments.length; i++) {
+                        $(arguments[i]).css('display', 'none');
+                    };
+                } else {
+                    for (let i = 0; i < arguments.length; i++) {
+                        $(arguments[i]).css('display', 'block');
+                    };
+                };
+            };
+
+            function ClearSearchModal(message) {
+                $('#search-results-body').empty();
+                $('#search-results-body').append(
+                    '<h5 class="nothing-yet-text text-center fw-bold mt-5 mb-5">' + message + '</h5>'
+                );
+            };
+
+            function ClearPath(path) {
+                if (path.indexOf('#') > -1) {
+                    return path.slice(0, path.indexOf('#'));
+                } else {
+                    return path;
+                };
+            };
+
+            function ClearText(function_to_execute, clear_button_function) {
+                for (let i = 0; i < arguments.length; i++) {
+                    $(arguments[i]).prop('value', '');
+                };
+                function_to_execute;
+                clear_button_function;
+            };
+
+            function DirectionHandler(current_path, els_or_el) {
+                current_path = ClearPath(current_path);
+                if (els_or_el instanceof NodeList || els_or_el instanceof HTMLCollection) {
+                    for (let i = 0; i < els_or_el.length; i++) {
+                        let link = els_or_el[i];
+                        $(link).on('click', () => {
+                            let cleaned_href = ClearPath($(link).attr('href'));
+                            if (current_path.endsWith(cleaned_href)) {
+                                window.location.href = $(link).attr('href');
+                                window.location.reload();
+                            };
+                        });
+                    };
+                } else {
+                    $(els_or_el).on('click', () => {
+                        let cleaned_href = ClearPath($(els_or_el).attr('href'));
+                        if (current_path.endsWith(cleaned_href)) {
+                            window.location.href = $(els_or_el).attr('href');
+                            window.location.reload();
+                        };
+                    });
+                };
+            };
+
+            function ExchangeSearchVal(source_input, target_input) {
                 $(target_input).prop('value', $(source_input).val());
             };
 
-            function GetDataAjax() {
+            function GetDataAjax(url, datatype, searching_for, searching_for_2, on_success) {
                 jQuery.ajax({
-                    url: '/search/',
+                    url: url,
                     method: 'GET',
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
                     },
-                    dataType: 'json',
+                    dataType: datatype,
                     data: {
-                        searching_for: $('#search-input-field-main').val() || $('#search-input-field-trigger').val(),
+                        searching_for: $(searching_for).val() || $(searching_for_2).val(),
                     },
                     success: function (data) {
-                        console.log(data)
-                        if (data.searching_for && data.searching_for !== '' && 
-                            data.searching_for !== null && data.searching_for !== undefined) {
-                            $('#search-results-body').empty();
-                            if (data.personal_information.length > 0) {
-                                $('#search-results-body').append(
-                                    '<p class="search-results-header">About</p>'
-                                );
-                                for (let i = 0; i < data.personal_information.length; i++) {
-                                    let dict = data.personal_information[i];
-                                    if (dict['full_bio'].includes(data.searching_for)) {
-                                        $('#search-results-body').append(
-                                            '<a href="/about/#bio" id="fb-' + i + '"></a>'
-                                        );
-                                        $('#fb-' + i).append(
-                                            '<div class="search-result" id="fb-div-' + i + '"></div>'
-                                        );
-                                        $('#fb-div-' + i).slideDown();
-                                        $('#fb-div-' + i).append(
-                                            '<h5 class="info-text fw-bold">' + dict['full_bio'].slice(0, 40) + '</h5>'
-                                        );
-                                        $('#fb-div-' + i).append(
-                                            '<p class="text-light fw-light">about &gt; author-bio &gt; ' + dict['full_bio'].slice(0, 20) + '...</p>'
-                                        );
-                                    };
-                                    if (dict['skills'].includes(data.searching_for)) {
-                                        $('#search-results-body').append(
-                                            '<a href="/about/#skills" id="s-' + i + '"></a>'
-                                        );
-                                        $('#s-' + i).append(
-                                            '<div class="search-result" id="s-div-' + i + '"></div>'
-                                        );
-                                        $('#s-div-' + i).append(
-                                            '<h5 class="info-text fw-bold">' + dict['skills'].slice(0, 40) + '</h5>'
-                                        );
-                                        $('#s-div-' + i).append(
-                                            '<p class="text-light fw-light">about &gt; skills &gt; ' + dict['skills'].slice(0, 20) + '...</p>'
-                                        );
-                                    };
-                                    if (dict['hobbies'].includes(data.searching_for)) {
-                                        $('#search-results-body').append(
-                                            '<a href="/about/#hobbies" id="h-' + i + '"></a>'
-                                        );
-                                        $('#h-' + i).append(
-                                            '<div class="search-result" id="h-div-' + i + '"></div>'
-                                        );
-                                        $('#h-div-' + i).append(
-                                            '<h5 class="info-text fw-bold">' + dict['hobbies'].slice(0, 40) + '</h5>'
-                                        );
-                                        $('#h-div-' + i).append(
-                                            '<p class="text-light fw-light">about &gt; hobbies &gt; ' + dict['hobbies'].slice(0, 20) + '...</p>'
-                                        );
-                                    };
-                                };
-                            };
-                            if (data.work_experience.length > 0) {
-                                $('#search-results-body').append(
-                                    '<p class="search-results-header">Work experience</p>'
-                                );
-                                for (let i = 0; i < data.work_experience.length; i++) {
-                                    let dict = data.work_experience[i];
-                                    $('#search-results-body').append(
-                                        '<a href="/about/#work-experience--' + dict['work_place'] + '" id="we-' + i + '"></a>'
-                                    );
-                                    $('#we-' + i).append(
-                                        '<div class="search-result" id="we-div-' + i + '"></div>'
-                                    );
-                                    $('#we-div-' + i).append(
-                                        '<h5 class="info-text fw-bold">' + dict['work_place'] + '</h5>'
-                                    );
-                                    $('#we-div-' + i).append(
-                                        '<h6 class="text-light fw-light">' + dict['as_a'] + '</h6>'
-                                    );
-                                    $('#we-div-' + i).append(
-                                        '<p class="text-light fw-light">about &gt; work-experience &gt; ' + dict['as_a'] + ' &gt; ' + dict['comment'].slice(0, 15) + '...</p>'
-                                    );
-                                };
-                            };
-                            if (data.education.length > 0) {
-                                $('#search-results-body').append(
-                                    '<p class="search-results-header">Education</p>'
-                                );
-                                for (let i = 0; i < data.education.length; i++) {
-                                    let dict = data.education[i];
-                                    $('#search-results-body').append(
-                                        '<a href="/about/#education--' + dict['education'] + '" id="e-' + i + '"></a>'
-                                    );
-                                    $('#e-' + i).append(
-                                        '<div class="search-result" id="e-div-' + i + '"></div>'
-                                    );
-                                    $('#e-div-' + i).append(
-                                        '<h5 class="info-text fw-bold">' + dict['education'] + '</h5>'
-                                    );
-                                    $('#e-div-' + i).append(
-                                        '<h6 class="text-light fw-light">' + dict['institution'] + '</h6>'
-                                    );
-                                    $('#e-div-' + i).append(
-                                        '<p class="text-light fw-light">about &gt; education &gt; ' + dict['institution'] + ' &gt; ' + dict['faculty'] + '...</p>'
-                                    );
-                                };
-                            };
-                            if (data.languages.length > 0) {
-                                $('#search-results-body').append(
-                                    '<p class="search-results-header">Languages</p>'
-                                );
-                                for (let i = 0; i < data.languages.length; i++) {
-                                    let dict = data.languages[i];
-                                    $('#search-results-body').append(
-                                        '<a href="/about/#languages--' + dict['language'] + '" id="l-' + i + '"></a>'
-                                    );
-                                    $('#l-' + i).append(
-                                        '<div class="search-result" id="l-div-' + i + '"></div>'
-                                    );
-                                    $('#l-div-' + i).append(
-                                        '<h5 class="info-text fw-bold">' + dict['language'] + '</h5>'
-                                    );
-                                    $('#l-div-' + i).append(
-                                        '<h6 class="text-light fw-light">' + dict['knowledge_extent'] + '</h6>'
-                                    );
-                                    $('#l-div-' + i).append(
-                                        '<p class="text-light fw-light">about &gt; languages &gt; ' + dict['language'] + ' &gt; ' + dict['knowledge_extent'] + '...</p>'
-                                    );
-                                };
-                            };
-                            if (data.programming_languages.length > 0) {
-                                $('#search-results-body').append(
-                                    '<p class="search-results-header">Programming languages</p>'
-                                );
-                                for (let i = 0; i < data.programming_languages.length; i++) {
-                                    let dict = data.programming_languages[i];
-                                    $('#search-results-body').append(
-                                        '<a href="/about/#programming-languages--' + dict['language'] + '" id="pl-' + i + '"></a>'
-                                    );
-                                    $('#pl-' + i).append(
-                                        '<div class="search-result" id="pl-div-' + i + '"></div>'
-                                    );
-                                    $('#pl-div-' + i).append(
-                                        '<h5 class="info-text fw-bold">' + dict['language'] + '</h5>'
-                                    );
-                                    $('#pl-div-' + i).append(
-                                        '<p class="text-light fw-light">about &gt; programming-languages &gt; ' + dict['language'] + '...</p>'
-                                    );
-                                };
-                            };
-                            if (data.my_projects.length > 0) {
-                                $('#search-results-body').append(
-                                    '<p class="search-results-header">Projects</p>'
-                                );
-                                for (let i = 0; i < data.my_projects.length; i++) {
-                                    let dict = data.my_projects[i];
-                                    $('#search-results-body').append(
-                                        '<a href="/projects/#projects--' + dict['project_name'] + '" id="mp-' + i + '"></a>'
-                                    );
-                                    $('#mp-' + i).append(
-                                        '<div class="search-result" id="mp-div-' + i + '"></div>'
-                                    );
-                                    $('#mp-div-' + i).append(
-                                        '<h5 class="info-text fw-bold">' + dict['project_name'] + '</h5>'
-                                    );
-                                    $('#mp-div-' + i).append(
-                                        '<p class="text-light fw-light">projects &gt; ' + dict['project_name'] + ' &gt; ' + dict['description'].slice(0, 20) + '...</p>'
-                                    );
-                                };
-                            };
-                            if (data.contact_information.length > 0) {
-                                $('#search-results-body').append(
-                                    '<p class="search-results-header">Contact</p>'
-                                );
-                                for (let i = 0; i < data.contact_information.length; i++) {
-                                    let dict = data.contact_information[i];
-                                    $('#search-results-body').append(
-                                        '<a href="/contact-details/#contact-information--' + dict['media'] + '" id="ci-' + i + '"></a>'
-                                    );
-                                    $('#ci-' + i).append(
-                                        '<div class="search-result" id="ci-div-' + i + '"></div>'
-                                    );
-                                    $('#ci-div-' + i).append(
-                                        '<h5 class="info-text fw-bold">' + dict['media'] + '</h5>'
-                                    );
-                                    $('#ci-div-' + i).append(
-                                        '<p class="text-light fw-light">contact &gt; ' + dict['media'] + ' &gt; ' + dict['comment'].slice(0, 20) + '...</p>'
-                                    );
-                                };
-                            };
-                        } else {
-                            $('#search-results-body').empty();
-                            $('#search-results-body').append(
-                                '<h5 class="nothing-yet-text text-center fw-bold mt-5 mb-5">Type your keyword above to search</h5>'
-                            );
-                        };
-                        if (data.not_found === true) {
-                            $('#search-resuls-body').empty();
-                            $('#search-results-body').append(
-                                '<h5 class="nothing-yet-text text-center fw-bold mt-5 mb-5">No data found</h5>'
-                            );
-                        };
+                        on_success(data);
+                        DirectionHandler(current_url, document.querySelectorAll('.search-link'));
                     },
                 });
+            };
+
+            function Truncate(text, length) {
+                if (text.length > length) {
+                    return text.slice(0, length) + '...';
+                } else {
+                    return text
+                };
+            };
+
+            function hasWhiteSpace(str) {
+                return /\s/g.test(str);
+            };
+
+            function toTitleCase(str) {
+                return (str[0].toUpperCase() + str.slice(1));
+            };
+
+            function ManageAjaxResults(data) {
+                if (data.searching_for && data.searching_for !== '' && 
+                    data.searching_for !== null && data.searching_for !== undefined) {
+                    $('#search-results-body').empty();
+                    if (data.personal_information.length > 0) {
+                        $('#search-results-body').append(
+                            '<p class="search-results-header">About</p>'
+                        );
+                        for (let i = 0; i < data.personal_information.length; i++) {
+                            let dict = data.personal_information[i];
+                            if (dict['full_bio'].toLowerCase().includes(data.searching_for.toLowerCase())) {
+                                let truncated_40 = Truncate(dict['full_bio'], 40);
+                                let truncated_20 = Truncate(dict['full_bio'], 20);
+                                $('#search-results-body').append(
+                                    '<a href="/about/#bio" class="search-link" id="fb-' + i + '"></a>'
+                                );
+                                $('#fb-' + i).append(
+                                    '<div class="search-result" id="fb-div-' + i + '"></div>'
+                                );
+                                $('#fb-div-' + i).append(
+                                    '<h5 class="info-text fw-bold">' + truncated_40 + '</h5>'
+                                );
+                                $('#fb-div-' + i).append(
+                                    '<p class="text-light fw-light">about &gt; author-bio &gt; ' + truncated_20 + '</p>'
+                                );
+                            };
+                            if (dict['skills'].toLowerCase().includes(data.searching_for.toLowerCase())) {
+                                let truncated_40 = Truncate(dict['skills'], 40);
+                                let truncated_20 = Truncate(dict['skills'], 20);
+                                $('#search-results-body').append(
+                                    '<a href="/about/#skills" class="search-link" id="s-' + i + '"></a>'
+                                );
+                                $('#s-' + i).append(
+                                    '<div class="search-result" id="s-div-' + i + '"></div>'
+                                );
+                                $('#s-div-' + i).append(
+                                    '<h5 class="info-text fw-bold">' + truncated_40 + '</h5>'
+                                );
+                                $('#s-div-' + i).append(
+                                    '<p class="text-light fw-light">about &gt; skills &gt; ' + truncated_20 + '</p>'
+                                );
+                            };
+                            if (dict['hobbies'].toLowerCase().includes(data.searching_for.toLowerCase())) {
+                                let truncated_40 = Truncate(dict['hobbies'], 40);
+                                let truncated_20 = Truncate(dict['hobbies'], 20);
+                                $('#search-results-body').append(
+                                    '<a href="/about/#hobbies" class="search-link" id="h-' + i + '"></a>'
+                                );
+                                $('#h-' + i).append(
+                                    '<div class="search-result" id="h-div-' + i + '"></div>'
+                                );
+                                $('#h-div-' + i).append(
+                                    '<h5 class="info-text fw-bold">' + truncated_40 + '</h5>'
+                                );
+                                $('#h-div-' + i).append(
+                                    '<p class="text-light fw-light">about &gt; hobbies &gt; ' + truncated_20 + '</p>'
+                                );
+                            };
+                        };
+                        if (data.resulting_lookup !== null && data.resulting_lookup.endsWith('-is_id') === true) {
+                            let slug = data.resulting_lookup.replace('-is_id', '');
+                            slug = (hasWhiteSpace(slug) === true) ? slug.replace(' ', '-'):slug;
+                            $('#search-results-body').append(
+                                '<a href="/about/#' + slug + '" class="search-link" id="lookup-anchor-' + slug + '"></a>'
+                            );
+                            $('#lookup-anchor-' + slug).append(
+                                '<div class="search-result" id="lookup-div-' + slug + '"></div>'
+                            );
+                            $('#lookup-div-' + slug).append(
+                                '<h5 class="info-text fw-bold">' + toTitleCase(slug).replace('-', ' ') + '</h5>'
+                            );
+                        };
+                    } else {
+                        if (data.resulting_lookup !== null && data.resulting_lookup.endsWith('-is_id') === true) {
+                            let slug = data.resulting_lookup.replace('-is_id', '');
+                            slug = (hasWhiteSpace(slug) === true) ? slug.replace(' ', '-'):slug;
+                            $('#search-results-body').append(
+                                '<p class="search-results-header">About</p>'
+                            );
+                            $('#search-results-body').append(
+                                '<a href="/about/#' + slug + '" class="search-link" id="lookup-anchor-' + slug + '"></a>'
+                            );
+                            $('#lookup-anchor-' + slug).append(
+                                '<div class="search-result" id="lookup-div-' + slug + '"></div>'
+                            );
+                            $('#lookup-div-' + slug).append(
+                                '<h5 class="info-text fw-bold">' + toTitleCase(slug).replace('-', ' ') + '</h5>'
+                            );
+                        };
+                    };
+                    if (data.work_experience.length > 0) {
+                        $('#search-results-body').append(
+                            '<p class="search-results-header">Work experience</p>'
+                        );
+                        for (let i = 0; i < data.work_experience.length; i++) {
+                            let dict = data.work_experience[i];
+                            dict['work_place'] = (hasWhiteSpace(dict['work_place']) === true) ? dict['work_place'].replace(' ', '-'):dict['work_place'];
+                            let truncated_15 = Truncate(dict['comment'], 15);
+                            $('#search-results-body').append(
+                                '<a href="/about/#work-experience&' + dict['work_place'] + '" class="search-link" id="we-' + i + '"></a>'
+                            );
+                            $('#we-' + i).append(
+                                '<div class="search-result" id="we-div-' + i + '"></div>'
+                            );
+                            $('#we-div-' + i).append(
+                                '<h5 class="info-text fw-bold">' + dict['work_place'] + '</h5>'
+                            );
+                            $('#we-div-' + i).append(
+                                '<h6 class="text-light fw-light">' + dict['as_a'] + '</h6>'
+                            );
+                            $('#we-div-' + i).append(
+                                '<p class="text-light fw-light">about &gt; work-experience &gt; ' + dict['as_a'] + ' &gt; ' + truncated_15 + '</p>'
+                            );
+                        };
+                    };
+                    if (data.education.length > 0) {
+                        $('#search-results-body').append(
+                            '<p class="search-results-header">Education</p>'
+                        );
+                        for (let i = 0; i < data.education.length; i++) {
+                            let dict = data.education[i];
+                            dict['education'] = (hasWhiteSpace(dict['education']) === true) ? dict['education'].replace(' ', '-'):dict['education'];
+                            $('#search-results-body').append(
+                                '<a href="/about/#education&' + dict['education'] + '" class="search-link" id="e-' + i + '"></a>'
+                            );
+                            $('#e-' + i).append(
+                                '<div class="search-result" id="e-div-' + i + '"></div>'
+                            );
+                            $('#e-div-' + i).append(
+                                '<h5 class="info-text fw-bold">' + dict['education'] + '</h5>'
+                            );
+                            $('#e-div-' + i).append(
+                                '<h6 class="text-light fw-light">' + dict['institution'] + '</h6>'
+                            );
+                            $('#e-div-' + i).append(
+                                '<p class="text-light fw-light">about &gt; education &gt; ' + dict['institution'] + ' &gt; ' + dict['faculty'] + '...</p>'
+                            );
+                        };
+                    };
+                    if (data.languages.length > 0) {
+                        $('#search-results-body').append(
+                            '<p class="search-results-header">Languages</p>'
+                        );
+                        for (let i = 0; i < data.languages.length; i++) {
+                            let dict = data.languages[i];
+                            dict['language'] = (hasWhiteSpace(dict['language']) === true) ? dict['language'].replace(' ', '-'):dict['language'];
+                            $('#search-results-body').append(
+                                '<a href="/about/#languages&' + dict['language'] + '" class="search-link" id="l-' + i + '"></a>'
+                            );
+                            $('#l-' + i).append(
+                                '<div class="search-result" id="l-div-' + i + '"></div>'
+                            );
+                            $('#l-div-' + i).append(
+                                '<h5 class="info-text fw-bold">' + dict['language'] + '</h5>'
+                            );
+                            $('#l-div-' + i).append(
+                                '<h6 class="text-light fw-light">' + dict['knowledge_extent'] + '</h6>'
+                            );
+                            $('#l-div-' + i).append(
+                                '<p class="text-light fw-light">about &gt; languages &gt; ' + dict['language'] + ' &gt; ' + dict['knowledge_extent'] + '...</p>'
+                            );
+                        };
+                    };
+                    if (data.programming_languages.length > 0) {
+                        $('#search-results-body').append(
+                            '<p class="search-results-header">Programming languages</p>'
+                        );
+                        for (let i = 0; i < data.programming_languages.length; i++) {
+                            let dict = data.programming_languages[i];
+                            dict['language'] = (hasWhiteSpace(dict['language']) === true) ? dict['language'].replace(' ', '-'):dict['language'];
+                            $('#search-results-body').append(
+                                '<a href="/about/#programming&' + dict['language'] + '" class="search-link" id="pl-' + i + '"></a>'
+                            );
+                            $('#pl-' + i).append(
+                                '<div class="search-result" id="pl-div-' + i + '"></div>'
+                            );
+                            $('#pl-div-' + i).append(
+                                '<h5 class="info-text fw-bold">' + dict['language'] + '</h5>'
+                            );
+                            $('#pl-div-' + i).append(
+                                '<p class="text-light fw-light">about &gt; programming-languages &gt; ' + dict['language'] + '...</p>'
+                            );
+                        };
+                    };
+                    if (data.my_projects.length > 0) {
+                        $('#search-results-body').append(
+                            '<p class="search-results-header">Projects</p>'
+                        );
+                        for (let i = 0; i < data.my_projects.length; i++) {
+                            let dict = data.my_projects[i];
+                            dict['project_name'] = (hasWhiteSpace(dict['project_name']) === true) ? dict['project_name'].replace(' ', '-'):dict['project_name'];
+                            let truncated_20 = Truncate(dict['description'], 20);
+                            $('#search-results-body').append(
+                                '<a href="/projects/#projects%' + dict['project_name'] + '" class="search-link" id="mp-' + i + '"></a>'
+                            );
+                            $('#mp-' + i).append(
+                                '<div class="search-result" id="mp-div-' + i + '"></div>'
+                            );
+                            $('#mp-div-' + i).append(
+                                '<h5 class="info-text fw-bold">' + dict['project_name'] + '</h5>'
+                            );
+                            $('#mp-div-' + i).append(
+                                '<p class="text-light fw-light">projects &gt; ' + dict['project_name'] + ' &gt; ' + truncated_20 + '</p>'
+                            );
+                        };
+                    };
+                    if (data.contact_information.length > 0) {
+                        $('#search-results-body').append(
+                            '<p class="search-results-header">Contact</p>'
+                        );
+                        for (let i = 0; i < data.contact_information.length; i++) {
+                            let dict = data.contact_information[i];
+                            dict['media'] = (hasWhiteSpace(dict['media']) === true) ? dict['media'].replace(' ', '-'):dict['media'];
+                            let truncated_20 = Truncate(dict['comment'], 20);
+                            $('#search-results-body').append(
+                                '<a href="/contact-details/#contact-information%' + dict['media'] + '-' + dict['id'] + '" class="search-link" id="ci-' + i + '"></a>'
+                            );
+                            $('#ci-' + i).append(
+                                '<div class="search-result" id="ci-div-' + i + '"></div>'
+                            );
+                            $('#ci-div-' + i).append(
+                                '<h5 class="info-text fw-bold">' + dict['media'].replace('-', ' ') + '</h5>'
+                            );
+                            $('#ci-div-' + i).append(
+                                '<p class="text-light fw-light">contact &gt; ' + dict['media'] + ' &gt; ' + truncated_20 + '</p>'
+                            );
+                        };
+                    };
+                    if (data.resulting_lookup !== null && data.resulting_lookup.endsWith('-is_link') === true) {
+                        var slug = data.resulting_lookup.replace('-is_link', '');
+                        slug = (hasWhiteSpace(slug) === true) ? slug.replace(' ', '-'):slug;
+                        $('#search-results-body').append(
+                            '<p class="search-results-header">Navigation</p>'
+                        );
+                        $('#search-results-body').append(
+                            '<a href="/' + slug + '/" class="search-link" id="' + slug + '-route"></a>'
+                        );
+                        $('#' + slug + '-route').append(
+                            '<div class="search-result" id="' + slug + '-route-div"></div>'
+                        );
+                        $('#' + slug + '-route-div').append(
+                            '<h5 class="info-text fw-bold">' + toTitleCase(slug).replace('-', ' ') + '</h5>'
+                        );
+                    };
+                };
+                if (data.not_found === true && data.resulting_lookup === null) {
+                    ClearSearchModal('No data found');
+                };
             };
         </script>
         {% block content %}{% endblock content %}

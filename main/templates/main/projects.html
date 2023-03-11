@@ -8,7 +8,7 @@
     {% if own_projects %}
         <div class="row projects-row">
             {% for own_project in own_projects %}
-                <div class="card project-card">
+                <div class="card project-card" id="{% replacechars own_project.project_name ' ' '-' %}">
                     <img src="{{ own_project.image.url }}" class="project-image">
                     <div class="card-img-overlay">
                         <h5 class="card-title">{{ own_project.project_name }}</h5>
@@ -51,7 +51,7 @@
     {% if team_projects %}
         <div class="row projects-row">
             {% for team_project in team_projects %}
-                <div class="card project-card">
+                <div class="card project-card" id="{% replacechars team_project.project_name ' ' '-' %}">
                     <img src="{{ team_project.image.url }}" class="project-image">
                     <div class="card-img-overlay">
                         <h5 class="card-title">{{ team_project.project_name }}</h5>

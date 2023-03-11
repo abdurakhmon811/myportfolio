@@ -4,7 +4,7 @@
 {% block content %}
 <div class="about-me-header">
     <h1 class="display-1 next-pages-link fw-light">{{ information.title }}</h1>
-    <h4 class="text-light fw-light mt-3">
+    <h4 class="text-light fw-light mt-3" id="bio">
         {{ information.full_bio }}
     </h4>
 </div>
@@ -15,9 +15,20 @@
         </div>
         <div class="col-xl-8 h-100">
             <div class="carousel slide h-100" id="work-exp-slides">
-                <div class="carousel-inner h-100">
+                <div class="carousel-indicators mt-5">
+                    {% for num in work_exp_length %}
+                        <button type="button" 
+                        data-bs-target="#work-exp-slides" 
+                        data-bs-slide-to="{{ num }}" 
+                        class="carousel-indicator"
+                        aria-label="Slide {{ num }}">
+                        </button>
+                    {% endfor %}
+                </div>
+                <div class="carousel-inner h-100" id="work-experience">
                     {% for work_exp in information.work_experience.all %}
-                        <div class="carousel-item work-exp-carousel-item h-100">
+                        <div class="carousel-item work-exp-carousel-item h-100" 
+                        id="{% replacechars work_exp.work_place ' ' '-' %}">
                             <div class="custom-caption h-100">
                                 <div class="inner-caption h-100">
                                     <h2 class="text-light fw-light">
@@ -82,12 +93,23 @@
         </div>
     </div>
     <!-- should-be-reversed class reverses the flex-direction in smaller screens than 1200px -->
-    <div class="row about-me-row mt-4" id="should-be-reversed">
+    <div class="row about-me-row mt-5" id="should-be-reversed">
         <div class="col-xl-8 h-100">
             <div class="carousel slide h-100" id="education-slides">
-                <div class="carousel-inner h-100">
+                <div class="carousel-indicators mt-5">
+                    {% for num in education_length %}
+                        <button type="button" 
+                        data-bs-target="#education-slides" 
+                        data-bs-slide-to="{{ num }}" 
+                        class="carousel-indicator-2"
+                        aria-label="Slide {{ num }}">
+                        </button>
+                    {% endfor %}
+                </div>
+                <div class="carousel-inner h-100" id="education">
                     {% for edu in information.education.all %}
-                        <div class="carousel-item education-carousel-item h-100">
+                        <div class="carousel-item education-carousel-item h-100"
+                        id="{% replacechars edu.education.degree ' ' '-' %}">
                             <div class="custom-caption h-100">
                                 <div class="inner-caption h-100">
                                     <h2 class="text-light fw-light">
@@ -160,15 +182,26 @@
             <img src="{% static 'images/education.png' %}" class="about-me-img">
         </div>
     </div>
-    <div class="row about-me-row mt-4">
+    <div class="row about-me-row mt-5">
         <div class="col-xl-4 about-me-img-col">
             <img src="{% static 'images/languages.png' %}" class="about-me-img">
         </div>
         <div class="col-xl-8 h-100">
             <div class="carousel slide h-100" id="languages-slides">
-                <div class="carousel-inner h-100">
+                <div class="carousel-indicators mt-5">
+                    {% for num in languages_length %}
+                        <button type="button" 
+                        data-bs-target="#languages-slides" 
+                        data-bs-slide-to="{{ num }}" 
+                        class="carousel-indicator-3"
+                        aria-label="Slide {{ num }}">
+                        </button>
+                    {% endfor %}
+                </div>
+                <div class="carousel-inner h-100" id="languages">
                     {% for lang in information.languages.all %}
-                        <div class="carousel-item languages-carousel-item h-100">
+                        <div class="carousel-item languages-carousel-item h-100"
+                        id="{% replacechars lang.language ' ' '-' %}">
                             <div class="custom-caption h-100">
                                 <div class="inner-caption h-100">
                                     <h2 class="text-light fw-light">
@@ -217,12 +250,23 @@
         </div>
     </div>
     <!-- should-be-reversed class reverses the flex-direction in smaller screens than 1200px -->
-    <div class="row about-me-row mt-4" id="should-be-reversed">
+    <div class="row about-me-row mt-5" id="should-be-reversed">
         <div class="col-xl-8 h-100">
             <div class="carousel slide h-100" id="programming-languages-slides">
-                <div class="carousel-inner h-100">
+                <div class="carousel-indicators mt-5">
+                    {% for num in programming_languages_length %}
+                        <button type="button" 
+                        data-bs-target="#programming-languages-slides" 
+                        data-bs-slide-to="{{ num }}" 
+                        class="carousel-indicator-4"
+                        aria-label="Slide {{ num }}">
+                        </button>
+                    {% endfor %}
+                </div>
+                <div class="carousel-inner h-100" id="programming">
                     {% for plang in information.programming_languages.all %}
-                        <div class="carousel-item programming-languages-carousel-item h-100">
+                        <div class="carousel-item programming-languages-carousel-item h-100"
+                        id="{% replacechars plang.language ' ' '-' %}">
                             <div class="custom-caption h-100">
                                 <div class="inner-caption h-100">
                                     <h2 class="text-light fw-light">
@@ -291,7 +335,7 @@
             <img src="{% static 'images/programming-languages.png' %}" class="about-me-img">
         </div>
     </div>
-    <div class="sh-div">
+    <div class="sh-div mt-3" id="skills">
         <h1 class="skills-text fw-light">
             Skills
         </h1>
@@ -307,7 +351,7 @@
             {% endfor %}
         </div>
     </div>
-    <div class="sh-div">
+    <div class="sh-div" id="hobbies">
         <h1 class="hobbies-text fw-light">
             Hobbies
         </h1>
@@ -323,7 +367,7 @@
             {% endfor %}
         </div>
     </div>
-    <div class="resume-link-div">
+    <div class="resume-link-div" id="resume">
         {% if information.resume_link %}
             <a href="{{ information.resume_link }}" class="resume-link">DOWNLOAD RESUME</a>
         {% else %}
@@ -332,27 +376,81 @@
     </div>
 </div>
 <script>
+    var current_url = window.location.href.toString().replace('%20', '-');
+
     const work_exp_carousel_items = document.querySelectorAll('.work-exp-carousel-item');
-    $(work_exp_carousel_items[0]).addClass('active');
     const education_carousel_items = document.querySelectorAll('.education-carousel-item');
-    $(education_carousel_items[0]).addClass('active');
     const languages_carousel_items = document.querySelectorAll('.languages-carousel-item');
-    $(languages_carousel_items[0]).addClass('active');
     const programming_languages_carousel_items = document.querySelectorAll('.programming-languages-carousel-item');
-    $(programming_languages_carousel_items[0]).addClass('active');
-    //const skills = document.querySelectorAll('.skill');
-    //const hobbies = document.querySelectorAll('.hobby');
-    //if (skills.length > 1) {
-    //    var chosen_skills = $(skills).slice(1);
-    //    for (let i = 0; i < chosen_skills.length; i++) {
-    //        chosen_skills[i].classList.add('ms-2');
-    //    };
-    //};
-    //if (hobbies.length > 1) {
-    //    var chosen_hobbies = $(hobbies).slice(1);
-    //    for (let i = 0; i < chosen_hobbies.length; i++) {
-    //        chosen_hobbies[i].classList.add('ms-2');
-    //    };
-    //};
+    
+    const carousel_indicators = document.querySelectorAll('.carousel-indicator');
+    $(carousel_indicators[0]).addClass('active');
+    $(carousel_indicators[0]).prop('aria-current', 'true');
+    const carousel_indicators_2 = document.querySelectorAll('.carousel-indicator-2');
+    $(carousel_indicators_2[0]).addClass('active');
+    $(carousel_indicators_2[0]).prop('aria-current', 'true');
+    const carousel_indicators_3 = document.querySelectorAll('.carousel-indicator-3');
+    $(carousel_indicators_3[0]).addClass('active');
+    $(carousel_indicators_3[0]).prop('aria-current', 'true');
+    const carousel_indicators_4 = document.querySelectorAll('.carousel-indicator-4');
+    $(carousel_indicators_4[0]).addClass('active');
+    $(carousel_indicators_4[0]).prop('aria-current', 'true');
+
+    if (current_url.indexOf('#') > 1 && current_url.indexOf('&') > 1 && current_url.indexOf('%') < 0) {
+        let parent_item_index = current_url.indexOf('#') + 1;
+        let child_item_index = current_url.indexOf('&') + 1;
+        let parent_item_id = current_url.slice(parent_item_index, (child_item_index - 1));
+        let child_item_id = current_url.slice(child_item_index);
+        let parent_item = document.getElementById(parent_item_id);
+        if (parent_item !== null && parent_item.querySelector('#' + child_item_id) !== null) {
+            let child_item = document.getElementById(child_item_id);
+            if (parentElementOfElements(work_exp_carousel_items, parent_item_id) === true) {
+                $(child_item).addClass('active');
+                ActivateCarouselItems(education_carousel_items, languages_carousel_items, programming_languages_carousel_items);
+            } else if (parentElementOfElements(education_carousel_items, parent_item_id) === true) {
+                $(child_item).addClass('active');
+                ActivateCarouselItems(work_exp_carousel_items, languages_carousel_items, programming_languages_carousel_items);
+            } else if (parentElementOfElements(languages_carousel_items, parent_item_id) === true) {
+                $(child_item).addClass('active');
+                ActivateCarouselItems(work_exp_carousel_items, education_carousel_items, programming_languages_carousel_items);
+            } else if (parentElementOfElements(programming_languages_carousel_items, parent_item_id) === true) {
+                $(child_item).addClass('active');
+                ActivateCarouselItems(work_exp_carousel_items, education_carousel_items, languages_carousel_items);
+            };
+        } else {
+            ActivateCarouselItems(
+                work_exp_carousel_items, 
+                education_carousel_items, 
+                languages_carousel_items, 
+                programming_languages_carousel_items
+            );
+        }
+    } else {
+        ActivateCarouselItems(
+            work_exp_carousel_items, 
+            education_carousel_items, 
+            languages_carousel_items, 
+            programming_languages_carousel_items
+        );
+    };
+
+    function ActivateCarouselItems() {
+        for (let i = 0; i < arguments.length; i++) {
+            let NodeList = arguments[i];
+            $(NodeList[0]).addClass('active');
+        };
+    };
+
+    function parentElementOfElements(elements, parent_id) {
+        var result;
+        elements.forEach(element => {
+            if ($(element).parent().attr('id') === parent_id) {
+                result = true; 
+            } else {
+                return false;
+            }
+        });
+        return result;
+    };
 </script>
 {% endblock content %}

@@ -18,6 +18,7 @@ from .serializers import AboutSerializer, \
     ProgrammingLanguageSerializer, \
     ProjectSerializer, \
     WorkExperienceSerializer
+import re
 
 
 def index(request: HttpRequest):
@@ -89,6 +90,32 @@ def search(request: HttpRequest):
                 not_found = True
             else:
                 not_found = False
+            
+            keyword_tuples = [
+                ('projects-is_link', 'projects'),
+                ('bio-is_id', 'information', 'about', 'author', 'achievements'),
+                (
+                    'work experience-is_id', 'work place', 'work', 'job', 'labour', 
+                    'labor', 'employment', 'employee', 'employer',
+                ),
+                (
+                    'education-is_id', 'degree', 'institution', 'diploma', 'university', 
+                    'college', 'tuition', 'faculty', 'major',
+                ),
+                ('languages-is_id', 'accent', 'speech', 'wording', 'speaking', 'writing', 'reading', 'listening'),
+                ('programming-is_id', 'coding', 'web development'),
+                ('skills-is_id', 'abilities', 'ability', 'capabilities', 'capability', 'crafts'),
+                ('hobbies-is_id', 'hobby', 'pastime', 'relaxation', 'amusement', 'entertainment', 'recreation', 'leisure'),
+                ('resume-is_id', 'cv', 'overview', 'summary'),
+                ('contact details-is_link', 'social media', 'media', 'internet')
+            ]
+            resulting_lookup = None
+            for keyword_tuple in keyword_tuples:
+                for keyword in keyword_tuple:
+                    if re.match(searching_for, keyword, flags=re.IGNORECASE):
+                        resulting_lookup = keyword_tuple[0]
+                        break
+
 
             personal_information = AboutSerializer(personal_information, many=True)
             work_experience = WorkExperienceSerializer(work_experience, many=True)
@@ -100,6 +127,7 @@ def search(request: HttpRequest):
             context = {
                 'searching_for': searching_for,
                 'not_found': not_found,
+                'resulting_lookup': resulting_lookup,
                 'personal_information': personal_information.data,
                 'work_experience': work_experience.data,
                 'education': education.data,
@@ -144,9 +172,18 @@ def about(request: HttpRequest):
         hobbies = information.hobbies.split(',')
     except ObjectDoesNotExist:
         pass
+    
+    work_exp_length = [i for i in range(0, len(information.work_experience.all()))]
+    education_length = [i for i in range(0, len(information.education.all()))]
+    languages_length = [i for i in range(0, len(information.languages.all()))]
+    programming_languages_length = [i for i in range(0, len(information.programming_languages.all()))]
 
     context = {
         'information': information,
+        'work_exp_length': work_exp_length,
+        'education_length': education_length,
+        'languages_length': languages_length,
+        'programming_languages_length': programming_languages_length,
         'skills': skills,
         'hobbies': hobbies,
     }
@@ -167,6 +204,7 @@ def contact_details(request: HttpRequest):
             qr = qrcode_maker(detail.value, 4, 10, 3, (255, 51, 0), (255, 255, 255))
             qr.save(path_to_qr)
         detail_dict = {
+            'id': detail.id,
             'media': detail.media,
             'value': detail.value,
             'qrcode': path_to_qr,
