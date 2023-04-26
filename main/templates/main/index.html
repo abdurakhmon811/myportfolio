@@ -1,15 +1,16 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
+{% load markdownify %}
 
 {% block content %}
 <div class="row main-row">
     <div class="col-xl-8">
         <h1 class="display-3 hi-there">
-            Hi there!
+            {% translate 'Hi there!' %}
         </h1>
-        <p class="fw-light short-bio">
-            {{ information.short_bio }} You can take a look at my projects or other information on 
-            <a href="{% url 'projects' %}" class="next-pages-link">the next pages &raquo;</a>
-        </p>
+        <h4 class="short-bio">
+            {{ information.short_bio|translate_dc:LANGUAGE_CODE|markdownify }}
+        </h4>
     </div>
     <div class="col-xl-4 main-image-col">
         <img src="{{ information.avatar.url }}" class="avatar">
@@ -20,7 +21,7 @@
     $('.main-row').css('transform', 'translateY(-20px)');
     $(document).ready(function (e) {
         const row = document.querySelector('.main-row');
-        $(row).addClass('show-smooth');
+        $(row).addClass('show-smoothly');
     });
 </script>
 {% endblock content %}

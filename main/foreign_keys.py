@@ -7,7 +7,7 @@ class EducationDegree(models.Model):
     A model for handling education degrees which are going to be related to Education model.
     """
 
-    degree = models.CharField(max_length=100)
+    degree = models.CharField(max_length=150)
 
     objects = models.Manager()
 
@@ -22,9 +22,9 @@ class Education(models.Model):
     """
 
     education = models.ForeignKey(EducationDegree, on_delete=models.PROTECT, null=True)
-    institution = models.CharField(max_length=150)
-    faculty = models.CharField(max_length=150)
-    major = models.CharField(max_length=200)
+    institution = models.CharField(max_length=600)
+    faculty = models.CharField(max_length=400)
+    major = models.CharField(max_length=400)
     start_date = models.DateField(auto_now_add=False)
     still_studying = models.BooleanField(default=False)
     end_date = models.DateField(auto_now_add=False, null=True)
@@ -43,16 +43,34 @@ class Language(models.Model):
     """
 
     degrees = [
-        ('A1', 'A1'),
-        ('A2', 'A2'),
-        ('B1', 'B1'),
-        ('B2', 'B2'),
-        ('C1', 'C1'),
-        ('Native', 'Native'),
+        (
+            '--de A1 ||| --en A1 ||| --ru A1 ||| --uz A1', 
+            '--de A1 ||| --en A1 ||| --ru A1 ||| --uz A1',
+        ),
+        (
+            '--de A2 ||| --en A2 ||| --ru A2 ||| --uz A2', 
+            '--de A2 ||| --en A2 ||| --ru A2 ||| --uz A2',
+        ),
+        (
+            '--de B1 ||| --en B1 ||| --ru B1 ||| --uz B1', 
+            '--de B1 ||| --en B1 ||| --ru B1 ||| --uz B1',
+        ),
+        (
+            '--de B2 ||| --en B2 ||| --ru B2 ||| --uz B2', 
+            '--de B2 ||| --en B2 ||| --ru B2 ||| --uz B2',
+        ),
+        (
+            '--de C1 ||| --en C1 ||| --ru C1 ||| --uz C1', 
+            '--de C1 ||| --en C1 ||| --ru C1 ||| --uz C1',
+        ),
+        (
+            '--de Einheimisch ||| --en Native ||| --ru Родной ||| --uz Mahalliy', 
+            '--de Einheimisch ||| --en Native ||| --ru Родной ||| --uz Mahalliy',
+        ),
     ]
 
-    language = models.CharField(max_length=100)
-    knowledge_extent = models.CharField(max_length=20, choices=degrees)
+    language = models.CharField(max_length=200)
+    knowledge_extent = models.CharField(max_length=70, choices=degrees)
     comment = models.TextField(null=True)
 
     objects = models.Manager()
@@ -72,7 +90,7 @@ class Media(models.Model):
         verbose_name = 'Media'
         verbose_name_plural = 'Media'
     
-    media_type = models.CharField(max_length=100)
+    media_type = models.CharField(max_length=150)
     media_image = models.ImageField(upload_to='images')
 
     objects = models.Manager()
@@ -87,7 +105,7 @@ class ProgrammingLanguage(models.Model):
     A model for handling what kind of programming languages I know and to what extent.
     """
 
-    language = models.CharField(max_length=100)
+    language = models.CharField(max_length=200)
     started = models.DateField(auto_now_add=False)      # The date when I started learning programming
     still_learning = models.BooleanField(default=True)
     ended = models.DateField(auto_now_add=False, null=True)
@@ -105,7 +123,7 @@ class WorkType(models.Model):
     A model for handling work types which are going to be related to WorkExperience model.
     """
 
-    work_type = models.CharField(max_length=100)
+    work_type = models.CharField(max_length=200)
 
     objects = models.Manager()
 
@@ -119,8 +137,8 @@ class WorkExperience(models.Model):
     A model for handling what work experience I have.
     """
 
-    work_place = models.CharField(max_length=150)
-    as_a = models.CharField(max_length=150)         # EXAMPLE: Full-stack Web Developer
+    work_place = models.CharField(max_length=200)
+    as_a = models.CharField(max_length=200)         # EXAMPLE: Full-stack Web Developer
     employment_type = models.ForeignKey(WorkType, on_delete=models.PROTECT, null=True)
     started = models.DateField(auto_now_add=False)  # The date I started working at the specified work place
     still_working = models.BooleanField(default=False)

@@ -1,20 +1,36 @@
-"""
-This Python module is written by Abdurakhmon Omonov.
-
-Most developers know that refactoring code is important from a number of perspectives like the readibility of the code
-or its performance.
-
-Remember the line from the Zen of Python.
-...
-Simple is better than complex.
-...
-So the purpose of this module is to make your code as easy as possible.
-I named this module METROPOLIS as I am going to refer to the classes and methods of it as occupation names.
-It would be better of you to contribute to the code if you have some spare time. But, remember not to change the existing
-code if it does not have any problems and follow the ethics of programming in general.
-"""
 from qrcode import QRCode
+import csv
 import qrcode
+import re
+
+
+class Translator:
+    """
+    The one who will take care of translations or any other stuff related to lingual topics.
+    """
+
+    def find_related_words(self, word: str, source_file_path: str) -> str:
+        """
+        Finds related words for the given word.
+
+        NOTE: The first word in the file being passed should have -is_id or -is_link suffixes as this skill
+        is ideally developed for a search engine for a website. For example, when a user types UNIVERSITY in the search box
+        everything related to education should appear, which is what this skill for.
+        :returns: A link or an id(of an HTML element) to redirect the request user to.
+        """
+        
+        with open(source_file_path, 'r', encoding='utf-8-sig') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                for phrase in row:
+                    match_ = re.match(
+                        word, 
+                        phrase, 
+                        flags=re.IGNORECASE,
+                    )
+                    if match_:
+                        return str(row[0])
+
 
 def qrcode_maker(data: str, 
                  version: int, 

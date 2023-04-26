@@ -1,3 +1,47 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-Regular.woff') format('woff');
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'Montserrat-bold';
+    src: url('../fonts/Montserrat-Bold.woff') format('woff');
+    font-style: normal;
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'Montserrat-bolditalic';
+    src: url('../fonts/Montserrat-BoldItalic.woff') format('woff');
+    font-style: italic;
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'Montserrat-italic';
+    src: url('../fonts/Montserrat-Italic.woff') format('woff');
+    font-style: italic;
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'Montserrat-light';
+    src: url('../fonts/Montserrat-Light.woff') format('woff');
+    font-style: normal;
+    font-weight: light;
+}
+@font-face {
+    font-family: 'Montserrat-medium';
+    src: url('../fonts/Montserrat-Medium.woff') format('woff');
+    font-style: normal;
+    font-weight: 500;
+}
+@font-face {
+    font-family: 'Montserrat-semibold';
+    src: url('../fonts/Montserrat-SemiBold.woff') format('woff');
+    font-style: normal;
+    font-weight: 800;
+}
+
 /* HTML elements */
 a {
     color: #ff3300e5;
@@ -10,6 +54,8 @@ a:hover {
 body {
     background-color: #1e1e1e;
     padding-bottom: 80px;
+    font-family: 'Montserrat', 'Montserrat-bold', 'Montserrat-bolditalic', 'Montserrat-italic', 'Montserrat-light',
+    'Montserrat-medium', 'Montserrat-semibold';
 }
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -17,6 +63,9 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
     -webkit-text-fill-color: #fff !important;
+}
+p {
+    margin-bottom: 0;
 }
 
 /* Classes */
@@ -66,6 +115,7 @@ input:-webkit-autofill:active {
     height: fit-content;
     justify-content: center;
     margin: 0;
+    margin-top: 5rem;
     padding: 0;
     width: 100%;
 }
@@ -115,7 +165,7 @@ input:-webkit-autofill:active {
     padding: 2rem;
 }
 .carousel-indicators {
-    bottom: -40px;
+    bottom: -55px;
     position: absolute !important;
 }
 .carousel-item {
@@ -162,6 +212,7 @@ input:-webkit-autofill:active {
     font-size: 20px;
     font-style: italic;
     font-weight: 300;
+    line-height: 4rem;
     text-shadow: 0 0 1.2rem #ff3300;
 }
 .custom-caption {
@@ -206,6 +257,9 @@ input:-webkit-autofill:active {
     .main-page:active {
         content: url('../icons/main_page_white.png');
     }
+    .main-page.current {
+        content: url('../icons/main_page_white.png');
+    }
     .projects {
         content: url('../icons/projects_grey.png');
         height: 50px;
@@ -218,8 +272,11 @@ input:-webkit-autofill:active {
     .projects:active {
         content: url('../icons/projects_white.png')
     }
+    .projects.current {
+        content: url('../icons/projects_white.png');
+    }
     .about {
-        content: url('../icons/about_grey.png');
+        content: url('../icons/about_me_grey.png');
         height: 50px;
         transition: all 0.2s ease-in-out;
         width: 50px;
@@ -229,6 +286,9 @@ input:-webkit-autofill:active {
     }
     .about:active {
         content: url('../icons/about_me_white.png')
+    }
+    .about.current {
+        content: url('../icons/about_me_white.png');
     }
     .contact-details {
         content: url('../icons/contact_details_grey.png');
@@ -242,17 +302,8 @@ input:-webkit-autofill:active {
     .contact-details:active {
         content: url('../icons/contact_details_white.png')
     }
-    .statistics {
-        content: url('../icons/statistics_grey.png');
-        height: 50px;
-        transition: all 0.2s ease-in-out;
-        width: 50px;
-    }
-    .statistics:hover {
-        content: url('../icons/statistics_white.png')
-    }
-    .statistics:active {
-        content: url('../icons/statistics_white.png')
+    .contact-details.current {
+        content: url('../icons/contact_details_white.png');
     }
     .github {
         content: url('../icons/github.png');
@@ -341,7 +392,7 @@ input:-webkit-autofill:active {
 }
 .hi-there {
     background-clip: text;
-    background-image: linear-gradient(to right, #ff3300e5, #0011ff 60%);
+    background-image: linear-gradient(to right, #ff3300e5, #ffee00 60%);
     background-size: 100%;
     margin-bottom: 2rem;
     -moz-background-clip: text;
@@ -351,10 +402,15 @@ input:-webkit-autofill:active {
 }
 @media only screen and (max-width: 1200px) {
     .hi-there {
-        background-image: linear-gradient(to right, #ff3300e5 35%, #0011ff);
+        background-image: linear-gradient(to right, #ff3300e5 35%, #ffee00);
         display: flex;
         justify-content: center;
     }
+}
+.hide-smoothly {
+    opacity: 0 !important;
+    transform: translateY(-20px) !important;
+    transition: all 0.6s ease-in-out !important;
 }
 .hobbies-text {
     color: #00afe2;
@@ -364,6 +420,7 @@ input:-webkit-autofill:active {
     border-radius: 1.5rem;
     box-shadow: 0 0 1.2rem #0097c5;
     color: #fff;
+    font-size: large;
     font-weight: 300;
     padding-bottom: 0.5rem;
     padding-left: 1rem;
@@ -384,12 +441,13 @@ input:-webkit-autofill:active {
     }
 }
 .info-text {
-    color: #ff3300e5;
+    color: #ff3300;
 }
 .inner-caption {
     align-items:baseline;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 .link-col {
     display: flex;
@@ -529,7 +587,7 @@ input:-webkit-autofill:active {
     animation: gradient linear infinite;
     animation-direction: reverse;
     animation-duration: 20s;
-    background: linear-gradient(to right, #ff3300e5, #0011ff, #ff3300e5) 0 0 / 400% 100%;
+    background: linear-gradient(to right, #ff3300e5, #ffee00, #ff0000, #ff3300e5) 0 0 / 400% 100%;
     background-clip: text;
     background-size: 400%;
     color: transparent;
@@ -546,6 +604,9 @@ input:-webkit-autofill:active {
     to {
         background-position: 400% 0%;
     }
+}
+.no-break {
+    white-space: nowrap;
 }
 @media only screen and (max-width: 1200px) and (min-width: 576px) {
     .no-projects {
@@ -725,11 +786,10 @@ input:-webkit-autofill:active {
     margin: 1rem;
 }
 .short-bio {
-    font-size: 2.3rem;
+    font-size: 2rem;
 }
 @media only screen and (max-width: 1200px) and (min-width: 768px) {
     .short-bio {
-        font-size: 2rem;
         text-align: center;
     }
 }
@@ -739,7 +799,7 @@ input:-webkit-autofill:active {
         text-align: center;
     }
 }
-.show-smooth {
+.show-smoothly {
     opacity: 1 !important;
     transform: translateY(0) !important;
     transition: all 0.6s ease-in-out !important;
@@ -749,6 +809,7 @@ input:-webkit-autofill:active {
     border-radius: 1.5rem;
     box-shadow: 0 0 1.2rem #26be08e5;
     color: #fff;
+    font-size: large;
     font-weight: 300;
     padding-bottom: 0.5rem;
     padding-left: 1rem;
@@ -918,6 +979,6 @@ input:-webkit-autofill:active {
     width: 100% !important;
 }
 #visit-link {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: lighter;
 }

@@ -1,8 +1,11 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block content %}
 <div class="container" id="projects-header">
-    <h1>Here are all of the projects I have done on my own</h1>
+    <h1>
+        {% translate 'Here are all of the projects I have done on my own' %}
+    </h1>
 </div>
 <div class="container" id="projects-container">
     {% if own_projects %}
@@ -11,19 +14,26 @@
                 <div class="card project-card" id="{% replacechars own_project.project_name ' ' '-' %}">
                     <img src="{{ own_project.image.url }}" class="project-image">
                     <div class="card-img-overlay">
-                        <h5 class="card-title">{{ own_project.project_name }}</h5>
+                        <h5 class="card-title">
+                            {{ own_project.project_name }}
+                        </h5>
                         <a href="" data-bs-toggle="modal" data-bs-target="#description-{{ own_project.id }}" id="modal-trigger">
-                            Click here to read the description
+                            {% translate 'Click here to read the description' %}
                         </a>
-                        <p class="card-text mt-3">Date finished - {{ own_project.date_finished|date:'d/m/Y' }}</p>
-                        <a href="{{ own_project.link }}" id="visit-link">Visit &raquo;</a>
+                        <p class="card-text mt-2 mb-2">
+                            {% translate 'Date finished' %} - {{ own_project.date_finished|date:'d/m/Y' }}
+                        </p>
+                        <a href="{{ own_project.github_link }}" id="visit-link">
+                            Github &raquo;
+                        </a><br>
+                        <a href="{{ own_project.link }}" id="visit-link">{% translate 'Visit' %} &raquo;</a>
                     </div>
                 </div>
                 <div class="modal fade" id="description-{{ own_project.id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="fw-light">Project description</h3>
+                                <h3 class="fw-light">{% translate 'Project description' %}</h3>
                                 <button type="button" 
                                 class="btn-close btn-close-white"
                                 data-bs-dismiss="modal"
@@ -32,7 +42,7 @@
                             </div>
                             <div class="modal-body">
                                 <p class="fw-light">
-                                    {{ own_project.description }}
+                                    {{ own_project.description|translate_dc:LANGUAGE_CODE }}
                                 </p>
                             </div>
                         </div>
@@ -41,11 +51,15 @@
             {% endfor %}
         </div>
     {% else %}
-        <p id="no-projects">It seems I have not either uploaded my projects or made any...</p>
+        <p id="no-projects">
+            {% translate 'It seems I have not either uploaded my projects or made any...' %}
+        </p>
     {% endif %}
 </div>
 <div class="container" id="projects-header-2">
-    <h1>And these are the ones I have done with a team</h1>
+    <h1>
+        {% translate 'And these are the ones I have done with a team' %}
+    </h1>
 </div>
 <div class="container" id="projects-container-2">
     {% if team_projects %}
@@ -54,19 +68,26 @@
                 <div class="card project-card" id="{% replacechars team_project.project_name ' ' '-' %}">
                     <img src="{{ team_project.image.url }}" class="project-image">
                     <div class="card-img-overlay">
-                        <h5 class="card-title">{{ team_project.project_name }}</h5>
+                        <h5 class="card-title">
+                            {{ team_project.project_name }}
+                        </h5>
                         <a href="" data-bs-toggle="modal" data-bs-target="#description" id="modal-trigger">
-                            Click here to read the description
+                            {% translate 'Click here to read the description' %}
                         </a>
-                        <p class="card-text mt-3">Date finished - {{ team_project.date_finished|date:'d/m/Y' }}</p>
-                        <a href="{{ team_project.link }}" id="visit-link">Visit &raquo;</a>
+                        <p class="card-text mt-2 mb-2">
+                            {% translate 'Date finished' %} - {{ team_project.date_finished|date:'d/m/Y' }}
+                        </p>
+                        <a href="{{ own_project.github_link }}" id="visit-link">
+                            Github &raquo;
+                        </a><br>
+                        <a href="{{ team_project.link }}" id="visit-link">{% translate 'Visit' %} &raquo;</a>
                     </div>
                 </div>
                 <div class="modal fade" id="description-2-{{ team_project.id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="fw-light">Project description</h3>
+                                <h3 class="fw-light">{% translate 'Project description' %}</h3>
                                 <button type="button" 
                                 class="btn-close btn-close-white"
                                 data-bs-dismiss="modal"
@@ -75,7 +96,7 @@
                             </div>
                             <div class="modal-body">
                                 <p class="fw-light">
-                                    {{ team_project.description }}
+                                    {{ team_project.description|translate_dc:LANGUAGE_CODE }}
                                 </p>
                             </div>
                         </div>
@@ -84,7 +105,103 @@
             {% endfor %}
         </div>
     {% else %}
-        <p id="no-projects-2">It seems I have not either uploaded the projects I made with a team or made any...</p>
+        <p id="no-projects-2">
+            {% translate 'It seems I have not either uploaded the projects I made with a team or made any...' %}
+        </p>
     {% endif %}
 </div>
+<script>
+    // Global variables or constants go here
+    const project_cards = document.querySelectorAll('.project-card');
+    const projects_header = document.getElementById('projects-header');
+    const no_projects = document.getElementById('no-projects');
+    const projects_header_2 = document.getElementById('projects-header-2');
+    const no_projects_2 = document.getElementById('no-projects-2');
+
+    $(projects_header).css('opacity', '0');
+    $(projects_header).css('transform', 'translateY(-20px)');
+    $(no_projects).css('opacity', '0');
+    $(no_projects).css('transform', 'translateY(-20px)');
+    $(projects_header_2).css('opacity', '0');
+    $(projects_header_2).css('transform', 'translateY(-20px)');
+    $(no_projects_2).css('opacity', '0');
+    $(no_projects_2).css('transform', 'translateY(-20px)');
+    for (let i = 0; i < project_cards.length; i++) {
+        $(project_cards[i]).css('opacity', '0');
+        $(project_cards[i]).css('transform', 'translateY(-20px)');
+    };
+
+    // Event based functions go here
+    $(document).ready(function () {
+        if (ElementInViewport(projects_header)) {
+            $(projects_header).addClass('show-smoothly');
+        };
+        if (no_projects && ElementInViewport(no_projects)) {
+            $(no_projects).addClass('show-smoothly');
+        };
+        if (ElementInViewport(projects_header_2)) {
+            $(projects_header_2).addClass('show-smoothly');
+        };
+        if (no_projects_2 && ElementInViewport(no_projects_2)) {
+            $(no_projects_2).addClass('show-smoothly');
+        };
+        for (let i = 0; i < project_cards.length; i++) {
+            if (ElementInViewport(project_cards[i])) {
+                $(project_cards[i]).addClass('show-smoothly');
+            };
+        };
+    });
+    $(window).scroll(function () {
+        if (ElementInViewport(projects_header)) {
+            $(projects_header).removeClass('hide-smoothly');
+            $(projects_header).addClass('show-smoothly');
+        } else {
+            $(projects_header).removeClass('show-smoothly');
+            $(projects_header).addClass('hide-smoothly');
+        };
+        if (no_projects && ElementInViewport(no_projects)) {
+            $(no_projects).removeClass('hide-smoothly');
+            $(no_projects).addClass('show-smoothly');
+        } else {
+            $(no_projects).removeClass('show-smoothly');
+            $(no_projects).addClass('hide-smoothly');
+        };
+        if (ElementInViewport($(projects_header_2))) {
+            $(projects_header_2).removeClass('hide-smoothly');
+            $(projects_header_2).addClass('show-smoothly');
+        } else {
+            $(projects_header_2).removeClass('show-smoothly');
+            $(projects_header_2).addClass('hide-smoothly');
+        };
+        if (no_projects_2 && ElementInViewport(no_projects_2)) {
+            $(no_projects_2).removeClass('hide-smoothly');
+            $(no_projects_2).addClass('show-smoothly');
+        } else {
+            $(no_projects_2).removeClass('show-smoothly');
+            $(no_projects_2).addClass('hide-smoothly');
+        };
+        for (let i = 0; i < project_cards.length; i++) {
+            if (ElementInViewport(project_cards[i])) {
+                $(project_cards[i]).removeClass('hide-smoothly');
+                $(project_cards[i]).addClass('show-smoothly');
+            } else {
+                $(project_cards[i]).removeClass('show-smoothly');
+                $(project_cards[i]).addClass('hide-smoothly');
+            };
+        };
+    });
+
+    // Functions/methods go here
+    function ElementInViewport (element) {
+        if (typeof jQuery === "function" && element instanceof jQuery) {
+            element = element[0];
+        };
+        let rect = element.getBoundingClientRect();
+        return (
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    };
+</script>
 {% endblock content %}

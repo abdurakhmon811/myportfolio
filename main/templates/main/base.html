@@ -1,16 +1,16 @@
 {% load static %}
 {% load i18n %}
 
+{% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="EI=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}Abdurakhmon Omonov{% endblock title %}</title>
+        <title id="tab-title">{% translate 'Abdurakhmon Omonov' %}</title>
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
-        <!-- TODO: Add favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'icons/favicon.png' %}">
         <script language="JavaScript" type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
         <script language="JavaScript" type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
     </head>
@@ -49,16 +49,11 @@
         <div class="second-main-page-header">
             <form class="d-flex mx-auto" id="search-form-trigger">
                 <input class="form-control search-input fw-bold"
-                placeholder="Type your keyword to search"
+                placeholder="{% translate 'Type your keyword to search' %}"
                 id="search-input-field-trigger">
                 <a type="button"
                 class="clear-btn"
-                onclick="ClearText(
-                    ClearSearchModal('Type your keyword above to search'),
-                    ClearBtn(hide=true, document.querySelectorAll('.clear-btn')),
-                    document.querySelector('#search-input-field-main'),
-                    document.querySelector('#search-input-field-trigger')
-                )">
+                id="clear-btn-trigger">
                     <img src="{% static 'icons/close-icon.png' %}" class="clear-btn-img">
                 </a>
                 <a class="btn"
@@ -72,24 +67,24 @@
                         <img src="{% static 'icons/languages.png' %}" height="25">
                     </button>
                     <ul class="dropdown-menu">
-                        <a href="" id="de">
+                        <a id="de">
                             <li class="dropdown-item">
-                                Deutsch
+                                {% translate "Deutsch" %}
                             </li>
                         </a>
-                        <a href="" id="en">
+                        <a id="en">
                             <li class="dropdown-item">
-                                English
+                                {% translate "English" %}
                             </li>
                         </a>
-                        <a href="" id="ru">
+                        <a id="ru">
                             <li class="dropdown-item">
-                                Russian
+                                {% translate "Russian" %}
                             </li>
                         </a>
-                        <a href="" id="uz">
+                        <a id="uz">
                             <li class="dropdown-item">
-                                Uzbek
+                                {% translate "Uzbek" %}
                             </li>
                         </a>
                     </ul>
@@ -102,20 +97,15 @@
                     <div class="modal-header">
                         <form class="mx-auto w-100" id="search-form-main">
                             <input class="form-control search-input ms-0 fw-bold"
-                            placeholder="Type your keyword to search"
+                            placeholder="{% translate 'Type your keyword to search' %}"
                             role="search"
                             id="search-input-field-main">
                             <a type="button"
                             class="clear-btn"
-                            onclick="ClearText(
-                                ClearSearchModal('Type your keyword above to search'),
-                                ClearBtn(hide=true, document.querySelectorAll('.clear-btn')),
-                                document.querySelector('#search-input-field-main'),
-                                document.querySelector('#search-input-field-trigger')
-                            )">
+                            id="clear-btn-main">
                                 <img src="{% static 'icons/close-icon.png' %}" class="clear-btn-img">
                             </a>
-                            <button type="button" 
+                            <button type="button"
                             class="btn-close btn-close-white" 
                             aria-label="Close" 
                             data-bs-dismiss="modal"
@@ -125,17 +115,12 @@
                     </div>
                     <div class="modal-body ps-0 pe-0" id="search-results-body">
                         <h5 class="nothing-yet-text text-center fw-bold mt-5 mb-5">
-                            Type your keyword above to search
+                            {% translate "Type your keyword above to search" %}
                         </h5>
                     </div>
                 </div>
             </div>
         </div>
-        <h4 class="fw-light text-center mt-3" style="color: red">
-            WARNING: The website is still under development, so you may find some parts of it not functioning properly
-            or functioning at all. Also, if you have visited the website before, hard clearing your browser's cache is needed 
-            to load the updated version of the site.
-        </h4>
         <nav class="navbar navbar-expand bg-body-tertiary fixed-bottom">
             <div class="container-fluid">
                 <div class="mx-auto">
@@ -151,21 +136,21 @@
                             <a href="{% url 'projects' %}" 
                             class="nav-link custom-nav-link projects fw-bold"
                             id="projects">
-                                Projects
+                                {% translate "Projects" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{% url 'about' %}" 
                             class="nav-link custom-nav-link about fw-bold"
                             id="about">
-                                About me
+                                {% translate "About me" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{% url 'contact_details' %}" 
                             class="nav-link custom-nav-link contact-details fw-bold"
                             id="contact-details">
-                                Contact details
+                                {% translate "Contact details" %}
                             </a>
                         </li>
                     </ul>
@@ -177,11 +162,39 @@
             const main_search = document.querySelector('#search-input-field-main');
             const trigger_search = document.querySelector('#search-input-field-trigger');
             const clear_buttons = document.querySelectorAll('.clear-btn');
+            const clear_btn_main = document.querySelector('#clear-btn-main');
+            const clear_btn_trigger = document.querySelector('#clear-btn-trigger');
             var current_url = window.location.href.toString().replace('%20', '-');
+            var tab_title = document.getElementById('tab-title');
 
+            $('#de').prop('href', '/de/' + window.location.pathname.slice(4));
+            $('#en').prop('href', '/en/' + window.location.pathname.slice(4));
+            $('#ru').prop('href', '/ru/' + window.location.pathname.slice(4));
+            $('#uz').prop('href', '/uz/' + window.location.pathname.slice(4));
+            
             // Event based functions go below
-            $(document).ready(function (e) {
-                var current_page = document.querySelector("a[href='" + location.pathname + "']");
+            $(clear_btn_main).on('click', function () {
+                let search_sentence = "{% translate 'Type your keyword above to search' %}";
+                ClearText(
+                    ClearSearchModal(search_sentence),
+                    ClearBtn(hide=true, document.querySelectorAll('.clear-btn')),
+                    document.querySelector('#search-input-field-main'),
+                    document.querySelector('#search-input-field-trigger'),
+                );
+            });
+
+            $(clear_btn_trigger).on('click', function () {
+                let search_sentence = "{% translate 'Type your keyword above to search' %}";
+                ClearText(
+                    ClearSearchModal(search_sentence),
+                    ClearBtn(hide=true, document.querySelectorAll('.clear-btn')),
+                    document.querySelector('#search-input-field-main'),
+                    document.querySelector('#search-input-field-trigger'),
+                );
+            });
+
+            $(document).ready(function () {
+                var current_page = document.querySelector("a[href='" + location.pathname + "']:not([id='{{ LANGUAGE_CODE }}'])");
                 var icon_name = current_page.textContent.toLowerCase().trim().replace(' ', '_');
                 $('#loader').hide();
                 if (window.innerWidth > 616) {
@@ -193,9 +206,9 @@
                 } else {
                     $(current_page).css('background-color', '#2dc90ee5');
                     $(current_page).css('box-shadow', '0 0 1.2rem #2dc90ee5');
-                    $(current_page).css('content', "url('../static/icons/" + icon_name + "_white.png')");
                     $(current_page).css('height', '100%');
                     $(current_page).css('transition', 'none');
+                    $(current_page).addClass('current');
                 };
 
                 if (current_url.indexOf('#') > 1 && current_url.indexOf('%') > 1 && current_url.indexOf('&') < 0) {
@@ -209,7 +222,7 @@
                                 behavior: 'smooth'
                             }
                         );
-                    };
+                    }; 
                 } else if (current_url.indexOf('#') > 1 && current_url.indexOf('&') > 1 && current_url.indexOf('%') < 0) {
                     let parent_item_index = current_url.indexOf('#') + 1;
                     let child_item_index = current_url.indexOf('&') + 1;
@@ -232,16 +245,26 @@
                             {
                                 block: 'center', 
                                 behavior: 'smooth'
-                            }
+                            },
                         );
                     };
+                };
+
+                let cleaned_current_url = ClearPath(current_url);
+                if (cleaned_current_url.endsWith('/projects/')) {
+                    tab_title.innerHTML = "{% translate 'Projects - Abdurakhmon Omonov' %}";
+                } else if (cleaned_current_url.endsWith('/about/')) {
+                    tab_title.innerHTML = "{% translate 'About - Abdurakhmon Omonov' %}";
+                } else if (cleaned_current_url.endsWith('/contact-details/')) {
+                    tab_title.innerHTML = "{% translate 'Contact details - Abdurakhmon Omonov' %}";
                 };
             });
 
             $(main_search).on('keydown keyup', function (e) {
                 if ($(main_search).val() === '' || $(main_search).val() === ' ' || 
                     $(main_search).val() === null || $(main_search).val() === undefined) {
-                    ClearSearchModal('Type your keyword above to search');
+                    let search_sentence = "{% translate 'Type your keyword above to search' %}";
+                    ClearSearchModal(search_sentence);
                     ClearBtn(hide=true, clear_buttons);
                 } else {
                     ClearBtn(arguments=clear_buttons);
@@ -250,7 +273,7 @@
 
             $(main_search).on('input', event => {
                 GetDataAjax(
-                    '/search/', 
+                    '/{{ LANGUAGE_CODE }}/search/', 
                     'json', 
                     '#search-input-field-main', 
                     '#search-input-field-trigger', 
@@ -271,7 +294,8 @@
             $(trigger_search).on('keydown keyup', function (e) {
                 if ($(trigger_search).val() === '' || $(trigger_search).val() === ' ' || 
                     $(trigger_search).val() === null || $(trigger_search).val() === undefined) {
-                    ClearSearchModal('Type your keyword above to search');
+                    let search_sentence = "{% translate 'Type your keyword above to search' %}";
+                    ClearSearchModal(search_sentence);
                     ClearBtn(hide=true, clear_buttons);
                 } else {
                     ClearBtn(arguments=clear_buttons);
@@ -280,7 +304,7 @@
 
             $(trigger_search).on('input', event => {
                 GetDataAjax(
-                    '/search/', 
+                    '/{{ LANGUAGE_CODE }}/search/', 
                     'json', 
                     '#search-input-field-main', 
                     '#search-input-field-trigger', 
@@ -298,7 +322,7 @@
                 };
             });
             
-            // Other (object-oriented or none) functions/methods go below
+            // Other functions/methods go below
             function ClearBtn(hide=false) {
                 if (hide === true) {
                     for (let i = 0; i < arguments.length; i++) {
@@ -380,6 +404,17 @@
                 });
             };
 
+            function TranslateDC(text, language_code) {
+                let translations = text.split('|||');
+                for (let i = 0; i < translations.length; i++) {
+                    let translation = translations[i].trim();
+                    if (translation.startsWith('--' + language_code)) {
+                        return translation.replace('--' + language_code, '').trim();
+                    };
+                };
+                return translations[0].replace('--' + language_code, '').trim();
+            };
+
             function Truncate(text, length) {
                 if (text.length > length) {
                     return text.slice(0, length) + '...';
@@ -402,15 +437,15 @@
                     $('#search-results-body').empty();
                     if (data.personal_information.length > 0) {
                         $('#search-results-body').append(
-                            '<p class="search-results-header">About</p>'
+                            '<p class="search-results-header">{% translate "About" %}</p>'
                         );
                         for (let i = 0; i < data.personal_information.length; i++) {
                             let dict = data.personal_information[i];
                             if (dict['full_bio'].toLowerCase().includes(data.searching_for.toLowerCase())) {
-                                let truncated_40 = Truncate(dict['full_bio'], 40);
-                                let truncated_20 = Truncate(dict['full_bio'], 20);
+                                let truncated_40 = Truncate(TranslateDC(dict['full_bio'], '{{ LANGUAGE_CODE }}'), 40);
+                                let truncated_20 = Truncate(TranslateDC(dict['full_bio'], '{{ LANGUAGE_CODE }}'), 20);
                                 $('#search-results-body').append(
-                                    '<a href="/about/#bio" class="search-link" id="fb-' + i + '"></a>'
+                                    '<a href="/{{ LANGUAGE_CODE }}/about/#bio" class="search-link" id="fb-' + i + '"></a>'
                                 );
                                 $('#fb-' + i).append(
                                     '<div class="search-result" id="fb-div-' + i + '"></div>'
@@ -419,14 +454,14 @@
                                     '<h5 class="info-text fw-bold">' + truncated_40 + '</h5>'
                                 );
                                 $('#fb-div-' + i).append(
-                                    '<p class="text-light fw-light">about &gt; author-bio &gt; ' + truncated_20 + '</p>'
+                                    '<p class="text-light fw-light">{% translate "about" %} &gt; {% translate "author-bio" %} &gt; ' + truncated_20 + '</p>'
                                 );
                             };
                             if (dict['skills'].toLowerCase().includes(data.searching_for.toLowerCase())) {
                                 let truncated_40 = Truncate(dict['skills'], 40);
                                 let truncated_20 = Truncate(dict['skills'], 20);
                                 $('#search-results-body').append(
-                                    '<a href="/about/#skills" class="search-link" id="s-' + i + '"></a>'
+                                    '<a href="/{{ LANGUAGE_CODE }}/about/#skills" class="search-link" id="s-' + i + '"></a>'
                                 );
                                 $('#s-' + i).append(
                                     '<div class="search-result" id="s-div-' + i + '"></div>'
@@ -435,14 +470,14 @@
                                     '<h5 class="info-text fw-bold">' + truncated_40 + '</h5>'
                                 );
                                 $('#s-div-' + i).append(
-                                    '<p class="text-light fw-light">about &gt; skills &gt; ' + truncated_20 + '</p>'
+                                    '<p class="text-light fw-light">{% translate "about" %} &gt; {% translate "skills" %} &gt; ' + truncated_20 + '</p>'
                                 );
                             };
                             if (dict['hobbies'].toLowerCase().includes(data.searching_for.toLowerCase())) {
-                                let truncated_40 = Truncate(dict['hobbies'], 40);
-                                let truncated_20 = Truncate(dict['hobbies'], 20);
+                                let truncated_40 = Truncate(TranslateDC(dict['hobbies'], '{{ LANGUAGE_CODE }}'), 40);
+                                let truncated_20 = Truncate(TranslateDC(dict['hobbies'], '{{ LANGUAGE_CODE }}'), 20);
                                 $('#search-results-body').append(
-                                    '<a href="/about/#hobbies" class="search-link" id="h-' + i + '"></a>'
+                                    '<a href="/{{ LANGUAGE_CODE }}/about/#hobbies" class="search-link" id="h-' + i + '"></a>'
                                 );
                                 $('#h-' + i).append(
                                     '<div class="search-result" id="h-div-' + i + '"></div>'
@@ -451,15 +486,15 @@
                                     '<h5 class="info-text fw-bold">' + truncated_40 + '</h5>'
                                 );
                                 $('#h-div-' + i).append(
-                                    '<p class="text-light fw-light">about &gt; hobbies &gt; ' + truncated_20 + '</p>'
+                                    '<p class="text-light fw-light">{% translate "about" %} &gt; {% translate "hobbies" %} &gt; ' + truncated_20 + '</p>'
                                 );
                             };
                         };
                         if (data.resulting_lookup !== null && data.resulting_lookup.endsWith('-is_id') === true) {
                             let slug = data.resulting_lookup.replace('-is_id', '');
-                            slug = (hasWhiteSpace(slug) === true) ? slug.replace(' ', '-'):slug;
+                            slug = (hasWhiteSpace(slug) === true) ? slug.replace(/\s/g, '-'):slug;
                             $('#search-results-body').append(
-                                '<a href="/about/#' + slug + '" class="search-link" id="lookup-anchor-' + slug + '"></a>'
+                                '<a href="/{{ LANGUAGE_CODE }}/about/#' + slug + '" class="search-link" id="lookup-anchor-' + slug + '"></a>'
                             );
                             $('#lookup-anchor-' + slug).append(
                                 '<div class="search-result" id="lookup-div-' + slug + '"></div>'
@@ -471,12 +506,12 @@
                     } else {
                         if (data.resulting_lookup !== null && data.resulting_lookup.endsWith('-is_id') === true) {
                             let slug = data.resulting_lookup.replace('-is_id', '');
-                            slug = (hasWhiteSpace(slug) === true) ? slug.replace(' ', '-'):slug;
+                            slug = (hasWhiteSpace(slug) === true) ? slug.replace(/\s/g, '-'):slug;
                             $('#search-results-body').append(
-                                '<p class="search-results-header">About</p>'
+                                '<p class="search-results-header">{% translate "About" %}</p>'
                             );
                             $('#search-results-body').append(
-                                '<a href="/about/#' + slug + '" class="search-link" id="lookup-anchor-' + slug + '"></a>'
+                                '<a href="/{{ LANGUAGE_CODE }}/about/#' + slug + '" class="search-link" id="lookup-anchor-' + slug + '"></a>'
                             );
                             $('#lookup-anchor-' + slug).append(
                                 '<div class="search-result" id="lookup-div-' + slug + '"></div>'
@@ -488,14 +523,15 @@
                     };
                     if (data.work_experience.length > 0) {
                         $('#search-results-body').append(
-                            '<p class="search-results-header">Work experience</p>'
+                            '<p class="search-results-header">{% translate "Work experience" %}</p>'
                         );
                         for (let i = 0; i < data.work_experience.length; i++) {
                             let dict = data.work_experience[i];
-                            dict['work_place'] = (hasWhiteSpace(dict['work_place']) === true) ? dict['work_place'].replace(' ', '-'):dict['work_place'];
-                            let truncated_15 = Truncate(dict['comment'], 15);
+                            dict['work_place'] = (hasWhiteSpace(dict['work_place']) === true) ? TranslateDC(dict['work_place'], '{{ LANGUAGE_CODE }}').replace(/\s/g, '-'):TranslateDC(dict['work_place'], '{{ LANGUAGE_CODE }}');
+                            dict['as_a'] = (hasWhiteSpace(dict['as_a']) === true) ? TranslateDC(dict['as_a'], '{{ LANGUAGE_CODE }}').replace(/\s/g, '-'):TranslateDC(dict['as_a'], '{{ LANGUAGE_CODE }}');
+                            let truncated_15 = Truncate(TranslateDC(dict['comment'], '{{ LANGUAGE_CODE }}'), 15);
                             $('#search-results-body').append(
-                                '<a href="/about/#work-experience&' + dict['work_place'] + '" class="search-link" id="we-' + i + '"></a>'
+                                '<a href="/{{ LANGUAGE_CODE }}/about/#work-experience&' + dict['work_place'] + '" class="search-link" id="we-' + i + '"></a>'
                             );
                             $('#we-' + i).append(
                                 '<div class="search-result" id="we-div-' + i + '"></div>'
@@ -507,19 +543,21 @@
                                 '<h6 class="text-light fw-light">' + dict['as_a'] + '</h6>'
                             );
                             $('#we-div-' + i).append(
-                                '<p class="text-light fw-light">about &gt; work-experience &gt; ' + dict['as_a'] + ' &gt; ' + truncated_15 + '</p>'
+                                '<p class="text-light fw-light">{% translate "about" %} &gt; {% translate "work-experience" %} &gt; ' + dict['as_a'] + ' &gt; ' + truncated_15 + '</p>'
                             );
                         };
                     };
                     if (data.education.length > 0) {
                         $('#search-results-body').append(
-                            '<p class="search-results-header">Education</p>'
+                            '<p class="search-results-header">{% translate "Education" %}</p>'
                         );
                         for (let i = 0; i < data.education.length; i++) {
                             let dict = data.education[i];
-                            dict['education'] = (hasWhiteSpace(dict['education']) === true) ? dict['education'].replace(' ', '-'):dict['education'];
+                            dict['education'] = (hasWhiteSpace(dict['education']) === true) ? TranslateDC(dict['education'], '{{ LANGUAGE_CODE }}').replace(/\s/g, '-'):TranslateDC(dict['education'], '{{ LANGUAGE_CODE }}');
+                            dict['institution'] = (hasWhiteSpace(dict['institution']) === true) ? TranslateDC(dict['institution'], '{{ LANGUAGE_CODE }}').replace(/\s/g, '-'):TranslateDC(dict['institution'], '{{ LANGUAGE_CODE }}');
+                            dict['faculty'] = (hasWhiteSpace(dict['faculty']) === true) ? TranslateDC(dict['faculty'], '{{ LANGUAGE_CODE }}').replace(/\s/g, '-'):TranslateDC(dict['faculty'], '{{ LANGUAGE_CODE }}');
                             $('#search-results-body').append(
-                                '<a href="/about/#education&' + dict['education'] + '" class="search-link" id="e-' + i + '"></a>'
+                                '<a href="/{{ LANGUAGE_CODE }}/about/#education&' + dict['education'] + '" class="search-link" id="e-' + i + '"></a>'
                             );
                             $('#e-' + i).append(
                                 '<div class="search-result" id="e-div-' + i + '"></div>'
@@ -531,19 +569,19 @@
                                 '<h6 class="text-light fw-light">' + dict['institution'] + '</h6>'
                             );
                             $('#e-div-' + i).append(
-                                '<p class="text-light fw-light">about &gt; education &gt; ' + dict['institution'] + ' &gt; ' + dict['faculty'] + '...</p>'
+                                '<p class="text-light fw-light">{% translate "about" %} &gt; {% translate "education" %} &gt; ' + dict['institution'] + ' &gt; ' + dict['faculty'] + '...</p>'
                             );
                         };
                     };
                     if (data.languages.length > 0) {
                         $('#search-results-body').append(
-                            '<p class="search-results-header">Languages</p>'
+                            '<p class="search-results-header">{% translate "Languages" %}</p>'
                         );
                         for (let i = 0; i < data.languages.length; i++) {
                             let dict = data.languages[i];
-                            dict['language'] = (hasWhiteSpace(dict['language']) === true) ? dict['language'].replace(' ', '-'):dict['language'];
+                            dict['language'] = (hasWhiteSpace(dict['language']) === true) ? TranslateDC(dict['language'], '{{ LANGUAGE_CODE }}').replace(/\s/g, '-'):TranslateDC(dict['language'], '{{ LANGUAGE_CODE }}');
                             $('#search-results-body').append(
-                                '<a href="/about/#languages&' + dict['language'] + '" class="search-link" id="l-' + i + '"></a>'
+                                '<a href="/{{ LANGUAGE_CODE }}/about/#languages&' + dict['language'] + '" class="search-link" id="l-' + i + '"></a>'
                             );
                             $('#l-' + i).append(
                                 '<div class="search-result" id="l-div-' + i + '"></div>'
@@ -552,22 +590,22 @@
                                 '<h5 class="info-text fw-bold">' + dict['language'] + '</h5>'
                             );
                             $('#l-div-' + i).append(
-                                '<h6 class="text-light fw-light">' + dict['knowledge_extent'] + '</h6>'
+                                '<h6 class="text-light fw-light">' + TranslateDC(dict['knowledge_extent'], '{{ LANGUAGE_CODE }}') + '</h6>'
                             );
                             $('#l-div-' + i).append(
-                                '<p class="text-light fw-light">about &gt; languages &gt; ' + dict['language'] + ' &gt; ' + dict['knowledge_extent'] + '...</p>'
+                                '<p class="text-light fw-light">{% translate "about" %} &gt; {% translate "languages" %} &gt; ' + dict['language'] + ' &gt; ' + TranslateDC(dict['knowledge_extent'], '{{ LANGUAGE_CODE }}') + '...</p>'
                             );
                         };
                     };
                     if (data.programming_languages.length > 0) {
                         $('#search-results-body').append(
-                            '<p class="search-results-header">Programming languages</p>'
+                            '<p class="search-results-header">{% translate "Programming languages" %}</p>'
                         );
                         for (let i = 0; i < data.programming_languages.length; i++) {
                             let dict = data.programming_languages[i];
-                            dict['language'] = (hasWhiteSpace(dict['language']) === true) ? dict['language'].replace(' ', '-'):dict['language'];
+                            dict['language'] = (hasWhiteSpace(dict['language']) === true) ? TranslateDC(dict['language'], '{{ LANGUAGE_CODE }}').replace(/\s/g, '-'):TranslateDC(dict['language'], '{{ LANGUAGE_CODE }}');
                             $('#search-results-body').append(
-                                '<a href="/about/#programming&' + dict['language'] + '" class="search-link" id="pl-' + i + '"></a>'
+                                '<a href="/{{ LANGUAGE_CODE }}/about/#programming&' + dict['language'] + '" class="search-link" id="pl-' + i + '"></a>'
                             );
                             $('#pl-' + i).append(
                                 '<div class="search-result" id="pl-div-' + i + '"></div>'
@@ -576,20 +614,20 @@
                                 '<h5 class="info-text fw-bold">' + dict['language'] + '</h5>'
                             );
                             $('#pl-div-' + i).append(
-                                '<p class="text-light fw-light">about &gt; programming-languages &gt; ' + dict['language'] + '...</p>'
+                                '<p class="text-light fw-light">{% translate "about" %} &gt; {% translate "programming-languages" %} &gt; ' + dict['language'] + '...</p>'
                             );
                         };
                     };
                     if (data.my_projects.length > 0) {
                         $('#search-results-body').append(
-                            '<p class="search-results-header">Projects</p>'
+                            '<p class="search-results-header">{% translate "Projects" %}</p>'
                         );
                         for (let i = 0; i < data.my_projects.length; i++) {
                             let dict = data.my_projects[i];
-                            dict['project_name'] = (hasWhiteSpace(dict['project_name']) === true) ? dict['project_name'].replace(' ', '-'):dict['project_name'];
-                            let truncated_20 = Truncate(dict['description'], 20);
+                            dict['project_name'] = (hasWhiteSpace(dict['project_name']) === true) ? dict['project_name'].replace(/\s/g, '-'):dict['project_name'];
+                            let truncated_20 = Truncate(TranslateDC(dict['description'], '{{ LANGUAGE_CODE }}'), 20);
                             $('#search-results-body').append(
-                                '<a href="/projects/#projects%' + dict['project_name'] + '" class="search-link" id="mp-' + i + '"></a>'
+                                '<a href="/{{ LANGUAGE_CODE }}/projects/#projects%' + dict['project_name'] + '" class="search-link" id="mp-' + i + '"></a>'
                             );
                             $('#mp-' + i).append(
                                 '<div class="search-result" id="mp-div-' + i + '"></div>'
@@ -598,51 +636,52 @@
                                 '<h5 class="info-text fw-bold">' + dict['project_name'] + '</h5>'
                             );
                             $('#mp-div-' + i).append(
-                                '<p class="text-light fw-light">projects &gt; ' + dict['project_name'] + ' &gt; ' + truncated_20 + '</p>'
+                                '<p class="text-light fw-light">{% translate "projects" %} &gt; ' + dict['project_name'] + ' &gt; ' + truncated_20 + '</p>'
                             );
                         };
                     };
                     if (data.contact_information.length > 0) {
                         $('#search-results-body').append(
-                            '<p class="search-results-header">Contact</p>'
+                            '<p class="search-results-header">{% translate "Contact" %}</p>'
                         );
                         for (let i = 0; i < data.contact_information.length; i++) {
                             let dict = data.contact_information[i];
-                            dict['media'] = (hasWhiteSpace(dict['media']) === true) ? dict['media'].replace(' ', '-'):dict['media'];
-                            let truncated_20 = Truncate(dict['comment'], 20);
+                            dict['media'] = (hasWhiteSpace(dict['media']) === true) ? TranslateDC(dict['media'], '{{ LANGUAGE_CODE }}').replace(/\s/g, '-'):TranslateDC(dict['media'], '{{ LANGUAGE_CODE }}');
+                            let truncated_20 = Truncate(TranslateDC(dict['comment'], '{{ LANGUAGE_CODE }}'), 20);
                             $('#search-results-body').append(
-                                '<a href="/contact-details/#contact-information%' + dict['media'] + '-' + dict['id'] + '" class="search-link" id="ci-' + i + '"></a>'
+                                '<a href="/{{ LANGUAGE_CODE }}/contact-details/#contact-information%detail-' + dict['id'] + '" class="search-link" id="ci-' + i + '"></a>'
                             );
                             $('#ci-' + i).append(
                                 '<div class="search-result" id="ci-div-' + i + '"></div>'
                             );
                             $('#ci-div-' + i).append(
-                                '<h5 class="info-text fw-bold">' + dict['media'].replace('-', ' ') + '</h5>'
+                                '<h5 class="info-text fw-bold">' + dict['media'] + '</h5>'
                             );
                             $('#ci-div-' + i).append(
-                                '<p class="text-light fw-light">contact &gt; ' + dict['media'] + ' &gt; ' + truncated_20 + '</p>'
+                                '<p class="text-light fw-light">{% translate "contact" %} &gt; ' + dict['media'] + ' &gt; ' + truncated_20 + '</p>'
                             );
                         };
                     };
                     if (data.resulting_lookup !== null && data.resulting_lookup.endsWith('-is_link') === true) {
                         var slug = data.resulting_lookup.replace('-is_link', '');
-                        slug = (hasWhiteSpace(slug) === true) ? slug.replace(' ', '-'):slug;
                         $('#search-results-body').append(
-                            '<p class="search-results-header">Navigation</p>'
+                            '<p class="search-results-header">{% translate "Navigation" %}</p>'
                         );
                         $('#search-results-body').append(
-                            '<a href="/' + slug + '/" class="search-link" id="' + slug + '-route"></a>'
+                            '<a href="/{{ LANGUAGE_CODE }}/' + TranslateDC(slug, 'en').replace(/\s/g, '-') + '/" class="search-link" id="' + TranslateDC(slug, 'en').replace(/\s/g, '-') + '-route"></a>'
                         );
-                        $('#' + slug + '-route').append(
-                            '<div class="search-result" id="' + slug + '-route-div"></div>'
+                        $('#' + TranslateDC(slug, 'en').replace(/\s/g, '-') + '-route').append(
+                            '<div class="search-result" id="' + TranslateDC(slug, 'en').replace(/\s/g, '-') + '-route-div"></div>'
                         );
-                        $('#' + slug + '-route-div').append(
-                            '<h5 class="info-text fw-bold">' + toTitleCase(slug).replace('-', ' ') + '</h5>'
+                        $('#' + TranslateDC(slug, 'en').replace(/\s/g, '-') + '-route-div').append(
+                            '<h5 class="info-text fw-bold">' + toTitleCase(TranslateDC(slug, '{{ LANGUAGE_CODE }}')).replace('-', ' ') + '</h5>'
                         );
+                        console.log(TranslateDC(slug, 'en').replace(/\s/g, '-'))
                     };
                 };
                 if (data.not_found === true && data.resulting_lookup === null) {
-                    ClearSearchModal('No data found');
+                    let no_data = "{% translate 'No data found' %}"
+                    ClearSearchModal(no_data);
                 };
             };
         </script>

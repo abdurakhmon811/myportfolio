@@ -7,7 +7,7 @@ from .foreign_keys import Education, \
     Language, \
     ProgrammingLanguage, \
     WorkExperience
-from .metropolis import qrcode_maker
+from .metropolis import qrcode_maker, Translator
 from .models import About, \
     ContactDetail, \
     Project
@@ -18,7 +18,6 @@ from .serializers import AboutSerializer, \
     ProgrammingLanguageSerializer, \
     ProjectSerializer, \
     WorkExperienceSerializer
-import re
 
 
 def index(request: HttpRequest):
@@ -42,6 +41,8 @@ def search(request: HttpRequest):
     """
     Renders the page with the search results.
     """
+
+    translator = Translator()
 
     request_is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     if request_is_ajax and request.method == 'GET' and 'searching_for' in request.GET:
@@ -90,32 +91,6 @@ def search(request: HttpRequest):
                 not_found = True
             else:
                 not_found = False
-            
-            keyword_tuples = [
-                ('projects-is_link', 'projects'),
-                ('bio-is_id', 'information', 'about', 'author', 'achievements'),
-                (
-                    'work experience-is_id', 'work place', 'work', 'job', 'labour', 
-                    'labor', 'employment', 'employee', 'employer',
-                ),
-                (
-                    'education-is_id', 'degree', 'institution', 'diploma', 'university', 
-                    'college', 'tuition', 'faculty', 'major',
-                ),
-                ('languages-is_id', 'accent', 'speech', 'wording', 'speaking', 'writing', 'reading', 'listening'),
-                ('programming-is_id', 'coding', 'web development'),
-                ('skills-is_id', 'abilities', 'ability', 'capabilities', 'capability', 'crafts'),
-                ('hobbies-is_id', 'hobby', 'pastime', 'relaxation', 'amusement', 'entertainment', 'recreation', 'leisure'),
-                ('resume-is_id', 'cv', 'overview', 'summary'),
-                ('contact details-is_link', 'social media', 'media', 'internet')
-            ]
-            resulting_lookup = None
-            for keyword_tuple in keyword_tuples:
-                for keyword in keyword_tuple:
-                    if re.match(searching_for, keyword, flags=re.IGNORECASE):
-                        resulting_lookup = keyword_tuple[0]
-                        break
-
 
             personal_information = AboutSerializer(personal_information, many=True)
             work_experience = WorkExperienceSerializer(work_experience, many=True)
@@ -127,7 +102,7 @@ def search(request: HttpRequest):
             context = {
                 'searching_for': searching_for,
                 'not_found': not_found,
-                'resulting_lookup': resulting_lookup,
+                'resulting_lookup': translator.find_related_words(searching_for, 'media/csv/related_words.csv'),
                 'personal_information': personal_information.data,
                 'work_experience': work_experience.data,
                 'education': education.data,
@@ -173,10 +148,10 @@ def about(request: HttpRequest):
     except ObjectDoesNotExist:
         pass
     
-    work_exp_length = [i for i in range(0, len(information.work_experience.all()))]
-    education_length = [i for i in range(0, len(information.education.all()))]
-    languages_length = [i for i in range(0, len(information.languages.all()))]
-    programming_languages_length = [i for i in range(0, len(information.programming_languages.all()))]
+    work_exp_length = [i for i in range(0, len(information.work_experience.all()))] if information else None
+    education_length = [i for i in range(0, len(information.education.all()))] if information else None
+    languages_length = [i for i in range(0, len(information.languages.all()))] if information else None
+    programming_languages_length = [i for i in range(0, len(information.programming_languages.all()))] if information else None
 
     context = {
         'information': information,

@@ -1,32 +1,95 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="contact-details-body">
     {% for detail in results %}
         <div class="row contact-detail-row">
-            <div class="col-md-10 contact-info-col" id="{% replacechars detail.media.media_type ' ' '-' %}-{{ detail.id }}">
+            <div class="col-md-10 contact-info-col" id="detail-{{ detail.id }}">
                 <h2 class="fw-light">
-                    <img src="{{ detail.media.media_image.url }}" class="mb-2" height="30"> {{ detail.media.media_type }}
+                    <img src="{{ detail.media.media_image.url }}" class="mb-2" height="30"> 
+                    {{ detail.media.media_type|translate_dc:LANGUAGE_CODE }}
                 </h2>
                 <p class="fw-light">
-                    {{ detail.comment }}
+                    {{ detail.comment|translate_dc:LANGUAGE_CODE }}
                 </p>
                 {% if detail.is_url %}
-                    <a href="{{ detail.value }}" class="contact-link">Contact &raquo;</a>
+                    <a href="{{ detail.value }}" class="contact-link">{% translate 'Reach' %} &raquo;</a>
                 {% elif detail.is_email %}
-                    <a href="mailto:{{ detail.value }}" class="contact-link">Contact &raquo;</a>
+                    <a href="mailto:{{ detail.value }}" class="contact-link">{% translate 'Reach' %} &raquo;</a>
                 {% elif detail.is_phone_number %}
-                    <a href="tel:{{ detail.value }}" class="contact-link">Contact &raquo;</a>
+                    <a href="tel:{{ detail.value }}" class="contact-link">{% translate 'Reach' %} &raquo;</a>
                 {% endif %}
             </div>
             <div class="col-md-2 qrcode-col">
                 <!-- The path to the qrcode image should be changed to the appropriate one when deploying -->
-                <img src="../{{ detail.qrcode }}" id="qrcode">
+                <img src="/{{ detail.qrcode }}" id="qrcode">
             </div>
         </div>
     {% empty %}
-        <h2 class="nothing-yet-text text-center mt-5 mb-5">Nothing yet</h2>
+        <h2 class="nothing-yet-text text-center mt-5 mb-5">{% translate 'Nothing yet' %}</h2>
     {% endfor %}
 </div>
+<script>
+    // Global variables or constants go here
+    const detail_cols = document.querySelectorAll('.contact-info-col');
+    const qrcode_cols = document.querySelectorAll('.qrcode-col');
+
+    for (let i = 0; i < detail_cols.length; i++) {
+        $(detail_cols[i]).css('opacity', '0');
+        $(detail_cols[i]).css('transform', 'translateY(-20px)');
+    };
+    for (let i = 0; i < qrcode_cols.length; i++) {
+        $(qrcode_cols[i]).css('opacity', '0');
+        $(qrcode_cols[i]).css('transform', 'translateY(-20px)');
+    };
+
+    // Event Based functions go here
+    $(document).ready(function () {
+        for (let i = 0; i < detail_cols.length; i++) {
+            if (ElementInViewport(detail_cols[i])) {
+                $(detail_cols[i]).addClass('show-smoothly');
+            };
+        };
+        for (let i = 0; i < qrcode_cols.length; i++) {
+            if (ElementInViewport(qrcode_cols[i])) {
+                $(qrcode_cols[i]).addClass('show-smoothly');
+            };
+        };
+    });
+    $(window).scroll(function () {
+        for (let i = 0; i < detail_cols.length; i++) {
+            if (ElementInViewport(detail_cols[i])) {
+                $(detail_cols[i]).removeClass('hide-smoothly');
+                $(detail_cols[i]).addClass('show-smoothly');
+            } else {
+                $(detail_cols[i]).removeClass('show-smoothly');
+                $(detail_cols[i]).addClass('hide-smoothly');
+            };
+        };
+        for (let i = 0; i < qrcode_cols.length; i++) {
+            if (ElementInViewport(qrcode_cols[i])) {
+                $(qrcode_cols[i]).removeClass('hide-smoothly');
+                $(qrcode_cols[i]).addClass('show-smoothly');
+            } else {
+                $(qrcode_cols[i]).removeClass('show-smoothly');
+                $(qrcode_cols[i]).addClass('hide-smoothly');
+            };
+        };
+    });
+
+    // Functions/methods go here
+    function ElementInViewport (element) {
+        if (typeof jQuery === "function" && element instanceof jQuery) {
+            element = element[0];
+        };
+        let rect = element.getBoundingClientRect();
+        return (
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    };
+</script>
 {% endblock content %}

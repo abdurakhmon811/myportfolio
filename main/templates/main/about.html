@@ -1,19 +1,23 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% load i18n %}
+{% load markdownify %}
 
 {% block content %}
 <div class="about-me-header">
-    <h1 class="display-1 next-pages-link fw-light">{{ information.title }}</h1>
-    <h4 class="text-light fw-light mt-3" id="bio">
-        {{ information.full_bio }}
+    <h1 class="display-4 next-pages-link fw-light">
+        {{ information.title|translate_dc:LANGUAGE_CODE }}
+    </h1>
+    <h4 class="text-light fw-light text-start mt-3" id="bio">
+        {{ information.full_bio|translate_dc:LANGUAGE_CODE|markdownify }}
     </h4>
 </div>
 <div class="about-me-body">
-    <div class="row about-me-row">
+    <div class="row about-me-row mt-2">
         <div class="col-xl-4 about-me-img-col">
             <img src="{% static 'images/work-experience.png' %}" class="about-me-img">
         </div>
-        <div class="col-xl-8 h-100">
+        <div class="col-xl-8 about-me-col h-100">
             <div class="carousel slide h-100" id="work-exp-slides">
                 <div class="carousel-indicators mt-5">
                     {% for num in work_exp_length %}
@@ -31,27 +35,35 @@
                         id="{% replacechars work_exp.work_place ' ' '-' %}">
                             <div class="custom-caption h-100">
                                 <div class="inner-caption h-100">
-                                    <h2 class="text-light fw-light">
-                                        <img src="{% static 'icons/company-icon.png' %}" height="25"> 
-                                        {{ work_exp.work_place }}
+                                    <h2 class="text-warning fw-light d-flex align-items-center">
+                                        <img src="{% static 'icons/company-icon.png' %}" class="me-1" height="25">
+                                        {{ work_exp.work_place|translate_dc:LANGUAGE_CODE|markdownify }}
                                     </h2>
-                                    <h5 class="text-light fw-light">
-                                        As a {{ work_exp.as_a }}
+                                    <h5 class="text-light fw-light d-flex mb-1">
+                                        <span class="no-break">{% translate 'As a' %}</span>&nbsp;
+                                        <span class="info-text">
+                                            {{ work_exp.as_a|translate_dc:LANGUAGE_CODE|markdownify }}
+                                        </span>
                                     </h5>
-                                    <h5 class="text-light fw-light">
-                                        Employment type - {{ work_exp.employment_type }}
+                                    <h5 class="text-light fw-light d-flex mb-2">
+                                        <span class="no-break">{% translate 'Employment type' %}</span>&nbsp;-&nbsp;
+                                        <span class="text-warning">
+                                            {{ work_exp.employment_type.work_type|translate_dc:LANGUAGE_CODE|markdownify }}
+                                        </span>
                                     </h5>
-                                    <h6 class="text-light fw-light">
+                                    <h6 class="text-light fw-light mb-2">
                                         {% if work_exp.still_working %}
-                                            Period: {{ work_exp.started|date:'d.m.Y' }} - Current
+                                            {% translate 'Period' %}: {{ work_exp.started|date:'d.m.Y' }} - 
+                                            <span class="text-warning">{% translate 'Current' %}</span>
                                         {% else %}
-                                            Period: {{ work_exp.started|date:'d.m.Y' }} - {{ work_exp.ended|date:'d.m.Y' }}
+                                            {% translate 'Period' %}: {{ work_exp.started|date:'d.m.Y' }} - 
+                                            {{ work_exp.ended|date:'d.m.Y' }}
                                         {% endif %}
                                     </h6>
-                                    <p class="text-light fw-light mt-2">
-                                        Thoughts:<br>
-                                        {{ work_exp.comment|truncate:450 }}
-                                    </p>
+                                    <span class="text-light fw-light mt-2">
+                                        <span class="text-danger">{% translate 'Thoughts' %}</span>:<br>
+                                        {{ work_exp.comment|translate_dc:LANGUAGE_CODE|truncate:450|markdownify }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -61,20 +73,20 @@
                                 <div class="inner-caption h-100">
                                     <h2 class="text-light fw-light">
                                         <img src="{% static 'icons/company-icon.png' %}" height="25"> 
-                                        Nothing yet
+                                        {% translate 'Nothing yet' %}
                                     </h2>
                                     <h5 class="text-light fw-light">
-                                        As a Nothing yet
+                                        {% translate 'As a' %} {% translate 'Nothing yet' %}
                                     </h5>
                                     <h5 class="text-light fw-light">
-                                        Employment type - Nothing yet
+                                        {% translate 'Employment type' %} - {% translate 'Nothing yet' %}
                                     </h5>
                                     <h6 class="text-light fw-light">
-                                        Period: Nothing yet
+                                        {% translate 'Period' %}: {% translate 'Nothing yet' %}
                                     </h6>
                                     <p class="text-light fw-light mt-2">
-                                        Thoughts:<br>
-                                        Nothing yet
+                                        {% translate 'Thoughts' %}:<br>
+                                        {% translate 'Nothing yet' %}
                                     </p>
                                 </div>
                             </div>
@@ -93,8 +105,8 @@
         </div>
     </div>
     <!-- should-be-reversed class reverses the flex-direction in smaller screens than 1200px -->
-    <div class="row about-me-row mt-5" id="should-be-reversed">
-        <div class="col-xl-8 h-100">
+    <div class="row about-me-row" id="should-be-reversed">
+        <div class="col-xl-8 about-me-col h-100">
             <div class="carousel slide h-100" id="education-slides">
                 <div class="carousel-indicators mt-5">
                     {% for num in education_length %}
@@ -112,30 +124,38 @@
                         id="{% replacechars edu.education.degree ' ' '-' %}">
                             <div class="custom-caption h-100">
                                 <div class="inner-caption h-100">
-                                    <h2 class="text-light fw-light">
-                                        <img src="{% static 'icons/education.png' %}" height="25"> 
-                                        {{ edu.education }}
+                                    <h2 class="text-warning fw-light d-flex align-items-center">
+                                        <img src="{% static 'icons/education.png' %}" class="me-1" height="25"> 
+                                        {{ edu.education.degree|translate_dc:LANGUAGE_CODE|markdownify }}
                                     </h2>
-                                    <h5 class="text-light fw-light">
-                                        {{ edu.institution }}
+                                    <h5 class="text-warning fw-light mb-1">
+                                        {{ edu.institution|translate_dc:LANGUAGE_CODE|markdownify }}
                                     </h5>
-                                    <h5 class="text-light fw-light">
-                                        Faculty - {{ edu.faculty }}
+                                    <h5 class="text-light fw-light d-flex mb-1">
+                                        {% translate 'Faculty' %} -&nbsp;
+                                        <span class="info-text">
+                                            {{ edu.faculty|translate_dc:LANGUAGE_CODE|markdownify }}
+                                        </span>
                                     </h5>
-                                    <h5 class="text-light fw-light">
-                                        Major - {{ edu.major }}
+                                    <h5 class="text-light fw-light d-flex mb-2">
+                                        {% translate 'Major' %} -&nbsp;
+                                        <span class="info-text">
+                                            {{ edu.major|translate_dc:LANGUAGE_CODE|markdownify }}
+                                        </span>
                                     </h5>
                                     <h6 class="text-light fw-light">
                                         {% if edu.still_studying %}
-                                            Period: {{ edu.start_date|date:'d.m.Y' }} - Current
+                                            {% translate 'Period' %}: {{ edu.start_date|date:'d.m.Y' }} - 
+                                            <span class="text-warning">{% translate 'Current' %}</span>
                                         {% else %}
-                                            Period: {{ edu.start_date|date:'d.m.Y' }} - {{ edu.end_date|date:'d.m.Y' }}
+                                            {% translate 'Period' %}: {{ edu.start_date|date:'d.m.Y' }} - 
+                                            {{ edu.end_date|date:'d.m.Y' }}
                                         {% endif %}
                                     </h6>
-                                    <p class="text-light fw-light mt-2">
-                                        Thoughts:<br>
-                                        {{ edu.comment|truncate:450 }}
-                                    </p>
+                                    <span class="text-light fw-light mt-2">
+                                        <span class="text-danger">{% translate 'Thoughts' %}</span>:<br>
+                                        {{ edu.comment|translate_dc:LANGUAGE_CODE|truncate:450|markdownify }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -145,23 +165,23 @@
                                 <div class="inner-caption h-100">
                                     <h2 class="text-light fw-light">
                                         <img src="{% static 'icons/education.png' %}" height="25"> 
-                                        Nothing yet
+                                        {% translate 'Nothing yet' %}
                                     </h2>
                                     <h5 class="text-light fw-light">
-                                        Nothing yet
+                                        {% translate 'Nothing yet' %}
                                     </h5>
                                     <h5 class="text-light fw-light">
-                                        Faculty - Nothing yet
+                                        {% translate 'Faculty' %} - {% translate 'Nothing yet' %}
                                     </h5>
                                     <h5 class="text-light fw-light">
-                                        Major - Nothing yet
+                                        {% translate 'Major' %} - {% translate 'Nothing yet' %}
                                     </h5>
                                     <h6 class="text-light fw-light">
-                                        Period: Nothing yet
+                                        {% translate 'Period' %}: {% translate 'Nothing yet' %}
                                     </h6>
                                     <p class="text-light fw-light mt-2">
-                                        Thoughts:<br>
-                                        Nothing yet
+                                        {% translate 'Thoughts' %}:<br>
+                                        {% translate 'Nothing yet' %}
                                     </p>
                                 </div>
                             </div>
@@ -182,11 +202,11 @@
             <img src="{% static 'images/education.png' %}" class="about-me-img">
         </div>
     </div>
-    <div class="row about-me-row mt-5">
+    <div class="row about-me-row">
         <div class="col-xl-4 about-me-img-col">
             <img src="{% static 'images/languages.png' %}" class="about-me-img">
         </div>
-        <div class="col-xl-8 h-100">
+        <div class="col-xl-8 about-me-col h-100">
             <div class="carousel slide h-100" id="languages-slides">
                 <div class="carousel-indicators mt-5">
                     {% for num in languages_length %}
@@ -204,17 +224,20 @@
                         id="{% replacechars lang.language ' ' '-' %}">
                             <div class="custom-caption h-100">
                                 <div class="inner-caption h-100">
-                                    <h2 class="text-light fw-light">
-                                        <img src="{% static 'icons/languages-sm.png' %}" height="25"> 
-                                        {{ lang.language }}
+                                    <h2 class="text-warning fw-light d-flex align-items-center">
+                                        <img src="{% static 'icons/languages-sm.png' %}" class="me-1" height="25"> 
+                                        {{ lang.language|translate_dc:LANGUAGE_CODE|markdownify }}
                                     </h2>
                                     <h5 class="text-light fw-light">
-                                        Knowledge degree - {{ lang.knowledge_extent }}
+                                        <span class="no-break">{% translate 'Knowledge degree' %}</span> - 
+                                        <span class="info-text">
+                                            {{ lang.knowledge_extent|translate_dc:LANGUAGE_CODE }}
+                                        </span>
                                     </h5>
-                                    <p class="text-light fw-light mt-2">
-                                        Thoughts:<br>
-                                        {{ lang.comment|truncate:450 }}
-                                    </p>
+                                    <span class="text-light fw-light mt-2">
+                                        <span class="text-danger">{% translate 'Thoughts' %}</span>:<br>
+                                        {{ lang.comment|translate_dc:LANGUAGE_CODE|truncate:450|markdownify }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -224,14 +247,14 @@
                                 <div class="inner-caption h-100">
                                     <h2 class="text-light fw-light">
                                         <img src="{% static 'icons/languages-sm.png' %}" height="25"> 
-                                        Nothing yet
+                                        {% translate 'Nothing yet' %}
                                     </h2>
                                     <h5 class="text-light fw-light">
-                                        Knowledge degree - Nothing yet
+                                        {% translate 'Knowledge degree' %} - {% translate 'Nothing yet' %}
                                     </h5>
                                     <p class="text-light fw-light mt-2">
-                                        Thoughts:<br>
-                                        Nothing yet
+                                        <span class="text-danger">{% translate 'Thoughts' %}</span>:<br>
+                                        {% translate 'Nothing yet' %}
                                     </p>
                                 </div>
                             </div>
@@ -250,8 +273,8 @@
         </div>
     </div>
     <!-- should-be-reversed class reverses the flex-direction in smaller screens than 1200px -->
-    <div class="row about-me-row mt-5" id="should-be-reversed">
-        <div class="col-xl-8 h-100">
+    <div class="row about-me-row" id="should-be-reversed">
+        <div class="col-xl-8 about-me-col h-100">
             <div class="carousel slide h-100" id="programming-languages-slides">
                 <div class="carousel-indicators mt-5">
                     {% for num in programming_languages_length %}
@@ -269,32 +292,23 @@
                         id="{% replacechars plang.language ' ' '-' %}">
                             <div class="custom-caption h-100">
                                 <div class="inner-caption h-100">
-                                    <h2 class="text-light fw-light">
-                                        <img src="{% static 'icons/programming-languages.png' %}" height="25"> 
+                                    <h2 class="text-warning fw-light d-flex align-items-center">
+                                        <img src="{% static 'icons/programming-languages.png' %}" class="me-1" height="25"> 
                                         {{ plang.language }}
                                     </h2>
-                                    <h5 class="text-light fw-light">
-                                        {% if plang.still_learning and plang.language == 'Python' %}
-                                            Still learning - True
-                                        {% elif plang.still_learning and plang.language == 'JavaScript' %}
-                                            Still learning - true
-                                        {% elif plang.still_learning %}
-                                            Still learning - True
-                                        {% else %}
-                                            Still learning - False
-                                        {% endif %}
-                                    </h5>
                                     <h6 class="text-light fw-light">
                                         {% if plang.still_learning %}
-                                            Period: {{ plang.started|date:'d.m.Y' }} - Current
+                                            {% translate 'Period' %}: {{ plang.started|date:'d.m.Y' }} - 
+                                            <span class="text-warning">{% translate 'Current' %}</span>
                                         {% else %}
-                                            Period: {{ plang.started|date:'d.m.Y' }} - {{ plang.ended|date:'d.m.Y' }}
+                                            {% translate 'Period' %}: {{ plang.started|date:'d.m.Y' }} - 
+                                            {{ plang.ended|date:'d.m.Y' }}
                                         {% endif %}
                                     </h6>
-                                    <p class="text-light fw-light mt-2">
-                                        Thoughts:<br>
-                                        {{ plang.comment|truncate:450 }}
-                                    </p>
+                                    <span class="text-light fw-light mt-2">
+                                        <span class="text-danger">{% translate 'Thoughts' %}</span>:<br>
+                                        {{ plang.comment|translate_dc:LANGUAGE_CODE|truncate:450|markdownify }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -304,17 +318,17 @@
                                 <div class="inner-caption h-100">
                                     <h2 class="text-light fw-light">
                                         <img src="{% static 'icons/programming-languages.png' %}" height="25"> 
-                                        Nothing yet
+                                        {% translate 'Nothing yet' %}
                                     </h2>
                                     <h5 class="text-light fw-light">
-                                        Still learning - Nothing yet
+                                        {% translate 'Still learning' %} - {% translate 'Nothing yet' %}
                                     </h5>
                                     <h6 class="text-light fw-light">
-                                        Period: Nothing yet
+                                        {% translate 'Period' %}: {% translate 'Nothing yet' %}
                                     </h6>
                                     <p class="text-light fw-light mt-2">
-                                        Thoughts:<br>
-                                        Nothing yet
+                                        {% translate 'Thoughts' %}:<br>
+                                        {% translate 'Nothing yet' %}
                                     </p>
                                 </div>
                             </div>
@@ -335,9 +349,9 @@
             <img src="{% static 'images/programming-languages.png' %}" class="about-me-img">
         </div>
     </div>
-    <div class="sh-div mt-3" id="skills">
+    <div class="sh-div mt-5" id="skills">
         <h1 class="skills-text fw-light">
-            Skills
+            {% translate 'Skills' %}
         </h1>
         <div class="row sh-row">
             {% for skill in skills %}
@@ -347,41 +361,83 @@
                     </h4>
                 </div>
             {% empty %}
-                <h4 class="nothing-yet-text">Nothing yet</h4>
+                <h4 class="nothing-yet-text">{% translate 'Nothing yet' %}</h4>
             {% endfor %}
         </div>
     </div>
     <div class="sh-div" id="hobbies">
         <h1 class="hobbies-text fw-light">
-            Hobbies
+            {% translate 'Hobbies' %}
         </h1>
         <div class="row sh-row">
             {% for hobby in hobbies %}
                 <div class="col sh-col">
                     <h4 class="hobby">
-                        {{ hobby }}
+                        {{ hobby|translate_dc:LANGUAGE_CODE }}
                     </h4>
                 </div>
             {% empty %}
-                <h4 class="nothing-yet-text">Nothing yet</h4>
+                <h4 class="nothing-yet-text">{% translate 'Nothing yet' %}</h4>
             {% endfor %}
         </div>
     </div>
     <div class="resume-link-div" id="resume">
-        {% if information.resume_link %}
-            <a href="{{ information.resume_link }}" class="resume-link">DOWNLOAD RESUME</a>
+        {% if information.resume %}
+            <a href="{{ information.resume.url }}" class="resume-link" download="">{% translate 'DOWNLOAD RESUME' %}</a>
         {% else %}
-            <h4 class="nothing-yet-text">Resume not available for now</h4>
+            <h4 class="nothing-yet-text">{% translate 'Resume not available for now' %}</h4>
         {% endif %}
     </div>
 </div>
 <script>
+    // Global variables or constants go here
     var current_url = window.location.href.toString().replace('%20', '-');
-
     const work_exp_carousel_items = document.querySelectorAll('.work-exp-carousel-item');
     const education_carousel_items = document.querySelectorAll('.education-carousel-item');
     const languages_carousel_items = document.querySelectorAll('.languages-carousel-item');
     const programming_languages_carousel_items = document.querySelectorAll('.programming-languages-carousel-item');
+    const header = document.querySelector('.about-me-header');
+    const cols = document.querySelectorAll('.about-me-col');
+    const img_cols = document.querySelectorAll('.about-me-img-col')
+    const skills_section = document.querySelector('#skills');
+    const hobbies_section = document.querySelector('#hobbies');
+    const resume_section = document.querySelector('#resume');
+
+    $(header).css('opacity', '0');
+    $(header).css('transform', 'translateY(-20px)');
+    for (let i = 0; i < cols.length; i++) {
+        $(cols[i]).css('opacity', '0');
+        $(cols[i]).css('transform', 'translateY(-20px)');
+    };
+    for (let i = 0; i < img_cols.length; i++) {
+        $(img_cols[i]).css('opacity', '0');
+        $(img_cols[i]).css('transform', 'translateY(-20px)');
+    };
+    $(skills_section).css('opacity', '0');
+    $(skills_section).css('transform', 'translateY(-20px)');
+    $(hobbies_section).css('opacity', '0');
+    $(hobbies_section).css('transform', 'translateY(-20px)');
+    $(resume_section).css('opacity', '0');
+    $(resume_section).css('transform', 'translateY(-20px)');
+    for (let i = 0; i < cols.length; i++) {
+        if (ElementInViewport(cols[i])) {
+            $(cols[i]).addClass('show-smoothly');
+        };
+    };
+    for (let i = 0; i < img_cols.length; i++) {
+        if (ElementInViewport(img_cols[i])) {
+            $(img_cols[i]).addClass('show-smoothly');
+        };
+    };
+    if (ElementInViewport(skills_section)) {
+        $(skills_section).addClass('show-smoothly');
+    };
+    if (ElementInViewport(hobbies_section)) {
+        $(hobbies_section).addClass('show-smoothly');
+    };
+    if (ElementInViewport(resume_section)) {
+        $(resume_section).addClass('show-smoothly');
+    };
     
     const carousel_indicators = document.querySelectorAll('.carousel-indicator');
     $(carousel_indicators[0]).addClass('active');
@@ -434,11 +490,70 @@
         );
     };
 
+    // Event based functions go here
+    $(document).ready(function () {
+        $(header).addClass('show-smoothly');
+    });
+    $(window).scroll(function () {
+        for (let i = 0; i < cols.length; i++) {
+            if (ElementInViewport(cols[i])) {
+                $(cols[i]).removeClass('hide-smoothly');
+                $(cols[i]).addClass('show-smoothly');
+            } else {
+                $(cols[i]).removeClass('show-smoothly');
+                $(cols[i]).addClass('hide-smoothly')
+            };
+        };
+        for (let i = 0; i < img_cols.length; i++) {
+            if (ElementInViewport(img_cols[i])) {
+                $(img_cols[i]).removeClass('hide-smoothly');
+                $(img_cols[i]).addClass('show-smoothly');
+            } else {
+                $(img_cols[i]).removeClass('show-smoothly');
+                $(img_cols[i]).addClass('hide-smoothly')
+            };
+        };
+        if (ElementInViewport(skills_section)) {
+            $(skills_section).removeClass('hide-smoothly');
+            $(skills_section).addClass('show-smoothly');
+        } else {
+            $(skills_section).removeClass('show-smoothly');
+            $(skills_section).addClass('hide-smoothly');
+        };
+        if (ElementInViewport(hobbies_section)) {
+            $(hobbies_section).removeClass('hide-smoothly');
+            $(hobbies_section).addClass('show-smoothly');
+        } else {
+            $(hobbies_section).removeClass('show-smoothly');
+            $(hobbies_section).addClass('hide-smoothly');
+        };
+        if (ElementInViewport(resume_section)) {
+            $(resume_section).removeClass('hide-smoothly');
+            $(resume_section).addClass('show-smoothly');
+        } else {
+            $(resume_section).removeClass('show-smoothly');
+            $(resume_section).addClass('hide-smoothly');
+        };
+    });
+
+    // Functions/methods go here
     function ActivateCarouselItems() {
         for (let i = 0; i < arguments.length; i++) {
             let NodeList = arguments[i];
             $(NodeList[0]).addClass('active');
         };
+    };
+
+    function ElementInViewport (element) {
+        if (typeof jQuery === "function" && element instanceof jQuery) {
+            element = element[0];
+        };
+        let rect = element.getBoundingClientRect();
+        return (
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
     };
 
     function parentElementOfElements(elements, parent_id) {

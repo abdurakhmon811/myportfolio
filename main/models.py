@@ -27,7 +27,7 @@ class About(models.Model):
     programming_languages = models.ManyToManyField(ProgrammingLanguage)
     skills = models.CharField(max_length=100, null=True)    # Either work related or non-releated
     hobbies = models.CharField(max_length=100, null=True)
-    resume_link = models.URLField(null=True)    # Link for file located in Google Drive should be given
+    resume = models.FileField(upload_to='files',null=True)    # Link for file located in Google Drive should be given
 
     objects = models.Manager()
 
@@ -69,6 +69,7 @@ class Project(models.Model):
     project_created = models.CharField(max_length=100, choices=developed, null=True)
     project_name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
+    github_link = models.URLField(null=True)
     link = models.URLField()
     image = models.ImageField(upload_to='images')
     date_finished = models.DateField(auto_now_add=False, null=True)

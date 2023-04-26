@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # Third party
     'bootstrap5',
     'rest_framework',
+    'markdownify',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -153,13 +154,24 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# My settings
-
-prefix_default_language = False
-
+# i18n settings
 LANGUAGES = [
     ('en', _('English')),
     ('de', _('German')),
     ('ru', _('Russian')),
     ('uz', _('Uzbek')),
 ]
+LOCALE_PATHS = [
+    (BASE_DIR / 'main/locale'),
+]
+
+MARKDOWNIFY = {
+    "default": {
+        "WHITELIST_TAGS": [
+            "a", "p", "h1", "h2", "h3", "h4", "h5", "h6", "em", "strong", "u", "img",
+        ],
+        "WHITELIST_ATTRS": [
+            "class", "style", "src", "height", "href",
+        ],
+    },
+}
