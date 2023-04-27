@@ -168,7 +168,7 @@ LOCALE_PATHS = [
 MARKDOWNIFY = {
     "default": {
         "WHITELIST_TAGS": [
-            "a", "p", "h1", "h2", "h3", "h4", "h5", "h6", "em", "strong", "u", "img",
+            "a", "p", "h1", "h2", "h3", "h4", "h5", "h6", "em", "strong", "u", "img", "br",
         ],
         "WHITELIST_ATTRS": [
             "class", "style", "src", "height", "href",
