@@ -17,7 +17,7 @@ class About(models.Model):
         verbose_name_plural = 'About'
 
     avatar = models.ImageField(upload_to='images', null=True)  # Used for the main page
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
     datetime = models.DateTimeField(auto_now_add=True)
     full_bio = models.TextField()
     short_bio = models.TextField(null=True)     # Used for the main page
@@ -25,9 +25,9 @@ class About(models.Model):
     education = models.ManyToManyField(Education)
     languages = models.ManyToManyField(Language)
     programming_languages = models.ManyToManyField(ProgrammingLanguage)
-    skills = models.CharField(max_length=100, null=True)    # Either work related or non-releated
-    hobbies = models.CharField(max_length=100, null=True)
-    resume = models.FileField(upload_to='files',null=True)    # Link for file located in Google Drive should be given
+    skills = models.CharField(max_length=100, null=True)    # Either work related or non
+    hobbies = models.CharField(max_length=10000, null=True)
+    resume = models.FileField(upload_to='files', null=True, blank=True)
 
     objects = models.Manager()
 

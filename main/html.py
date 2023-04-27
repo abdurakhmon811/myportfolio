@@ -28,7 +28,7 @@ def translate_dc(string: str, language_code: str):
         if translation.lstrip().startswith('--' + language_code):
             return translation.replace('--' + language_code, '').strip()
     
-    return translations[0].replace('--' + language_code).strip()
+    return translations[0].replace('--' + language_code, '').strip()
 
 
 # Tags go here
