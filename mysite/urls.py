@@ -19,6 +19,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 #from django.contrib.auth.models import User
 from django.urls import path, include
+#from main.models import About, ContactDetail, Project
+#from main.foreign_keys import Education, EducationDegree, Language, Media, ProgrammingLanguage, WorkExperience, WorkType
 #from rest_framework import routers, serializers, viewsets
 
 
@@ -44,7 +46,7 @@ from django.urls import path, include
 urlpatterns = i18n_patterns(
     path('django-management-system/', admin.site.urls),
     path('', include('main.urls')),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_apis')),
+    # path('api-auth/', include('rest_framework.urls', namespace='rest_apis')),
 )
 
 if settings.DEBUG:

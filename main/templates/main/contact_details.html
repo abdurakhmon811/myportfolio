@@ -1,6 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
 {% load i18n %}
+{% load markdownify %}
 
 {% block content %}
 <div class="contact-details-body">
@@ -11,9 +12,7 @@
                     <img src="{{ detail.media.media_image.url }}" class="mb-2" height="30"> 
                     {{ detail.media.media_type|translate_dc:LANGUAGE_CODE }}
                 </h2>
-                <p class="fw-light">
-                    {{ detail.comment|translate_dc:LANGUAGE_CODE }}
-                </p>
+                {{ detail.comment|translate_dc:LANGUAGE_CODE|markdownify }}
                 {% if detail.is_url %}
                     <a href="{{ detail.value }}" class="contact-link">{% translate 'Reach' %} &raquo;</a>
                 {% elif detail.is_email %}

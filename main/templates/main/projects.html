@@ -1,5 +1,6 @@
 {% extends 'main/base.html' %}
 {% load i18n %}
+{% load markdownify %}
 
 {% block content %}
 <div class="container" id="projects-header">
@@ -41,9 +42,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p class="fw-light">
-                                    {{ own_project.description|translate_dc:LANGUAGE_CODE }}
-                                </p>
+                                {{ own_project.description|translate_dc:LANGUAGE_CODE|markdownify }}
                             </div>
                         </div>
                     </div>
@@ -95,9 +94,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p class="fw-light">
-                                    {{ team_project.description|translate_dc:LANGUAGE_CODE }}
-                                </p>
+                                {{ team_project.description|translate_dc:LANGUAGE_CODE|markdownify }}
                             </div>
                         </div>
                     </div>
